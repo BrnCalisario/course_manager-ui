@@ -1,0 +1,7 @@
+<div cdkDropList class="list" (cdkDropListDropped)="drop($event)">
+@for (item of itemList; track item) {
+    <div class="item-box" cdkDrag> 
+        {{ itemFormatter(item) }}
+    </div>
+}
+</div>

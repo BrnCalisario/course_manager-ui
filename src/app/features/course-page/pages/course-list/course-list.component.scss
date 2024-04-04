@@ -1,0 +1,24 @@
+.filter-wrap {
+    margin-top: 4rem;
+    gap: 24px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+.search-bar {
+    outline-color: var(--secondary);
+    width: 50%;
+}
+
+.course-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+}
+
+@media screen and (max-width: 1800px) {
+    .course-grid {
+        grid-template-columns: repeat(3, 1fr);
+    }    
+}

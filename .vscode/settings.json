@@ -1,0 +1,9 @@
+{
+	"cSpell.words": [
+		"odata"
+	],
+	"editor.formatOnSave": true,
+	"editor.codeActionsOnSave": {
+		"source.organizeImports": true
+	}
+}

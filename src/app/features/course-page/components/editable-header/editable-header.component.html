@@ -1,0 +1,16 @@
+<div class="editable-title">
+    @if (this.edit) {
+        <mat-form-field>
+            <mat-label>Course Title</mat-label>
+            <input matInput [formControl]="courseName" type="text" class="edit-name">
+        </mat-form-field>
+        <button (click)="toggleEdit()" mat-icon-button color="primary">
+            <mat-icon>check</mat-icon>
+        </button>
+    } @else {
+        <h2>{{ courseName.value }}</h2>
+        <button (click)="toggleEdit()" mat-icon-button color="primary">
+            <mat-icon>edit</mat-icon>
+        </button>
+    }
+</div>

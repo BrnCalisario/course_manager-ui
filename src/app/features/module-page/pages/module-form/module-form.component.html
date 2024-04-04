@@ -1,0 +1,43 @@
+<b-header [back]="true" title="New Module"></b-header>
+
+<div class="form-card">
+
+	<form #form class="form" [formGroup]="moduleForm">
+		<div class="form-grid">
+			<div id="module" class="column">
+				<table cellspacing="0">
+					<tbody>
+						<tr>
+							<td><mat-form-field>
+									<mat-label>Name</mat-label>
+									<input matInput formControlName="Name" placeholder="Ex: Basic Python" #Name>
+								</mat-form-field></td>
+							<td style="width: 30%;"><mat-form-field>
+									<mat-label>Workload ( Hours ) </mat-label>
+									<input matInput formControlName="Workload" #Workload type="number">
+								</mat-form-field></td>
+						</tr>
+					</tbody>
+				</table>
+				<mat-form-field>
+					<mat-label>Description</mat-label>
+					<textarea matInput formControlName="Description" placeholder="Ex: This module covers..."
+						#Description></textarea>
+				</mat-form-field>
+				<mat-form-field>
+					<mat-label>Objectives</mat-label>
+					<textarea matInput formControlName="Objectives" placeholder="Ex: Learn about..."
+						#Objectives></textarea>
+				</mat-form-field>
+			</div>
+			<div id="competences" class="column">
+				<h2 style="color: var(--primary); margin-bottom: .5rem;">Select Competences</h2>
+				<app-select-chip [(selectedValues)]="selectedChips" [options]="this.chipOptions"
+					(onAdd)="openDialog()" />
+			</div>
+		</div>
+
+		<button style="justify-self: flex-end;" (click)="onClick()" mat-raised-button color="primary">Create</button>
+	</form>
+
+</div>

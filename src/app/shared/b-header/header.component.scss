@@ -1,0 +1,33 @@
+.header {
+    display: flex;
+}
+
+.title-wrap {
+    display: flex;
+    align-items: center;
+    gap: .5rem;
+}
+
+.strip {
+    margin-right: 1rem;
+    border-left: 0;
+    border-bottom: 0;
+    border-width: 6px;
+    background-color: var(--primary);
+}
+
+.content {
+    align-self: flex-start
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin: 0;
+    margin-top: 0.4rem;    
+}
+
+p {
+    font-size: 1.5rem;
+    margin: 0;
+    color: var(--secondary);
+}

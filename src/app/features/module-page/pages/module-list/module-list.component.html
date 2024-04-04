@@ -1,0 +1,16 @@
+<b-header title="Modules" description="Manage your modules here!"></b-header>
+
+<div class="filter-wrap">
+	<mat-form-field class="search-bar" appearance="outline">
+		<mat-label>Search for modules</mat-label>
+		<input matInput #search>
+		<mat-icon color="primary" matSuffix>search</mat-icon>
+	</mat-form-field>
+
+	<div class="button-wrap">
+		<button mat-fab extended color="primary" [routerLink]="['/module', 'form']">
+			<mat-icon>add</mat-icon>
+			New Module
+		</button>
+	</div>
+</div>

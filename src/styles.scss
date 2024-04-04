@@ -1,0 +1,141 @@
+@use '@angular/material' as mat;
+
+// Custom Theming for Angular Material
+// For more information: https://material.angular.io/guide/theming
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the palettes for your theme using the Material Design palettes available in palette.scss
+// (imported above). For each palette, you can optionally specify a default, lighter, and darker
+// hue. Available color palettes: https://material.io/design/color/
+// $frontend-primary: mat.define-palette(mat.$indigo-palette);
+// $frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// // The warn palette is optional (defaults to red).
+// $frontend-warn: mat.define-palette(mat.$red-palette);
+
+// // Create the theme object. A theme consists of configurations for individual
+// // theming systems such as "color" or "typography".
+// $frontend-theme: mat.define-light-theme((
+//   color: (
+//     primary: $frontend-primary,
+//     accent: $frontend-accent,
+//     warn: $frontend-warn,
+//   ),
+//   typography: mat.define-typography-config(),
+//   density: 0
+// ));
+
+// Include theme styles for core and each component used in your app.
+// Alternatively, you can import and @include the theme mixins for each component
+// that you are using.
+
+
+/* You can add global styles to this file, and also import other style files */
+
+$my-primary : (50: #e0f1f0,
+  100 : #b2ddd9,
+  200 : #81c8c1,
+  300 : #51b2a8,
+  400 : #2fa296,
+  500 : #159184,
+  600 : #138477,
+  700 : #107567,
+  800 : #0e6558,
+  900 : #08493d,
+  A100: #a6e6e0,
+  A200 : #63d7cb,
+  A400 : #00b6a3,
+  A700 : #008973,
+  contrast: (100 : #010302,
+    200 : #010302,
+    300 : #010302,
+    400 : #010302,
+    500 : white,
+    600 : white,
+    700 : white,
+    800 : white,
+    900 : white,
+    A100: #010302,
+    A200 : #010302,
+    A400 : #010302,
+    A700 : white),
+);
+
+$my-accent : (100 : #fffac8,
+  200 :#fff6a3,
+  300 : #fcb03d,
+  400 : #fb9e00,
+  500 : #fa8e00,
+  600 : #f78200,
+  700 : #f17100,
+  800 : #ec6000,
+  900 : #e34200,
+  A100: #fffac8,
+  A200 : #fff6a3,
+  A400 : #fcec63,
+  A700 : #ffc745,
+  contrast: (100 : #010302,
+    200 : #010302,
+    300 : #010302,
+    400 : #010302,
+    500 : white,
+    600 : white,
+    700 : white,
+    800 : white,
+    900 : white,
+    A100: #010302,
+    A200 : #010302,
+    A400 : #010302,
+    A700 : white),
+);
+
+$course-manager-primary : mat.define-palette($my-primary);
+$course-manager-accent : mat.define-palette($my-accent);
+$course-manager-warn : mat.define-palette(mat.$pink-palette, A200, A100, A400);
+
+// // $course-manager-theme : mat-light-theme((color: (primary : $course-manager-primary,
+// //       accent : $course-manager-accent,
+// //       warn : $course-manager-warn )));
+
+$course-manager-theme: mat.define-light-theme((color: (primary: $course-manager-primary,
+        accent: $course-manager-accent,
+        warn: $course-manager-warn,
+      ),
+      typography: mat.define-typography-config(),
+      density: 0));
+
+@include mat.all-component-themes($course-manager-theme);
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@100..900&display=swap');
+
+* {
+  --primary: #52B2A8;
+  --secondary: #78CAC1;
+
+  --header-font: 'Poppins', sans-serif;
+  --text-font: 'Poppins', sans-serif;
+
+}
+
+
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+p {
+  font-family: var(--text-font);
+  font-weight: 400;
+}
