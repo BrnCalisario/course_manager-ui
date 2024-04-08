@@ -1,17 +1,23 @@
 .filter-wrap {
-    margin-top: 4rem;
-    gap: 24px;
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+	margin-top: 4rem;
+	gap: 24px;
+	display: flex;
+	align-items: flex-start;
+	justify-content: space-between;
 }
 
 .search-bar {
-    outline-color: var(--secondary);
-    width: 50%;
+	outline-color: var(--secondary);
+	width: 50%;
 }
 
 .button-wrap {
-    display: flex;
-    gap: 0.5rem;
+	display: flex;
+	gap: 0.5rem;
+}
+
+.module-grid {
+	display: grid;
+	gap: 2rem;
+	grid-template-columns: 1fr 1fr 1fr;
 }

@@ -13,7 +13,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 
-import { Header } from './b-header/header.component';
+import { Header } from './header/header.component';
 import { PaginatorComponent } from './paginator/paginator.component';
 import { SelectChipComponent } from './select-chip/select-chip.component';
 
@@ -56,4 +56,4 @@ import { SelectChipComponent } from './select-chip/select-chip.component';
 	],
 	providers: [Router],
 })
-export class SharedModule {}
+export class SharedModule { }

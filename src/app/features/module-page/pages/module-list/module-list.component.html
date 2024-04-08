@@ -1,11 +1,14 @@
-<b-header title="Modules" description="Manage your modules here!"></b-header>
+<app-header title="Modules" description="Manage your modules here!"></app-header>
 
 <div class="filter-wrap">
 	<mat-form-field class="search-bar" appearance="outline">
 		<mat-label>Search for modules</mat-label>
 		<input matInput #search>
-		<mat-icon color="primary" matSuffix>search</mat-icon>
+		<button mat-icon-button color="primary" matSuffix>
+			<mat-icon>search</mat-icon>
+		</button>
 	</mat-form-field>
+
 
 	<div class="button-wrap">
 		<button mat-fab extended color="primary" [routerLink]="['/module', 'form']">
@@ -13,4 +16,12 @@
 			New Module
 		</button>
 	</div>
+</div>
+
+<div class="module-grid">
+	@for (item of modules; track $index) {
+
+	<app-module-card [module]="item"></app-module-card>
+
+	}
 </div>

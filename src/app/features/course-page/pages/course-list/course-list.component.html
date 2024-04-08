@@ -1,20 +1,22 @@
-<b-header title="Courses" description="Manage your courses here!"></b-header>
+<app-header title="Courses" description="Manage your courses here!"></app-header>
 
 <div class="filter-wrap">
-    <mat-form-field class="search-bar" appearance="outline">
-        <mat-label>Search for courses</mat-label>
-        <input matInput #search>
-        <mat-icon color="primary" matSuffix>search</mat-icon>
-    </mat-form-field>
+	<mat-form-field class="search-bar" appearance="outline">
+		<mat-label>Search for courses</mat-label>
+		<input matInput #search>
+		<button mat-icon-button color="primary" matSuffix>
+			<mat-icon>search</mat-icon>
+		</button>
+	</mat-form-field>
 
-    <button mat-fab extended color="primary" [routerLink]="['/course', 'form']">
-        <mat-icon>add</mat-icon>
-        New Course
-    </button>
+	<button mat-fab extended color="primary" [routerLink]="['/course', 'form']">
+		<mat-icon>add</mat-icon>
+		New Course
+	</button>
 </div>
 
 <div class="course-grid">
-@for (course of courses; track $index) {
-    <app-course-card [course]="course"></app-course-card>
-}
+	@for (course of courses; track $index) {
+	<app-course-card [course]="course"></app-course-card>
+	}
 </div>

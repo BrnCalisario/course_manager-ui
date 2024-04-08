@@ -1,0 +1,36 @@
+.module-card {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+
+	padding: 1rem;
+	outline: 2px solid var(--primary);
+	border-radius: 16px;
+
+	transition: 0.05s;
+}
+
+.module-card:hover {
+	outline-width: 3px;
+}
+
+.module-name {
+	font-size: 1.2rem;
+	font-weight: 500;
+	margin-bottom: 0.4rem;
+}
+
+.duration {
+	color: var(--primary);
+
+	p {
+		font-weight: bold;
+	}
+}
+
+
+p {
+	padding: 0;
+	margin: 0;
+}
