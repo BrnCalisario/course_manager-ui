@@ -3,7 +3,7 @@ import ODataResponse from 'src/lib/odata/types/ODataResponse';
 
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from '@environment/environment.prod';
+import { environment } from 'src/app/app.config';
 
 export interface BaseEntity<TId> {
 	Id: TId;
