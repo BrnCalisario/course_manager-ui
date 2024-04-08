@@ -1,29 +1,34 @@
 .container {
-  width: 100%;
-  height: 100%;
+	width: 100%;
+	height: 100%;
 }
 
 
 
 #title {
-  a {
-    text-decoration: none;
-    color: var(--primary);
-    font-family: var(--header-font);
-    padding: 1rem;
-  }
+	a {
+		text-decoration: none;
+		color: var(--primary);
+		font-family: var(--header-font);
+		padding: 1rem;
+	}
 }
 
 #content {
-  padding: 2rem;
+	padding: 2rem;
 }
 
 .side-header {
-  
-  color: var(--primary);
-  border-color: var(--primary);
-  background-color: white;
-  
-  font-weight: bold;
-  font-size: 1.5rem;
+
+	color: var(--primary);
+	border-color: var(--primary);
+	background-color: white;
+
+	font-weight: bold;
+	font-size: 1.5rem;
+}
+
+.toolbar {
+	display: flex;
+	justify-content: space-between;
 }

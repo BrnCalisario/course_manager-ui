@@ -13,12 +13,14 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 
-import { Header } from './header/header.component';
-import { PaginatorComponent } from './paginator/paginator.component';
-import { SelectChipComponent } from './select-chip/select-chip.component';
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { DraggableList } from './components/draggable-list/draggable-list.component';
+import { Header } from './components/header/header.component';
+import { PaginatorComponent } from './components/paginator/paginator.component';
+import { SelectChipComponent } from './components/select-chip/select-chip.component';
 
 @NgModule({
-	declarations: [Header, SelectChipComponent, PaginatorComponent],
+	declarations: [Header, SelectChipComponent, PaginatorComponent, DraggableList],
 	imports: [
 		MatPaginatorModule,
 		CommonModule,
@@ -34,6 +36,7 @@ import { SelectChipComponent } from './select-chip/select-chip.component';
 		MatButtonModule,
 		MatDividerModule,
 		MatChipsModule,
+		DragDropModule
 	],
 	exports: [
 		MatIcon,
@@ -53,6 +56,8 @@ import { SelectChipComponent } from './select-chip/select-chip.component';
 		Header,
 		SelectChipComponent,
 		PaginatorComponent,
+		DraggableList,
+		DragDropModule
 	],
 	providers: [Router],
 })

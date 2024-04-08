@@ -1,21 +1,19 @@
 
 import { Component, OnInit } from '@angular/core';
-import User from '@domain/user/user.model';
 
-import UserService from '../../shared/services/user.service';
+import { SideNavComponent } from '@features/side-nav/side-nav.component';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
 	selector: 'app-home-page',
 	standalone: true,
-	imports: [SharedModule],
+	imports: [SharedModule, SideNavComponent],
 	templateUrl: './home-page.component.html',
 	styleUrl: './home-page.component.scss',
 })
 export class HomePageComponent implements OnInit {
-	public users: User[] = [];
 
-	constructor(service: UserService) {
+	constructor() {
 	}
 
 	ngOnInit(): void {
