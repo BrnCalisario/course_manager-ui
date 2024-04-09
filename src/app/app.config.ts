@@ -1,21 +1,20 @@
-import { ApplicationConfig, isDevMode } from '@angular/core';
-import { provideRouter } from '@angular/router';
-
 import { Location } from '@angular/common';
-import { HTTP_INTERCEPTORS, provideHttpClient, withFetch } from '@angular/common/http';
+import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
+import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { routes } from './app.routes';
-
+import { provideRouter } from '@angular/router';
 import { BaseEndpoint } from '@domain/base/base.endpoint';
 import { environment as dev } from '@environment/environment';
 import { environment as prod } from '@environment/environment.prod';
-import { AuthInterceptor } from '@shared/middlewares/auth.interceptor';
+import { authInterceptor } from '@shared/middlewares/auth.interceptor';
+
+import { routes } from './app.routes';
 
 export const environment = isDevMode() ? dev : prod;
 
 const provideDIs = () => [
-	{ provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
+	provideHttpClient(withInterceptors([authInterceptor])),
 	{ provide: BaseEndpoint },
 	{ provide: Location }
 ];
