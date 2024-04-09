@@ -1,25 +1,43 @@
 import { Injectable } from "@angular/core";
-import { UserEndpoint } from "@domain/user/user.endpoint";
+import { Router } from "@angular/router";
+import { AuthEndpoint } from "@domain/auth/auth.endpoint";
 import { LoginDto, RegisterDto } from "@domain/user/user.model";
+
 
 @Injectable({ providedIn: 'root' })
 export default class AuthenticationService {
 
-	constructor(private readonly endpoint: UserEndpoint) { }
+	public get isLoggedIn(): boolean {
+		return this._isLoggedIn;
+	}
+
+	private _isLoggedIn: boolean = false;
+
+	constructor(private readonly router: Router, private readonly authEndpoint: AuthEndpoint) { }
 
 	public register(registerData: RegisterDto) {
-		this.endpoint.create(registerData);
+		return this.authEndpoint.register(registerData);
 	}
 
 	public login(loginData: LoginDto) {
-		this.endpoint.login(loginData)
-			.subscribe({
-				next: (res) => {
-					sessionStorage.setItem('token', res);
-				},
-				error: (err) => {
-					//TODO: Feedback with toast
-				}
-			})
+
+		this._isLoggedIn = true;
+		this.router.navigate(["/home"]);
+
+		// this.endpoint.login(loginData)
+		// 	.subscribe({
+		// 		next: (res) => {
+		// 			sessionStorage.setItem('token', res);
+		// 			this._isLoggedIn = true;
+		// 		},
+		// 		error: (err) => {
+		// 			//TODO: Feedback with toast
+		// 		}
+		// 	})
+	}
+
+	public logout() {
+		sessionStorage.removeItem('token');
+		this._isLoggedIn = false;
 	}
 }

@@ -1,3 +1,3 @@
 export const environment = {
-	APP_URL: 'https://localhost:7213',
+	APP_URL: 'https://coursemanagerapi.azurewebsites.net',
 }

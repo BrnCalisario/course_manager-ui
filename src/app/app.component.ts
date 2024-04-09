@@ -10,5 +10,4 @@ import { SideNavComponent } from './features/side-nav/side-nav.component';
 	styleUrl: './app.component.scss'
 })
 export class AppComponent {
-	title = 'frontend';
 }

@@ -5,15 +5,16 @@ import { HomePageComponent } from '@features/home-page/home-page.component';
 import { LoginComponent } from '@features/login/login.component';
 import { ModulePageComponent } from '@features/module-page/module-page.component';
 import { moduleRoutes } from '@features/module-page/module-page.routes';
+import { canActivateGuard } from '@shared/guards/auth.guard';
 
 export const routes: Routes = [
+	{ path: '', pathMatch: 'full', redirectTo: 'login' },
 	{ path: 'login', component: LoginComponent },
 	{
-		path: '', component: HomePageComponent, children: [
+		path: 'home', canActivate: [canActivateGuard], component: HomePageComponent,
+		children: [
 			{ path: 'course', component: CoursePageComponent, children: courseRoutes },
 			{ path: 'module', component: ModulePageComponent, children: moduleRoutes }
 		]
-	},
-	{ path: '**', redirectTo: '/', pathMatch: 'full' },
-
+	}
 ];
