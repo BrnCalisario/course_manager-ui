@@ -8,7 +8,7 @@ import { environment } from "src/app/app.config";
 export class AuthEndpoint {
 
     get route(): string {
-        return environment.APP_URL + '/odata/User';
+        return environment.APP_URL + '/api/User';
     }
 
     constructor(private readonly http: HttpClient) {
@@ -18,7 +18,7 @@ export class AuthEndpoint {
         return this.http.post<User>(this.route, registerDto);
     }
 
-    public login(loginDto: LoginDto): Observable<string> {
-        return this.http.post<string>(`${this.route}/Login`, loginDto);
+    public login(loginDto: LoginDto): Observable<any> {
+        return this.http.post<{ Token: string }>(`${this.route}/Auth`, loginDto);
     }
 }

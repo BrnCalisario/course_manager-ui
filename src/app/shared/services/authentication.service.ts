@@ -21,14 +21,20 @@ export default class AuthenticationService {
 
 	public login(loginData: LoginDto) {
 
-		this._isLoggedIn = true;
-		this.router.navigate(["/home"]);
+		loginData = { Email: 'teste@email.com', Password: '1234' }
 
-		// this.endpoint.login(loginData)
+		return this.authEndpoint.login(loginData).subscribe(res => {
+			sessionStorage.setItem('token', res.Token);
+			this._isLoggedIn = true;
+		});
+
+		// return this.authEndpoint.login(loginData)
 		// 	.subscribe({
 		// 		next: (res) => {
 		// 			sessionStorage.setItem('token', res);
 		// 			this._isLoggedIn = true;
+		// 			console.log("Logou");
+		// 			this.router.navigate(["/home"]);
 		// 		},
 		// 		error: (err) => {
 		// 			//TODO: Feedback with toast
