@@ -20,6 +20,6 @@ export class AuthEndpoint {
     }
 
     public validate(token: string): Observable<TokenInfo> {
-        return this.http.post<TokenInfo>(`${this.route}/ValidateToken`, token);
+        return this.http.post<TokenInfo>(`${this.route}/Validate`, { token });
     }
 }

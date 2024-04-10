@@ -1,4 +1,4 @@
 export class TokenInfo {
-    Token: string = '';
-    ExpiresAt: Date = new Date();
+    token: string = '';
+    expiresAt: Date = new Date();
 }

@@ -47,7 +47,7 @@ export default class AuthenticationService {
 		var token = undefined;
 
 		try {
-			token = sessionStorage?.getItem('token');
+			token = sessionStorage.getItem('token');
 		} catch {
 			return of(false);
 		}
@@ -65,8 +65,8 @@ export default class AuthenticationService {
 	}
 
 	private setToken(token: TokenInfo) {
-		sessionStorage.setItem('token', token.Token);
-		sessionStorage.setItem('expiresAt', token.ExpiresAt.toLocaleTimeString());
+		sessionStorage.setItem('token', token.token);
+		sessionStorage.setItem('expiresAt', new Date(token.expiresAt).toLocaleString());
 	}
 
 	private clearSession() {

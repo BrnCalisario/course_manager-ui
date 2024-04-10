@@ -7,6 +7,9 @@ export function tryObservable<T>(observable: Observable<T>, verifyFn?: (res: T) 
 
             return verifyFn(res);
         }),
-        catchError(_ => of(false))
+        catchError(err => {
+            console.log("Error", err);
+            return of(false);
+        })
     )
 }
