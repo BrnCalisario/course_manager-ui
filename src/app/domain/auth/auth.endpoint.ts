@@ -3,7 +3,9 @@ import { environment } from 'src/app/app.config';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import User, { LoginDto, RegisterDto } from '@domain/user/user.model';
+import { LoginDto } from '@domain/user/user.model';
+
+import { TokenInfo } from './auth.models';
 
 @Injectable({ providedIn: 'root' })
 export class AuthEndpoint {
@@ -15,11 +17,11 @@ export class AuthEndpoint {
 	constructor(private readonly http: HttpClient) {
 	}
 
-	public register(registerDto: RegisterDto): Observable<User> {
-		return this.http.post<User>(this.route, registerDto);
+	public login(loginDto: LoginDto): Observable<any> {
+		return this.http.post<TokenInfo>(`${this.route}/Login`, loginDto);
 	}
 
-	public login(loginDto: LoginDto): Observable<any> {
-		return this.http.post<{ Token: string }>(`${this.route}/login`, loginDto);
+	public validate(token: string): Observable<TokenInfo> {
+		return this.http.post<TokenInfo>(`${this.route}/Validate`, { token });
 	}
 }

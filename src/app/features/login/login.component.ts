@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import AuthenticationService from '@shared/services/authentication.service';
 import { SharedModule } from '@shared/shared.module';
 
@@ -27,26 +28,34 @@ export class LoginComponent {
 		Password: new FormControl('', [Validators.required, Validators.minLength(8), Validators.maxLength(30)])
 	})
 
-	constructor(private readonly authService: AuthenticationService) { }
+	constructor(
+		private readonly router: Router,
+		private readonly authService: AuthenticationService) { }
 
 
 	public login() {
-		this.authService.login({ ...this.loginForm.value });
+		this.authService.login({ ...this.loginForm.value }).subscribe((success) => {
+
+			if (success) {
+				this.router.navigate(["/home"]);
+			}
+
+		});
 	}
 
 	public register() {
 		if (!this.registerForm.valid) return;
 
-		this.authService.register({ ...this.registerForm.value })
-			.subscribe({
-				next: (res) => {
-					this.isLogin = true;
-					console.log(res)
-				},
-				error: (err) => {
-					alert("Erro interno")
-				}
-			})
+		// this.authService.register({ ...this.registerForm.value })
+		// 	.subscribe({
+		// 		next: (res) => {
+		// 			this.isLogin = true;
+		// 			console.log(res)
+		// 		},
+		// 		error: (err) => {
+		// 			alert("Erro interno")
+		// 		}
+		// 	})
 	}
 
 	public toggleForm() {
