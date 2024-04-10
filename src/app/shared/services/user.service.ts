@@ -1,4 +1,4 @@
-import ODataCommand from 'src/lib/odata/ODataCommand';
+import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 
 import { Injectable } from '@angular/core';
 import { UserEndpoint } from '@domain/user/user.endpoint';
@@ -7,17 +7,17 @@ import User from '@domain/user/user.model';
 @Injectable({ providedIn: 'root' })
 export default class UserService {
 
-	private _queryCommand?: ODataCommand<User>;
+	private _queryCommand?: ODataQueryCommand<User>;
 
 	constructor(private readonly endpoint: UserEndpoint) {
 
 	}
 
-	public queryCommand(): ODataCommand<User> {
+	public queryCommand(): ODataQueryCommand<User> {
 
 		if (!this._queryCommand) {
 
-			const command = new ODataCommand<User>((command) =>
+			const command = new ODataQueryCommand<User>((command) =>
 				this.endpoint.getAll(command.build())
 			);
 

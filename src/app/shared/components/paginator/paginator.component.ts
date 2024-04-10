@@ -1,5 +1,5 @@
 import { Subject, takeUntil } from 'rxjs';
-import ODataCommand from 'src/lib/odata/ODataCommand';
+import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
@@ -12,7 +12,7 @@ import User from '@domain/user/user.model';
 })
 export class PaginatorComponent implements OnInit {
 	@Input({ required: true })
-	public queryCommand!: ODataCommand<User>;
+	public queryCommand!: ODataQueryCommand<User>;
 
 	@Input()
 	public disabled: boolean = false;
@@ -37,12 +37,10 @@ export class PaginatorComponent implements OnInit {
 	private $delete: Subject<void> = new Subject();
 
 	ngOnInit(): void {
-		this.queryCommand.setParams({ $count: true });
+		this.queryCommand.params = { $count: true };
 
-		this.queryCommand.createSubscription((req) => {
-			req.pipe(takeUntil(this.$delete)).subscribe((res) => {
-				this.length = res['@odata.count'] ?? 0;
-			});
+		this.queryCommand.response$.pipe(takeUntil(this.$delete)).subscribe((res) => {
+			this.length = res['@odata.count'] ?? 0;
 		});
 
 		this.updateQuery();
@@ -56,10 +54,10 @@ export class PaginatorComponent implements OnInit {
 	}
 
 	private updateQuery() {
-		this.queryCommand.setParams({
+		this.queryCommand.params = {
 			$top: this.pageSize,
 			$skip: this.pageIndex * this.pageSize,
-		});
+		};
 
 		this.queryCommand.execute();
 	}

@@ -1,31 +1,65 @@
-import { Observable } from 'rxjs';
+import { Observable, Subject, Subscription, switchMap } from 'rxjs';
 
 import ICommand from './types/ICommand';
-import ODataParams from './types/ODataParams';
+import ODataParams, { ODataFilter } from './types/ODataParams';
 import ODataResponse from './types/ODataResponse';
 import RequestConstructor from './types/RequestConstructor';
-
-type Subscriber<T> = (req: Observable<ODataResponse<T>>) => void;
 
 /**
  * Represents an OData command that can be executed to retrieve data.
  * @template T - The type of data returned by the OData command.
  */
-class ODataCommand<T> implements ICommand {
-	private requestConstructor: RequestConstructor<T>;
-	private request: Observable<ODataResponse<T>>;
-	private _params: ODataParams = {};
+class ODataQueryCommand<T> implements ICommand {
+	private _params: ODataParams<T> = {};
+	private _executeOnChange = false;
 
-	constructor(func: RequestConstructor<T>) {
-		this.requestConstructor = func;
-		this.request = func(this);
+	private _request$: Subject<{}> = new Subject();
+	private _response$: Subject<ODataResponse<T>> = new Subject();
+
+	private _request$$: Subscription = Subscription.EMPTY;
+
+	constructor(private readonly requestConstructor: RequestConstructor<T>) { }
+
+	/**
+	 * Gets the parameters for the OData query.
+	 * @returns The OData parameters.
+	 */
+	public get params(): ODataParams<T> {
+		return this._params;
 	}
 
-	private subscribers: Subscriber<T>[] = [];
+	/**
+	 * Sets the parameters for the OData query.
+	 * @param newParams - The OData parameters to be set.
+	 */
+	public set params(newParams: ODataParams<T>) {
+		const checkParams = { ...this._params, ...newParams };
 
-	public createSubscription(sub: Subscriber<T>): void {
-		sub(this.request);
-		this.subscribers.push(sub);
+		if (checkParams.$top && checkParams.$top < 0) {
+			delete checkParams.$top;
+		}
+
+		if (checkParams.$skip && checkParams.$skip < 0) {
+			delete checkParams.$skip;
+		}
+
+		if (checkParams.$filter && this.buildFilter(checkParams.$filter) === '') {
+			delete checkParams.$filter;
+		}
+
+		if (checkParams.$orderby && checkParams.$orderby === '') {
+			delete checkParams.$orderby;
+		}
+
+		this._params = checkParams;
+
+		if (this._executeOnChange) {
+			this.execute();
+		}
+	}
+
+	public get response$(): Observable<ODataResponse<T>> {
+		return this._response$;
 	}
 
 	/**
@@ -47,33 +81,73 @@ class ODataCommand<T> implements ICommand {
 			builder.push(`$top=${this._params.$top}`);
 		}
 
+		if (this._params?.$filter) {
+			builder.push(`$filter=${this.buildFilter(this._params.$filter)}`);
+		}
+
+		if (this._params?.$orderby) {
+			builder.push(`$orderby=${String(this._params.$orderby)}`);
+		}
+
 		return builder.join('&');
 	}
 
-	/**
-	 * Sets the parameters for the OData query.
-	 * @param newParams - The OData parameters to be set.
-	 */
-	public setParams(newParams: ODataParams): void {
-		this._params = { ...this._params, ...newParams };
-	}
-
-	/**
-	 * Gets the parameters for the OData query.
-	 * @returns The OData parameters.
-	 */
-	public get params(): ODataParams {
-		return this._params;
-	}
-
-	/**
-	 * Executes the OData query.
-	 */
 	public execute(): void {
-		this.request = this.requestConstructor(this);
+		this.reset();
+		this.initialize();
+	}
 
-		this.subscribers.forEach((sub) => sub(this.request));
+	private buildFilter($filter: ODataFilter<T>) {
+		const filterParts: string[] = [];
+
+		for (const expression in $filter) {
+			const comparerEntity = $filter[expression as keyof ODataFilter<T>];
+
+			if (comparerEntity === undefined) {
+				continue;
+			}
+
+			if (Array.isArray(comparerEntity)) {
+				const subFilters = comparerEntity
+					.map((subFilter) => `(${this.buildFilter(subFilter)})`)
+					.join(expression);
+
+				filterParts.push(`(${subFilters})`);
+				continue;
+			}
+
+			for (const column of Object.keys(comparerEntity)) {
+				const value = comparerEntity[column as keyof typeof comparerEntity];
+
+				if (expression === 'contains' || expression === 'startsWith' || expression === 'endsWith') {
+					filterParts.push(`${expression}(${column}, '${value}')`);
+					continue;
+				}
+
+				filterParts.push(`${column} ${expression} ${value}`);
+			}
+		}
+
+		if (filterParts.length === 0) {
+			return '';
+		}
+
+		return filterParts.join(' and ');
+	}
+
+	private reset() {
+		this._request$$.unsubscribe();
+	}
+
+	private initialize() {
+		this._request$$ = this._request$.pipe(
+			switchMap(() => this.requestConstructor(this))
+		).subscribe(res => {
+			this._response$.next(res);
+		});
+
+		this._request$.next({});
 	}
 }
 
-export default ODataCommand;
+export default ODataQueryCommand;

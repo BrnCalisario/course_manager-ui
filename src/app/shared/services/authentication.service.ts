@@ -22,7 +22,6 @@ export default class AuthenticationService {
 		return this.authEndpoint.login(loginData)
 			.subscribe({
 				next: (res) => {
-					console.log(res)
 					sessionStorage.setItem('token', res.token);
 					this._isLoggedIn = true;
 					this.router.navigate(["/home"]);

@@ -1,20 +1,21 @@
-import { Injectable } from "@angular/core";
-import CompetenceEndpoint from "@domain/competence/competence.endpoint";
-import { Competence } from "@domain/competence/competence.models";
-import { Observable } from "rxjs";
-import ODataCommand from "src/lib/odata/ODataCommand";
+import { Observable } from 'rxjs';
+import ODataQueryCommand from 'src/lib/odata/ODataCommand';
+
+import { Injectable } from '@angular/core';
+import CompetenceEndpoint from '@domain/competence/competence.endpoint';
+import { Competence } from '@domain/competence/competence.models';
 
 @Injectable({ providedIn: 'root' })
 export default class CompetenceService {
 
-	private _getCommand?: ODataCommand<Competence>;
+	private _getCommand?: ODataQueryCommand<Competence>;
 
 	constructor(private readonly endpoint: CompetenceEndpoint) { }
 
-	public getCommand(): ODataCommand<Competence> {
+	public getCommand(): ODataQueryCommand<Competence> {
 
 		if (!this._getCommand) {
-			const command = new ODataCommand<Competence>((command) => {
+			const command = new ODataQueryCommand<Competence>((command) => {
 				return this.endpoint.getAll(command.build());
 			})
 

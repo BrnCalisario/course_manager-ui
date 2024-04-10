@@ -1,0 +1,19 @@
+<div class="actions">
+	<mat-form-field style="width: 100%;">
+		<mat-label>Search</mat-label>
+		<input matInput [formControl]="this.searchInput" [maxlength]="nameMaxLength">
+		@if (this.searchInput.value) {
+		<button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+			<mat-icon>close</mat-icon>
+		</button>
+		}
+	</mat-form-field>
+	<button type="button" mat-fab color="primary" (click)="openDialog()">
+		<mat-icon>add</mat-icon>
+	</button>
+</div>
+
+<div id="competences" class="column">
+	<h2 style="color: var(--primary); margin-bottom: .5rem;">Select Competences</h2>
+	<app-select-chip [(selectedValues)]="competences" [options]="competenceOptions" [toLabel]="ToLabel" />
+</div>

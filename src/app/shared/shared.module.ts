@@ -1,3 +1,4 @@
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormControlDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -13,7 +14,6 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 
-import { DragDropModule } from '@angular/cdk/drag-drop';
 import { DraggableList } from './components/draggable-list/draggable-list.component';
 import { Header } from './components/header/header.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';

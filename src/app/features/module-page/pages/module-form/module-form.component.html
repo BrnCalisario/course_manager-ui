@@ -5,20 +5,20 @@
 	<form #form class="form" [formGroup]="moduleForm">
 		<div class="form-grid">
 			<div id="module" class="column">
-				<table cellspacing="0">
-					<tbody>
-						<tr>
-							<td><mat-form-field>
-									<mat-label>Name</mat-label>
-									<input matInput formControlName="Name" placeholder="Ex: Basic Python" #Name>
-								</mat-form-field></td>
-							<td style="width: 30%;"><mat-form-field>
-									<mat-label>Workload ( Hours ) </mat-label>
-									<input matInput formControlName="Workload" #Workload type="number">
-								</mat-form-field></td>
-						</tr>
-					</tbody>
-				</table>
+				<div style="display: flex; gap: 5px;">
+					<div id="name">
+						<mat-form-field>
+							<mat-label>Name</mat-label>
+							<input matInput formControlName="Name" placeholder="Ex: Basic Python" #Name>
+						</mat-form-field>
+					</div>
+					<div id="workload">
+						<mat-form-field>
+							<mat-label>Workload ( Hours ) </mat-label>
+							<input matInput formControlName="Workload" #Workload type="number">
+						</mat-form-field>
+					</div>
+				</div>
 				<mat-form-field>
 					<mat-label>Description</mat-label>
 					<textarea matInput formControlName="Description" placeholder="Ex: This module covers..."
@@ -30,14 +30,11 @@
 						#Objectives></textarea>
 				</mat-form-field>
 			</div>
-			<div id="competences" class="column">
-				<h2 style="color: var(--primary); margin-bottom: .5rem;">Select Competences</h2>
-				<app-select-chip [(selectedValues)]="selectedChips" [options]="this.chipOptions"
-					(onAdd)="openDialog()" />
-			</div>
+
+			<app-competence-select-chip [(competences)]="competences" />
 		</div>
 
-		<button style="justify-self: flex-end;" (click)="onClick()" mat-raised-button color="primary">Create</button>
+		<button style="justify-self: flex-end;" mat-raised-button color="primary" (click)="onSubmit()">Create</button>
 	</form>
 
 </div>
