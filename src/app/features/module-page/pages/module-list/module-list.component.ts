@@ -20,6 +20,5 @@ export class ModuleListComponent {
 		new Module(),
 		new Module(),
 		new Module(),
-		new Module()
 	];
 }

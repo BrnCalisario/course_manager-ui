@@ -45,13 +45,10 @@ export default class AuthenticationService {
 
 	public validateToken(): Observable<boolean> {
 
-		var token = undefined;
+		// if (typeof sessionStorage === 'undefined')
+		// 	return of(false);
 
-		try {
-			token = sessionStorage.getItem('token');
-		} catch {
-			return of(false);
-		}
+		const token = sessionStorage.getItem('token');
 
 		if (!token) return of(false);
 
@@ -71,7 +68,7 @@ export default class AuthenticationService {
 	}
 
 	private clearSession() {
-		sessionStorage.removeItem('token');
-		sessionStorage.removeItem('expiresAt');
+		localStorage.removeItem('token');
+		localStorage.removeItem('expiresAt');
 	}
 }
