@@ -1,7 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthEndpoint } from '@domain/auth/auth.endpoint';
+import { TokenInfo } from '@domain/auth/auth.models';
+import { UserEndpoint } from '@domain/user/user.endpoint';
 import { LoginDto, RegisterDto } from '@domain/user/user.model';
+import { Observable, of } from 'rxjs';
+import { tryObservable } from 'src/utils/observable/try-observable';
 
 @Injectable({ providedIn: 'root' })
 export default class AuthenticationService {
@@ -12,29 +16,61 @@ export default class AuthenticationService {
 
 	private _isLoggedIn: boolean = false;
 
-	constructor(private readonly router: Router, private readonly authEndpoint: AuthEndpoint) { }
+	constructor(
+		private readonly router: Router,
+		private readonly authEndpoint: AuthEndpoint,
+		private readonly userEndpoint: UserEndpoint
+	) { }
 
-	public register(registerData: RegisterDto) {
-		return this.authEndpoint.register(registerData);
+	public register(registerData: RegisterDto): Observable<boolean> {
+		return tryObservable(this.userEndpoint.create(registerData));
 	}
 
-	public login(loginData: LoginDto) {
-		return this.authEndpoint.login(loginData)
-			.subscribe({
-				next: (res) => {
-					console.log(res)
-					sessionStorage.setItem('token', res.token);
-					this._isLoggedIn = true;
-					this.router.navigate(["/home"]);
-				},
-				error: (err) => {
-					//TODO: Feedback with toast
-				}
-			})
+	public login(loginData: LoginDto): Observable<boolean> {
+		return tryObservable(this.authEndpoint.login(loginData), (res => {
+
+			this._isLoggedIn = true;
+			this.setToken(res);
+
+			return true;
+		}))
+
 	}
 
-	public logout() {
-		sessionStorage.removeItem('token');
+	public logout(): void {
 		this._isLoggedIn = false;
+		this.clearSession();
+	}
+
+	public validateToken(): Observable<boolean> {
+
+		var token = undefined;
+
+		try {
+			token = sessionStorage?.getItem('token');
+		} catch {
+			return of(false);
+		}
+
+		if (!token) return of(false);
+
+		return tryObservable(this.authEndpoint.validate(token), (res => {
+
+			this._isLoggedIn = true;
+			this.setToken(res);
+
+			return true;
+		}));
+
+	}
+
+	private setToken(token: TokenInfo) {
+		sessionStorage.setItem('token', token.Token);
+		sessionStorage.setItem('expiresAt', token.ExpiresAt.toLocaleTimeString());
+	}
+
+	private clearSession() {
+		sessionStorage.removeItem('token');
+		sessionStorage.removeItem('expiresAt');
 	}
 }
