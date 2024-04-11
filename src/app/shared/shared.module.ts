@@ -14,13 +14,16 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 
+import { CdkMenuModule } from '@angular/cdk/menu';
+import { MatMenuModule } from '@angular/material/menu';
+import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import { DraggableList } from './components/draggable-list/draggable-list.component';
 import { Header } from './components/header/header.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { SelectChipComponent } from './components/select-chip/select-chip.component';
 
 @NgModule({
-	declarations: [Header, SelectChipComponent, PaginatorComponent, DraggableList],
+	declarations: [Header, SelectChipComponent, PaginatorComponent, DraggableList, ContextMenuComponent],
 	imports: [
 		MatPaginatorModule,
 		CommonModule,
@@ -36,7 +39,9 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		MatButtonModule,
 		MatDividerModule,
 		MatChipsModule,
-		DragDropModule
+		DragDropModule,
+		CdkMenuModule,
+		MatMenuModule
 	],
 	exports: [
 		MatIcon,
@@ -54,10 +59,13 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		MatDividerModule,
 		MatChipsModule,
 		Header,
+		ContextMenuComponent,
 		SelectChipComponent,
 		PaginatorComponent,
 		DraggableList,
-		DragDropModule
+		DragDropModule,
+		CdkMenuModule,
+		MatMenuModule,
 	],
 	providers: [Router],
 })

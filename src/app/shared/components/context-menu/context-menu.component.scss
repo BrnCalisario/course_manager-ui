@@ -1,0 +1,18 @@
+.menu-item {
+    border: 1px solid lightgray;
+}
+
+
+.menu-item {
+    padding: 1rem;
+    background-color: white;
+    // border: 1px solid magenta;
+}
+
+.menu-item:hover {
+    background-color: lightgray;
+}
+
+.menu-item:first-child {
+    border-bottom: 1px solid lightgray;
+}

@@ -19,7 +19,7 @@ export default class ModuleFormComponent {
 			null,
 			Validators.maxLength(500)
 		),
-		Objectives: new FormControl<string | null>(
+		Objective: new FormControl<string | null>(
 			null,
 			Validators.maxLength(500)
 		),

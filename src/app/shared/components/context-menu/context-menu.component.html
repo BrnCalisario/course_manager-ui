@@ -1,0 +1,6 @@
+<ng-container class="menu">
+    <div class="menu-item" *ngFor="let menuItem of contextMenuItems; index as i"
+        (click)="onContextMenuClick($event, menuItem.event)">
+        {{ menuItem.label }}
+    </div>
+</ng-container>
