@@ -16,10 +16,27 @@
         <div class=draggable-list>
             <draggable-list [itemFormatter]="formatModule" [itemList]="modules"></draggable-list>
         </div>
-
     </div>
 
-    <div class="column">
+    <div id="second-column" class="column">
 
+
+        <div style="display: flex; align-items: center; flex-direction: column; margin: 1rem 0;">
+            <h2 style="margin-bottom: 1rem;">You will be training this professional</h2>
+            <img src="https://placehold.co/300x300" style="border-radius: 50%;">
+        </div>
+
+
+
+        <h2>Main Competences</h2>
+        <div class="chip-list">
+            <mat-chip color="primary" [highlighted]="true"> Entity Relationship</mat-chip>
+            <mat-chip color="primary" [highlighted]="true"> Entity Relationship</mat-chip>
+            <mat-chip color="primary" [highlighted]="true"> Entity Relationship</mat-chip>
+            <mat-chip color="primary" [highlighted]="true"> Entity Relationship</mat-chip>
+            <mat-chip color="primary" [highlighted]="true"> Entity Relationship</mat-chip>
+            <mat-chip color="primary" [highlighted]="true"> Entity Relationship</mat-chip>
+            <mat-chip color="primary" [highlighted]="true"> Entity Relationship</mat-chip>
+        </div>
     </div>
 </div>

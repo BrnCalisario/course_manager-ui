@@ -9,6 +9,10 @@ export const canActivateGuard: CanActivateFn = (
 ) => {
 
 	const router = inject(Router);
+	const authService = inject(AuthenticationService);
+
+	if (authService.isLoggedIn)
+		return true;
 
 	return inject(AuthenticationService).validateToken().pipe(
 		tap(authenticated => {
