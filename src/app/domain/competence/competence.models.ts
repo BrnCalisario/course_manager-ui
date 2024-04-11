@@ -1,4 +1,4 @@
-import { BaseEntity } from "@domain/base/base.endpoint";
+import BaseEntity from '@domain/base/base.entity';
 
 export class Competence implements BaseEntity<string> {
 	Id: string = '';

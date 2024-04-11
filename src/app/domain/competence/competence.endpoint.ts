@@ -1,10 +1,11 @@
-import { HttpClient } from "@angular/common/http";
-import { Injectable } from "@angular/core";
-import { BaseEndpoint } from "@domain/base/base.endpoint";
-import { Competence } from "./competence.models";
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+import { BaseEndpoint } from '@domain/base/base.endpoint';
+
+import { Competence } from './competence.models';
 
 @Injectable({ providedIn: 'root' })
-export default class CompetenceEndpoint extends BaseEndpoint<Competence, string> {
+export default class CompetenceEndpoint extends BaseEndpoint<string, Competence> {
 
 	override get route(): string {
 		return "/odata/Competence";

@@ -1,16 +1,14 @@
 import { Observable } from 'rxjs';
-import ODataResponse from 'src/lib/odata/types/ODataResponse';
+import { environment } from 'src/app/app.config';
+import { ODataListResponse, ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { environment } from 'src/app/app.config';
 
-export interface BaseEntity<TId> {
-	Id: TId;
-}
+import BaseEntity from './base.entity';
 
 @Injectable()
-export abstract class BaseEndpoint<TEntity extends BaseEntity<TId>, TId> {
+export abstract class BaseEndpoint<TKey, TEntity extends BaseEntity<TKey>> {
 	abstract get route(): string;
 
 	protected appURL: string = environment.APP_URL;
@@ -22,23 +20,23 @@ export abstract class BaseEndpoint<TEntity extends BaseEntity<TId>, TId> {
 	constructor(protected http: HttpClient) {
 	}
 
-	public get(id: TId): Observable<ODataResponse<TEntity>> {
-		return this.http.get<ODataResponse<TEntity>>(`${this.baseURL}/${id}`);
+	public get(id: TKey): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.get<ODataSingleResponse<TEntity>>(`${this.baseURL}/${id}`);
 	}
 
-	public getAll(query?: string): Observable<ODataResponse<TEntity>> {
-		return this.http.get<ODataResponse<TEntity>>(`${this.baseURL}?${query}`);
+	public getAll(query?: string): Observable<ODataListResponse<TEntity>> {
+		return this.http.get<ODataListResponse<TEntity>>(`${this.baseURL}?${query}`);
 	}
 
-	public create(entity: Omit<TEntity, 'Id'>): Observable<TEntity> {
-		return this.http.post<TEntity>(this.baseURL, entity);
+	public create(entity: Omit<TEntity, 'Id'>): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.post<ODataSingleResponse<TEntity>>(this.baseURL, entity);
 	}
 
-	public update(entity: Omit<TEntity, 'Id'>): Observable<TEntity> {
-		return this.http.put<TEntity>(this.baseURL, entity);
+	public update(entity: Omit<TEntity, 'Id'>): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.put<ODataSingleResponse<TEntity>>(this.baseURL, entity);
 	}
 
-	public delete(id: TId): Observable<TEntity> {
-		return this.http.delete<TEntity>(`${this.baseURL}/${id}`);
+	public delete(id: TKey): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.delete<ODataSingleResponse<TEntity>>(`${this.baseURL}/${id}`);
 	}
 }

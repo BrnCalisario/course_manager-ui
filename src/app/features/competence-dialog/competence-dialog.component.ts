@@ -27,7 +27,9 @@ export class CompetenceDialogComponent {
 	) { }
 
 	public onSubmit() {
-		this.competenceService.post(this.form.value).subscribe({
+		const command = this.competenceService.postCommand(() => this.form.value);
+
+		command.response$.subscribe({
 			next: (res) => {
 				this.onSave.emit(res);
 				this.dialogRef.close();
@@ -36,5 +38,7 @@ export class CompetenceDialogComponent {
 				console.error(err);
 			},
 		});
+
+		command.execute();
 	}
 }
