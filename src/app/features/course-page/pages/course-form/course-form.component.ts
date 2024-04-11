@@ -31,6 +31,18 @@ export default class CourseFormComponent {
 			Workload: 5,
 			Dependencies: undefined
 		},
+		{
+			Id: '1',
+			Name: 'Module 3',
+			Workload: 5,
+			Dependencies: undefined
+		},
+		{
+			Id: '1',
+			Name: 'Module 3',
+			Workload: 5,
+			Dependencies: undefined
+		},
 	];
 
 	public formatModule(module: Module): string {
