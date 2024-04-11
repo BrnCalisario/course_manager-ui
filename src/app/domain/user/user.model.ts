@@ -1,4 +1,4 @@
-import { BaseEntity } from '../base/base.endpoint';
+import BaseEntity from '@domain/base/base.entity';
 
 export default class User implements BaseEntity<string> {
 	Id: string = '';

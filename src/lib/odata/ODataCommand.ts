@@ -2,29 +2,29 @@ import { Observable, Subject, Subscription, switchMap } from 'rxjs';
 
 import ICommand from './types/ICommand';
 import ODataParams, { ODataFilter } from './types/ODataParams';
-import ODataResponse from './types/ODataResponse';
+import ODataResponse, { ODataListResponse } from './types/ODataResponse';
 import RequestConstructor from './types/RequestConstructor';
 
 /**
  * Represents an OData command that can be executed to retrieve data.
- * @template T - The type of data returned by the OData command.
+ * @template TEntity - The type of data returned by the OData command.
  */
-class ODataQueryCommand<T> implements ICommand {
-	private _params: ODataParams<T> = {};
+class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODataListResponse<TEntity>> implements ICommand {
+	private _params: ODataParams<TEntity> = {};
 	private _executeOnChange = false;
 
 	private _request$: Subject<{}> = new Subject();
-	private _response$: Subject<ODataResponse<T>> = new Subject();
+	private _response$: Subject<TResponse> = new Subject();
 
 	private _request$$: Subscription = Subscription.EMPTY;
 
-	constructor(private readonly requestConstructor: RequestConstructor<T>) { }
+	constructor(private readonly requestConstructor: RequestConstructor<TEntity, TResponse>) { }
 
 	/**
 	 * Gets the parameters for the OData query.
 	 * @returns The OData parameters.
 	 */
-	public get params(): ODataParams<T> {
+	public get params(): ODataParams<TEntity> {
 		return this._params;
 	}
 
@@ -32,7 +32,7 @@ class ODataQueryCommand<T> implements ICommand {
 	 * Sets the parameters for the OData query.
 	 * @param newParams - The OData parameters to be set.
 	 */
-	public set params(newParams: ODataParams<T>) {
+	public set params(newParams: ODataParams<TEntity>) {
 		const checkParams = { ...this._params, ...newParams };
 
 		if (checkParams.$top && checkParams.$top < 0) {
@@ -58,7 +58,7 @@ class ODataQueryCommand<T> implements ICommand {
 		}
 	}
 
-	public get response$(): Observable<ODataResponse<T>> {
+	public get response$(): Observable<TResponse> {
 		return this._response$;
 	}
 
@@ -97,11 +97,11 @@ class ODataQueryCommand<T> implements ICommand {
 		this.initialize();
 	}
 
-	private buildFilter($filter: ODataFilter<T>) {
+	private buildFilter($filter: ODataFilter<TEntity>) {
 		const filterParts: string[] = [];
 
 		for (const expression in $filter) {
-			const comparerEntity = $filter[expression as keyof ODataFilter<T>];
+			const comparerEntity = $filter[expression as keyof ODataFilter<TEntity>];
 
 			if (comparerEntity === undefined) {
 				continue;

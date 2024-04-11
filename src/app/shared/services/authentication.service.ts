@@ -35,7 +35,6 @@ export default class AuthenticationService {
 
 			return true;
 		}))
-
 	}
 
 	public logout(): void {
@@ -44,7 +43,6 @@ export default class AuthenticationService {
 	}
 
 	public validateToken(): Observable<boolean> {
-
 		// if (typeof sessionStorage === 'undefined')
 		// 	return of(false);
 
@@ -59,7 +57,6 @@ export default class AuthenticationService {
 
 			return true;
 		}));
-
 	}
 
 	private setToken(token: TokenInfo) {

@@ -37,7 +37,7 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 		private readonly dialog: MatDialog,
 		private readonly competenceService: CompetenceService
 	) {
-		this.queryCommand = this.competenceService.getCommand();
+		this.queryCommand = this.competenceService.listCommand();
 	}
 
 	public ngOnInit(): void {

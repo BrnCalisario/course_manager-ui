@@ -1,13 +1,13 @@
-
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatChipSelectionChange } from '@angular/material/chips';
+import BaseEntity from '@domain/base/base.entity';
 
 @Component({
 	selector: 'app-select-chip',
 	templateUrl: './select-chip.component.html',
 	styleUrl: './select-chip.component.scss',
 })
-export class SelectChipComponent<T> {
+export class SelectChipComponent<TKey, T extends BaseEntity<TKey>> {
 	@Input({ required: true })
 	public options: T[] = [];
 
@@ -36,16 +36,9 @@ export class SelectChipComponent<T> {
 			);
 		}
 
-		console.log(this.selectedValues);
-
-		// // this.onChange.emit(this.selectedValues);
+		this.onChange.emit(this.selectedValues);
 	}
 
-	public isSelected = (item: T): boolean => {
-		console.log(this.selectedValues)
-		console.log(item)
-		console.log(this.selectedValues.includes(item))
-
-		return this.selectedValues.includes(item);
-	}
+	public isSelected = (item: T): boolean =>
+		this.selectedValues.some(entry => entry.Id === item.Id);
 }
