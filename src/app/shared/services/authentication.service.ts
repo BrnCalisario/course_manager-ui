@@ -2,7 +2,6 @@ import { Observable, of } from 'rxjs';
 import { tryObservable } from 'src/utils/observable/try-observable';
 
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 import { AuthEndpoint } from '@domain/auth/auth.endpoint';
 import { TokenInfo } from '@domain/auth/auth.models';
 import { UserEndpoint } from '@domain/user/user.endpoint';
@@ -10,7 +9,6 @@ import { LoginDto, RegisterDto } from '@domain/user/user.model';
 
 @Injectable({ providedIn: 'root' })
 export default class AuthenticationService {
-
 	public get isLoggedIn(): boolean {
 		return this._isLoggedIn;
 	}
@@ -18,7 +16,6 @@ export default class AuthenticationService {
 	private _isLoggedIn: boolean = false;
 
 	constructor(
-		private readonly router: Router,
 		private readonly authEndpoint: AuthEndpoint,
 		private readonly userEndpoint: UserEndpoint
 	) { }
@@ -43,9 +40,6 @@ export default class AuthenticationService {
 	}
 
 	public validateToken(): Observable<boolean> {
-		// if (typeof sessionStorage === 'undefined')
-		// 	return of(false);
-
 		const token = sessionStorage.getItem('token');
 
 		if (!token) return of(false);
@@ -65,7 +59,7 @@ export default class AuthenticationService {
 	}
 
 	private clearSession() {
-		localStorage.removeItem('token');
-		localStorage.removeItem('expiresAt');
+		sessionStorage.removeItem('token');
+		sessionStorage.removeItem('expiresAt');
 	}
 }

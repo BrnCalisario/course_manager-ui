@@ -39,7 +39,6 @@ export class LoginComponent {
 			if (success) {
 				this.router.navigate(["/home"]);
 			}
-
 		});
 	}
 

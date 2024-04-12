@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Competence } from '@domain/competence/competence.models';
 import CompetenceSelectChipComponent from '@features/module-page/components/competence-select-chip/competence-select-chip.component';
 import ModuleService from '@shared/services/module.service';
@@ -19,7 +20,7 @@ export default class ModuleFormComponent {
 			null,
 			Validators.maxLength(500)
 		),
-		Objectives: new FormControl<string | null>(
+		Objective: new FormControl<string | null>(
 			null,
 			Validators.maxLength(500)
 		),
@@ -31,19 +32,21 @@ export default class ModuleFormComponent {
 		Competences: new FormControl<Competence[]>([]),
 	});
 
-	constructor(private readonly service: ModuleService) { }
+	constructor(
+		private readonly service: ModuleService,
+		private readonly router: Router
+	) { }
 
 	public get competences(): Competence[] {
 		return this.moduleForm.get('Competences')!.value;
 	}
 
 	public onSubmit() {
-		console.log(this.moduleForm.value);
-
 		const command = this.service.postCommand(() => this.moduleForm.value);
 
-		command.response$.subscribe((response) => {
-			console.log(response);
+		command.response$.subscribe({
+			next: () => this.router.navigate(['/module', 'list']),
+			error: () => alert('An error occurred while creating the module.'), // Todo - Use feedback service
 		});
 
 		command.execute();

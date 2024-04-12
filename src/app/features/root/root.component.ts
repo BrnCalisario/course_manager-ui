@@ -5,11 +5,11 @@ import { SideNavComponent } from '@features/side-nav/side-nav.component';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
-	selector: 'app-home-page',
+	selector: 'app-root',
 	standalone: true,
 	imports: [SharedModule, SideNavComponent],
-	templateUrl: './home-page.component.html',
-	styleUrl: './home-page.component.scss',
+	templateUrl: './root.component.html',
+	styleUrl: './root.component.scss',
 })
-export class HomePageComponent {
+export class RootComponent {
 }
