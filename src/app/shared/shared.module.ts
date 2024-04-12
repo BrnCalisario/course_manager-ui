@@ -14,6 +14,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 
+import { MatDialogModule } from '@angular/material/dialog';
+
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { MatMenuModule } from '@angular/material/menu';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
@@ -41,7 +43,8 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		MatChipsModule,
 		DragDropModule,
 		CdkMenuModule,
-		MatMenuModule
+		MatMenuModule,
+		MatDialogModule
 	],
 	exports: [
 		MatIcon,
@@ -66,6 +69,7 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		DragDropModule,
 		CdkMenuModule,
 		MatMenuModule,
+		MatDialogModule
 	],
 	providers: [Router],
 })

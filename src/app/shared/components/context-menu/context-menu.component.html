@@ -1,7 +1,7 @@
 <ng-container class="menu">
 	<div class="menu-item" *ngFor="let menuItem of contextMenuItems; index as i"
-		(click)="onContextMenuClick($event, menuItem.event)">
+		(click)="onContextMenuClick(menuItem.label)">
 		{{ menuItem.label }}
-		<mat-icon>edit</mat-icon>
+		<mat-icon *ngIf="menuItem.icon">{{ menuItem.icon }}</mat-icon>
 	</div>
 </ng-container>

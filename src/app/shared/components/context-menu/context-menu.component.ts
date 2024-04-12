@@ -1,9 +1,13 @@
-
 import { Component, EventEmitter, Input, Output } from "@angular/core";
 
 export type ContextMenuData = {
 	label: string;
-	event: string;
+	icon?: string;
+}
+
+export type MenuItemEvent = {
+	type: string,
+	item: any
 }
 
 @Component({
@@ -16,12 +20,14 @@ export class ContextMenuComponent {
 	contextMenuItems!: Array<ContextMenuData>;
 
 	@Output()
-	onContextMenuItemClick: EventEmitter<any> = new EventEmitter<{ event: MouseEvent, data: string }>();
+	onContextMenuItemClick: EventEmitter<MenuItemEvent> = new EventEmitter<MenuItemEvent>();
 
-	onContextMenuClick(event: MouseEvent, data: string): any {
+	selectedItem?: any;
+
+	onContextMenuClick(eventType: string): any {
 		this.onContextMenuItemClick.emit({
-			event,
-			data,
+			type: eventType,
+			item: this.selectedItem
 		});
 	}
 }
