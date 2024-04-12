@@ -1,7 +1,12 @@
 <mat-chip-listbox multiple="true">
 	@for (option of this.options; track $index) {
-	<mat-chip-option (selectionChange)="onSelectionChange($event)" [value]="option" [selected]="isSelected(option)">
+	<mat-chip-option (contextmenu)="displayContextMenu($event)" (selectionChange)="onSelectionChange($event)"
+		[value]="option" [selected]="isSelected(option)">
 		{{ toLabel(option) }}
 	</mat-chip-option>
 	}
 </mat-chip-listbox>
+
+<app-context-menu *ngIf="isDisplayContextMenu" [ngStyle]="getContextMenuStyle()"
+	[contextMenuItems]="rightClickMenuItems" (onContextMenuItemClick)="handleMenuItemClick($event)">
+</app-context-menu>

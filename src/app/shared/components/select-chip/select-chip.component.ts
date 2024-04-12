@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, Output } from '@angular/core';
 import { MatChipSelectionChange } from '@angular/material/chips';
 import BaseEntity from '@domain/base/base.entity';
 
@@ -19,6 +19,38 @@ export class SelectChipComponent<TKey, T extends BaseEntity<TKey>> {
 
 	@Output('selectedValuesChange')
 	public onChange = new EventEmitter<T[]>();
+
+	public isDisplayContextMenu: boolean = true;
+	public rightClickMenuItems: Array<{ label: string, event: string }> = [];
+	public rightClickMenuPosition: { x: number, y: number } = { x: 0, y: 0 };
+
+	displayContextMenu(event: MouseEvent) {
+
+		event.preventDefault();
+
+		this.isDisplayContextMenu = true;
+
+		this.rightClickMenuItems = [{ label: 'Edit', event: 'Edit competence' }, { label: 'Remove', event: 'Remove competence' }];
+
+		this.rightClickMenuPosition = { x: event.clientX, y: event.clientY };
+	}
+
+	getContextMenuStyle() {
+		return {
+			position: 'fixed',
+			left: `${this.rightClickMenuPosition.x}px`,
+			top: `${this.rightClickMenuPosition.y}px`
+		}
+	}
+
+	@HostListener('document:click')
+	documentClick(): void {
+		this.isDisplayContextMenu = false;
+	}
+
+	handleMenuItemClick(event: any) {
+		console.log(event.event);
+	}
 
 	public onSelectionChange($event: MatChipSelectionChange): void {
 		if (!$event.isUserInput) return;

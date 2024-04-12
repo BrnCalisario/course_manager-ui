@@ -12,26 +12,7 @@ import { SharedModule } from "@shared/shared.module";
 })
 export default class CourseFormComponent {
 
-	public modules: Module[] = [
-		{
-			Id: '1',
-			Name: 'Module 1',
-			Workload: 3,
-			Dependencies: undefined
-		},
-		{
-			Id: '1',
-			Name: 'Module 2',
-			Workload: 4,
-			Dependencies: undefined
-		},
-		{
-			Id: '1',
-			Name: 'Module 3',
-			Workload: 5,
-			Dependencies: undefined
-		},
-	];
+	public modules: Module[] = [new Module(), new Module(), new Module()];
 
 	public formatModule(module: Module): string {
 		return `${module.Name} - Workload: ${module.Workload} h`;

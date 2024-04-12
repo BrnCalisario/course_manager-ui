@@ -4,7 +4,7 @@ export default class Module implements BaseEntity<string> {
 	Id: string = '';
 	Name: string = 'Basic Python';
 	Description?: string = '';
-	Objectives?: string = '';
+	Objective: string = 'Objectives';
 	Workload: number = 10;
 	Dependencies: Module[] | undefined = [];
 }
