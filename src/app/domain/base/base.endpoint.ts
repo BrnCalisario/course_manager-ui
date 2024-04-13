@@ -32,8 +32,8 @@ export abstract class BaseEndpoint<TKey, TEntity extends BaseEntity<TKey>> {
 		return this.http.post<ODataSingleResponse<TEntity>>(this.baseURL, entity);
 	}
 
-	public update(entity: Omit<TEntity, 'Id'>): Observable<ODataSingleResponse<TEntity>> {
-		return this.http.patch<ODataSingleResponse<TEntity>>(this.baseURL, entity);
+	public update(entity: TEntity): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.patch<ODataSingleResponse<TEntity>>(`${this.baseURL}/${entity.Id}`, entity, { headers: { 'Prefer': 'return=representation' } });
 	}
 
 	public delete(id: TKey): Observable<ODataSingleResponse<TEntity>> {

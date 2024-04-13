@@ -21,6 +21,9 @@ export class CompetenceDialogComponent implements OnInit {
 	@Input({ required: true })
 	public editMode: boolean = false;
 
+	@Input()
+	public entity?: Competence;
+
 	public form: FormGroup = new FormGroup({
 		Name: new FormControl<string>('', [Validators.required]),
 	});
@@ -30,11 +33,23 @@ export class CompetenceDialogComponent implements OnInit {
 	) { }
 
 	ngOnInit(): void {
+
+		if (!this.entity && this.editMode) throw Error("Provide entity to edit!");
+
+		if (this.entity && !this.editMode) console.warn("Don't need to provide entity on create mode");
+
+		if (this.editMode) {
+			this.form.get('Name')?.setValue(this.entity?.Name);
+		}
 	}
 
 	public onSubmit() {
 
-		this.competenceService.save({ ...this.form.value }, this.editMode)
+		if (this.form.value.Name == this.entity?.Name) return;
+
+		const body = this.entity ? { Id: this.entity.Id, ...this.form.value } : { ...this.form.value };
+
+		this.competenceService.save(body, this.editMode)
 			.subscribe({
 				next: (res) => {
 					this.onSave.emit(res);

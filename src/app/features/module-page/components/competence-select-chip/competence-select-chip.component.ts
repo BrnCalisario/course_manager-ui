@@ -95,19 +95,19 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 	}
 
 	public handleMenuItemClick(event: MenuItemEvent<Competence>) {
-		console.log("event: ", event.type);
-		console.log("competence id: ", event.item.Id);
+		console.info("event: ", event.type);
+		console.info("competence id: ", event.item.Id);
 
-		const { type: eventType, item: { Id: competenceId } } = event;
+		const { type: eventType, item: competence } = event;
 
 		eventType
 
 		switch (eventType) {
 			case "Edit":
-				this.openEditModal(competenceId);
+				this.openEditModal(competence);
 				break;
 			case "Remove":
-				this.openRemoveModal(competenceId);
+				this.openRemoveModal(competence.Id);
 				break;
 			default:
 				break;
@@ -155,22 +155,27 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 			})
 	}
 
-	private openEditModal(competenceId: string) {
+	private openEditModal(competence: Competence) {
 		//TODO: Implement edit modal
 
 		const dialogRef = this.dialog.open(CompetenceDialogComponent);
 
 		dialogRef.componentInstance.editMode = true;
+		dialogRef.componentInstance.entity = competence;
 
 		dialogRef.componentInstance.onSave
 			.pipe(take(1))
 			.subscribe(
-				(competence: Competence) => {
-					this.competenceOptions = this.competenceOptions.map(c => {
-						if (c.Id === competence.Id)
-							c.Name = competence.Name;
-						return c;
+				(res: Competence) => {
+					this.competenceOptions = this.competenceOptions.map(comp => {
+
+						if (comp.Id === res.Id) {
+							comp.Name = res.Name;
+						}
+
+						return comp;
 					})
+
 				}
 			)
 	}
