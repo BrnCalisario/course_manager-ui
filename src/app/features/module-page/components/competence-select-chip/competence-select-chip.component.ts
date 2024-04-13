@@ -1,13 +1,17 @@
-import { debounceTime, Subject } from 'rxjs';
+import { debounceTime, Subject, take } from 'rxjs';
 import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 
-import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Competence } from '@domain/competence/competence.models';
 import { CompetenceDialogComponent } from '@features/competence-dialog/competence-dialog.component';
+import { DeleteCompetenceDialog } from '@features/competence-dialog/delete-competence-dialog/delete-competence-dialog.component';
+import { ContextMenuComponent, ContextMenuData, MenuItemEvent } from '@shared/components/context-menu/context-menu.component';
 import CompetenceService from '@shared/services/competence.service';
 import { SharedModule } from '@shared/shared.module';
+import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
+
 
 @Component({
 	selector: 'app-competence-select-chip',
@@ -23,9 +27,19 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 	@Output()
 	public competencesChange = new EventEmitter<Competence[]>();
 
+	@ViewChild('contextmenu')
+	public contextMenu!: ContextMenuComponent;
+
 	public queryCommand: ODataQueryCommand<Competence>;
+	public deleteCommand: ODataQueryCommand<Competence, ODataSingleResponse<Competence>>;
+
 	public competenceOptions: Competence[] = [];
 	public nameMaxLength = 100;
+
+	public isDisplayContextMenu: boolean = true;
+	public rightClickMenuItems: Array<ContextMenuData> = [];
+	public rightClickMenuPosition: { x: number, y: number } = { x: 0, y: 0 };
+	public selectedId?: string;
 
 	public searchInput = new FormControl<string>('', [
 		Validators.maxLength(this.nameMaxLength),
@@ -38,6 +52,7 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 		private readonly competenceService: CompetenceService
 	) {
 		this.queryCommand = this.competenceService.listCommand();
+		this.deleteCommand = this.competenceService.deleteCommand(() => this.selectedId ?? '');
 	}
 
 	public ngOnInit(): void {
@@ -91,5 +106,64 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 
 	public ToLabel(competence: Competence): string {
 		return competence.Name;
+	}
+
+
+	displayContextMenu(event: MouseEvent, option: Competence) {
+
+		event.preventDefault();
+
+		this.isDisplayContextMenu = true;
+
+		this.contextMenu.selectedItem = option;
+
+		this.rightClickMenuItems = [
+			{ label: 'Edit', icon: 'edit' },
+			{ label: 'Remove', icon: 'delete' }
+		];
+
+		this.rightClickMenuPosition = { x: event.clientX, y: event.clientY };
+	}
+
+	@HostListener('document:click')
+	documentClick(): void {
+		this.isDisplayContextMenu = false;
+	}
+
+	public getContextMenuStyle() {
+		return {
+			display: this.isDisplayContextMenu ? 'block' : 'none',
+			position: 'fixed',
+			left: `${this.rightClickMenuPosition.x}px`,
+			top: `${this.rightClickMenuPosition.y}px`
+		}
+	}
+
+	handleMenuItemClick(event: MenuItemEvent) {
+		console.log("event: ", event.type);
+		console.log("competence id: ", event.item.Id);
+
+		//TODO: On Edit, On Remove
+
+		const dialogRef = this.dialog.open(DeleteCompetenceDialog);
+
+		dialogRef.componentInstance.entityId = event.item.Id;
+
+		dialogRef.componentInstance.onConfirm
+			.subscribe(id => {
+				this.selectedId = id;
+				this.deleteCommand.execute();
+			});
+
+		this.deleteCommand.response$.pipe(
+			take(1))
+			.subscribe({
+				next: (res) => {
+					dialogRef.close();
+					// this.competenceOptions = this.competenceOptions.filter(competence => competence.Id !== res.Id)
+					this.queryCommand.execute();
+				},
+				error: () => alert("Erro ao deletar") // TODO: Feedback Service
+			})
 	}
 }
