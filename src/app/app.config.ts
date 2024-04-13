@@ -1,7 +1,7 @@
 import { Location } from '@angular/common';
 import { provideHttpClient, withFetch, withInterceptors } from '@angular/common/http';
 import { ApplicationConfig, isDevMode } from '@angular/core';
-import { provideClientHydration } from '@angular/platform-browser';
+// import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { BaseEndpoint } from '@domain/base/base.endpoint';
@@ -23,7 +23,7 @@ export const appConfig: ApplicationConfig = {
 	providers: [
 		provideHttpClient(withFetch()),
 		provideRouter(routes),
-		provideClientHydration(),
+		// provideClientHydration(),
 		provideAnimationsAsync(),
 		provideDIs()
 	]

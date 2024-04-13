@@ -14,7 +14,7 @@ export const canActivateGuard: CanActivateFn = (
 	if (authService.isLoggedIn)
 		return true;
 
-	return inject(AuthenticationService).validateToken().pipe(
+	return authService.validateToken().pipe(
 		tap(authenticated => {
 			if (!authenticated) {
 				router.navigate(["/login"]);
@@ -22,3 +22,4 @@ export const canActivateGuard: CanActivateFn = (
 		})
 	)
 };
+
