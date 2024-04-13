@@ -8,17 +8,17 @@
 		</button>
 		}
 	</mat-form-field>
-	<button type="button" mat-fab color="primary" (click)="openDialog()">
+	<button type="button" mat-fab color="primary" (click)="openCreateDialog()">
 		<mat-icon>add</mat-icon>
 	</button>
 </div>
 
 <div id="competences" class="column">
 	<h2 style="color: var(--primary); margin-bottom: .5rem;">Select Competences</h2>
-	<app-select-chip [contextMenuFn]="displayContextMenu.bind(this)" [(selectedValues)]="competences"
+	<app-select-chip [contextMenuFn]="showContextMenu.bind(this)" [(selectedValues)]="competences"
 		[options]="competenceOptions" [toLabel]="ToLabel" />
 </div>
 
-<app-context-menu #contextmenu [ngStyle]="getContextMenuStyle()" [contextMenuItems]="rightClickMenuItems"
+<app-context-menu #contextmenu [display]="this.displayContextMenu" [contextMenuItems]="contextMenuOptions"
 	(onContextMenuItemClick)="handleMenuItemClick($event)">
 </app-context-menu>

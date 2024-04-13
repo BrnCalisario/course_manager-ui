@@ -1,7 +1,9 @@
-<ng-container class="menu">
-	<div class="menu-item" *ngFor="let menuItem of contextMenuItems; index as i"
-		(click)="onContextMenuClick(menuItem.label)">
-		{{ menuItem.label }}
-		<mat-icon *ngIf="menuItem.icon">{{ menuItem.icon }}</mat-icon>
-	</div>
-</ng-container>
+<div [ngStyle]="style">
+	<ng-container class="menu">
+		<div class="menu-item" *ngFor="let menuItem of contextMenuItems; index as i"
+			(click)="onContextMenuClick(menuItem.label)">
+			{{ menuItem.label }}
+			<mat-icon *ngIf="menuItem.icon">{{ menuItem.icon }}</mat-icon>
+		</div>
+	</ng-container>
+</div>
