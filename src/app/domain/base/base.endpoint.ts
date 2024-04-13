@@ -33,7 +33,7 @@ export abstract class BaseEndpoint<TKey, TEntity extends BaseEntity<TKey>> {
 	}
 
 	public update(entity: Omit<TEntity, 'Id'>): Observable<ODataSingleResponse<TEntity>> {
-		return this.http.put<ODataSingleResponse<TEntity>>(this.baseURL, entity);
+		return this.http.patch<ODataSingleResponse<TEntity>>(this.baseURL, entity);
 	}
 
 	public delete(id: TKey): Observable<ODataSingleResponse<TEntity>> {

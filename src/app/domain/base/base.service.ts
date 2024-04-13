@@ -32,6 +32,16 @@ abstract class BaseService<TKey, TEntity extends BaseEntity<TKey>> {
 		return command;
 	}
 
+	public saveCommand(builder: () => TEntity, isEdit: boolean): ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>> {
+
+		const command = new ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>>(() => {
+			const method = isEdit ? this.endpoint.create : this.endpoint.update;
+			return method(builder());
+		})
+
+		return command;
+	}
+
 	public deleteCommand(fnId: () => TKey): ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>> {
 		const command = new ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>>(() => {
 			return this.endpoint.delete(fnId());

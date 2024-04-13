@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogModule, MatDialogRef } from '@angular/material/dialog';
 import { MatTableModule } from '@angular/material/table';
@@ -13,32 +13,36 @@ import { SharedModule } from '@shared/shared.module';
 	templateUrl: './competence-dialog.component.html',
 	styleUrl: './competence-dialog.component.scss',
 })
-export class CompetenceDialogComponent {
+export class CompetenceDialogComponent implements OnInit {
+
 	@Output()
 	public onSave = new EventEmitter<Competence>();
+
+	@Input({ required: true })
+	public editMode: boolean = false;
 
 	public form: FormGroup = new FormGroup({
 		Name: new FormControl<string>('', [Validators.required]),
 	});
-
 	constructor(
 		private readonly competenceService: CompetenceService,
 		private readonly dialogRef: MatDialogRef<CompetenceDialogComponent>
 	) { }
 
+	ngOnInit(): void {
+	}
+
 	public onSubmit() {
-		const command = this.competenceService.postCommand(() => this.form.value);
 
-		command.response$.subscribe({
-			next: (res) => {
-				this.onSave.emit(res);
-				this.dialogRef.close();
-			},
-			error: (err) => {
-				console.error(err);
-			},
-		});
-
-		command.execute();
+		this.competenceService.save({ ...this.form.value }, this.editMode)
+			.subscribe({
+				next: (res) => {
+					this.onSave.emit(res);
+					this.dialogRef.close();
+				},
+				error: (error) => {
+					console.error(error)
+				}
+			});
 	}
 }

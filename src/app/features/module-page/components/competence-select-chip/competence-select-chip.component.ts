@@ -86,19 +86,6 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 		this.destroy$.complete();
 	}
 
-	public openCreateDialog(): void {
-		const dialogRef = this.dialog.open(CompetenceDialogComponent);
-
-		dialogRef.componentInstance.onSave.subscribe(
-			(competence: Competence) => {
-				this.competenceOptions = [
-					...this.competenceOptions,
-					competence,
-				];
-			}
-		);
-	}
-
 	public clearInput() {
 		this.searchInput.setValue('');
 	}
@@ -127,6 +114,23 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 		}
 	}
 
+	public openCreateDialog(): void {
+		const dialogRef = this.dialog.open(CompetenceDialogComponent);
+
+		dialogRef.componentInstance.editMode = false;
+
+		dialogRef.componentInstance.onSave
+			.pipe(take(1))
+			.subscribe(
+				(competence: Competence) => {
+					this.competenceOptions = [
+						...this.competenceOptions,
+						competence,
+					];
+				}
+			);
+	}
+
 	private openRemoveModal(competenceId: string) {
 
 		const dialogRef = this.dialog.open(DeleteCompetenceDialog);
@@ -153,6 +157,22 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 
 	private openEditModal(competenceId: string) {
 		//TODO: Implement edit modal
+
+		const dialogRef = this.dialog.open(CompetenceDialogComponent);
+
+		dialogRef.componentInstance.editMode = true;
+
+		dialogRef.componentInstance.onSave
+			.pipe(take(1))
+			.subscribe(
+				(competence: Competence) => {
+					this.competenceOptions = this.competenceOptions.map(c => {
+						if (c.Id === competence.Id)
+							c.Name = competence.Name;
+						return c;
+					})
+				}
+			)
 	}
 
 	//#region ContextMenu Properties and Functions
