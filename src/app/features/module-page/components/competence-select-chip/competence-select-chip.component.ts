@@ -1,4 +1,4 @@
-import { Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject } from 'rxjs';
 import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 
 import { Component, EventEmitter, Input, OnDestroy, OnInit, Output } from '@angular/core';
@@ -52,17 +52,19 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 
 		this.queryCommand.execute();
 
-		this.searchInput.valueChanges.pipe(takeUntil(this.destroy$)).subscribe(_ => {
-			this.queryCommand.params = {
-				$filter: {
-					contains: {
-						Name: this.searchInput.value ?? '',
+		this.searchInput.valueChanges.pipe(
+			debounceTime(350))
+			.subscribe(_ => {
+				this.queryCommand.params = {
+					$filter: {
+						contains: {
+							Name: this.searchInput.value ?? '',
+						},
 					},
-				},
-			};
+				};
 
-			this.queryCommand.execute();
-		});
+				this.queryCommand.execute();
+			});
 	}
 
 	public ngOnDestroy(): void {

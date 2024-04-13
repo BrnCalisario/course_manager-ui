@@ -4,6 +4,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { Router } from '@angular/router';
 import AuthenticationService from '@shared/services/authentication.service';
+
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
@@ -16,13 +17,13 @@ import { SharedModule } from '../../shared/shared.module';
 })
 export class SideNavComponent {
 
-	constructor(private authService: AuthenticationService, private router: Router,
-	) {
-
-	}
+	constructor(
+		private authService: AuthenticationService,
+		private router: Router
+	) { }
 
 	public logout() {
 		this.authService.logout();
-		this.router.navigate(["/"]);
+		this.router.navigate(["/login"]);
 	}
 }

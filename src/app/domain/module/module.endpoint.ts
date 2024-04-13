@@ -7,7 +7,7 @@ import Module from './module.model';
 @Injectable({ providedIn: 'root' })
 export class ModuleEndpoint extends BaseEndpoint<string, Module> {
 	override get route(): string {
-		return "/api/Module";
+		return "/odata/Module";
 	}
 
 	constructor(protected override http: HttpClient) {

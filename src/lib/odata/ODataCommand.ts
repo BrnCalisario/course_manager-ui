@@ -1,4 +1,4 @@
-import { Observable, Subject, Subscription, switchMap } from 'rxjs';
+import { Observable, Subject, switchMap, take } from 'rxjs';
 
 import ICommand from './types/ICommand';
 import ODataParams, { ODataFilter } from './types/ODataParams';
@@ -15,8 +15,6 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 
 	private _request$: Subject<{}> = new Subject();
 	private _response$: Subject<TResponse> = new Subject();
-
-	private _request$$: Subscription = Subscription.EMPTY;
 
 	constructor(private readonly requestConstructor: RequestConstructor<TEntity, TResponse>) { }
 
@@ -93,8 +91,14 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 	}
 
 	public execute(): void {
-		this.reset();
-		this.initialize();
+		this._request$.pipe(
+			switchMap(() => this.requestConstructor(this)),
+			take(1)
+		).subscribe(res => {
+			this._response$.next(res);
+		});
+
+		this._request$.next({});
 	}
 
 	private buildFilter($filter: ODataFilter<TEntity>) {
@@ -133,20 +137,6 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 		}
 
 		return filterParts.join(' and ');
-	}
-
-	private reset() {
-		this._request$$.unsubscribe();
-	}
-
-	private initialize() {
-		this._request$$ = this._request$.pipe(
-			switchMap(() => this.requestConstructor(this))
-		).subscribe(res => {
-			this._response$.next(res);
-		});
-
-		this._request$.next({});
 	}
 }
 
