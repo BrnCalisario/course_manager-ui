@@ -1,9 +1,9 @@
-export type ContextMenuData = {
+export type ContextMenuData<T> = {
 	label: string;
 	icon?: string;
+	func: (event: MenuItemEvent<T>) => void;
 }
 
 export type MenuItemEvent<T> = {
-	type: string,
 	item: T
 }

@@ -1,5 +1,5 @@
-import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { ContextMenuData, MenuItemEvent } from "@shared/models/contex-tmenu.models";
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { ContextMenuData, MenuItemEvent } from '@shared/models/context-menu.models';
 
 @Component({
 	selector: "app-context-menu",
@@ -9,7 +9,7 @@ import { ContextMenuData, MenuItemEvent } from "@shared/models/contex-tmenu.mode
 export class ContextMenuComponent<T> {
 
 	@Input({ required: true })
-	public contextMenuItems!: Array<ContextMenuData>;
+	public contextMenuItems!: Array<ContextMenuData<T>>;
 
 	@Output()
 	public onContextMenuItemClick: EventEmitter<MenuItemEvent<T>> = new EventEmitter<MenuItemEvent<T>>();
@@ -28,14 +28,5 @@ export class ContextMenuComponent<T> {
 			left: `${this.position.x}px`,
 			top: `${this.position.y}px`,
 		}
-	}
-
-	onContextMenuClick(eventType: string): any {
-		if (!this.selectedItem) throw Error("Selected Item not provided");
-
-		this.onContextMenuItemClick.emit({
-			type: eventType,
-			item: this.selectedItem
-		});
 	}
 }

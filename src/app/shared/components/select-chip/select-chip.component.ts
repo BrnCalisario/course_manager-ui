@@ -21,7 +21,7 @@ export class SelectChipComponent<TKey, T extends BaseEntity<TKey>> {
 	public onChange = new EventEmitter<T[]>();
 
 	@Input({ required: false })
-	contextMenuFn: (event: MouseEvent, option: T) => void = (event: MouseEvent, option: T) => { };
+	contextMenuFn: (event: MouseEvent, option: T) => void = () => { };
 
 	selectedId!: string;
 

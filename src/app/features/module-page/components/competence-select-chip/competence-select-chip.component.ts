@@ -1,17 +1,21 @@
 import { debounceTime, Subject, take, takeUntil } from 'rxjs';
 import ODataQueryCommand from 'src/lib/odata/ODataCommand';
+import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
-import { Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild } from '@angular/core';
+import {
+    Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild
+} from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Competence } from '@domain/competence/competence.models';
 import { CompetenceDialogComponent } from '@features/competence-dialog/competence-dialog.component';
-import { DeleteCompetenceDialog } from '@features/competence-dialog/delete-competence-dialog/delete-competence-dialog.component';
+import {
+    DeleteCompetenceDialog
+} from '@features/competence-dialog/delete-competence-dialog/delete-competence-dialog.component';
 import { ContextMenuComponent } from '@shared/components/context-menu/context-menu.component';
-import { ContextMenuData, MenuItemEvent } from '@shared/models/contex-tmenu.models';
+import { ContextMenuData, MenuItemEvent } from '@shared/models/context-menu.models';
 import CompetenceService from '@shared/services/competence.service';
 import { SharedModule } from '@shared/shared.module';
-import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
 @Component({
 	selector: 'app-competence-select-chip',
@@ -66,13 +70,13 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 
 		this.queryCommand.execute();
 
-		this.searchInput.valueChanges.pipe(
-			debounceTime(350))
-			.subscribe(_ => {
+		this.searchInput.valueChanges
+			.pipe(debounceTime(350))
+			.subscribe(text => {
 				this.queryCommand.params = {
 					$filter: {
 						contains: {
-							Name: this.searchInput.value ?? '',
+							Name: text ?? '',
 						},
 					},
 				};
@@ -94,26 +98,6 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 		return competence.Name;
 	}
 
-	public handleMenuItemClick(event: MenuItemEvent<Competence>) {
-		console.info("event: ", event.type);
-		console.info("competence id: ", event.item.Id);
-
-		const { type: eventType, item: competence } = event;
-
-		eventType
-
-		switch (eventType) {
-			case "Edit":
-				this.openEditModal(competence);
-				break;
-			case "Remove":
-				this.openRemoveModal(competence.Id);
-				break;
-			default:
-				break;
-		}
-	}
-
 	public openCreateDialog(): void {
 		const dialogRef = this.dialog.open(CompetenceDialogComponent);
 
@@ -131,11 +115,11 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 			);
 	}
 
-	private openRemoveModal(competenceId: string) {
+	private openRemoveModal(event: MenuItemEvent<Competence>) {
 
 		const dialogRef = this.dialog.open(DeleteCompetenceDialog);
 
-		dialogRef.componentInstance.entityId = competenceId;
+		dialogRef.componentInstance.entityId = event.item.Id;
 
 		dialogRef.componentInstance.onConfirm
 			.subscribe(id => {
@@ -143,10 +127,10 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 				this.deleteCommand.execute();
 			});
 
-		this.deleteCommand.response$.pipe(
-			take(1))
+		this.deleteCommand.response$
+			.pipe(take(1))
 			.subscribe({
-				next: (res) => {
+				next: () => {
 					dialogRef.close();
 					// this.competenceOptions = this.competenceOptions.filter(competence => competence.Id !== res.Id)
 					this.queryCommand.execute();
@@ -155,13 +139,11 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 			})
 	}
 
-	private openEditModal(competence: Competence) {
-		//TODO: Implement edit modal
-
+	private openEditModal(event: MenuItemEvent<Competence>) {
 		const dialogRef = this.dialog.open(CompetenceDialogComponent);
 
 		dialogRef.componentInstance.editMode = true;
-		dialogRef.componentInstance.entity = competence;
+		dialogRef.componentInstance.entity = event.item;
 
 		dialogRef.componentInstance.onSave
 			.pipe(take(1))
@@ -187,10 +169,9 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 
 	public displayContextMenu: boolean = false;
 
-	//TODO: Pass click event as parameter
-	public contextMenuOptions: Array<ContextMenuData> = [
-		{ label: 'Edit', icon: 'edit' },
-		{ label: 'Remove', icon: 'delete' }
+	public contextMenuOptions: Array<ContextMenuData<Competence>> = [
+		{ label: 'Edit', icon: 'edit', func: this.openEditModal.bind(this) },
+		{ label: 'Remove', icon: 'delete', func: this.openRemoveModal.bind(this) }
 	];
 
 	@HostListener('document:click')
