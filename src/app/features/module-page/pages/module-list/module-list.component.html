@@ -19,9 +19,5 @@
 </div>
 
 <div class="module-grid">
-	@for (item of modules; track $index) {
-
-	<app-module-card [module]="item"></app-module-card>
-
-	}
+	<app-module-card *ngFor="let item of modules;" [module]="item" />
 </div>

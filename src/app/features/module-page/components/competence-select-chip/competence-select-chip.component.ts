@@ -3,14 +3,14 @@ import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
 import {
-    Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild
+	Component, EventEmitter, HostListener, Input, OnDestroy, OnInit, Output, ViewChild
 } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Competence } from '@domain/competence/competence.models';
 import { CompetenceDialogComponent } from '@features/competence-dialog/competence-dialog.component';
 import {
-    DeleteCompetenceDialog
+	DeleteCompetenceDialog
 } from '@features/competence-dialog/delete-competence-dialog/delete-competence-dialog.component';
 import { ContextMenuComponent } from '@shared/components/context-menu/context-menu.component';
 import { ContextMenuData, MenuItemEvent } from '@shared/models/context-menu.models';
@@ -136,7 +136,7 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 					this.queryCommand.execute();
 				},
 				error: () => alert("Erro ao deletar") // TODO: Feedback Service
-			})
+			});
 	}
 
 	private openEditModal(event: MenuItemEvent<Competence>) {
@@ -159,7 +159,7 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 					})
 
 				}
-			)
+			);
 	}
 
 	//#region ContextMenu Properties and Functions
