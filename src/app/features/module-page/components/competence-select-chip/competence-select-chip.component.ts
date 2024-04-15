@@ -9,10 +9,8 @@ import { FormControl, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Competence } from '@domain/competence/competence.models';
 import { CompetenceDialogComponent } from '@features/competence-dialog/competence-dialog.component';
-import {
-	DeleteCompetenceDialog
-} from '@features/competence-dialog/delete-competence-dialog/delete-competence-dialog.component';
 import { ContextMenuComponent } from '@shared/components/context-menu/context-menu.component';
+import { ConfirmDeleteDialog } from '@shared/components/delete-dialog/confirm-delete.component';
 import { ContextMenuData, MenuItemEvent } from '@shared/models/context-menu.models';
 import CompetenceService from '@shared/services/competence.service';
 import { SharedModule } from '@shared/shared.module';
@@ -53,7 +51,7 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 		private readonly competenceService: CompetenceService
 	) {
 		this.queryCommand = this.competenceService.listCommand();
-		this.deleteCommand = this.competenceService.deleteCommand(() => this.selectedId ?? '');
+		this.deleteCommand = this.competenceService.deleteCommand(() => this.selectedId!);
 	}
 
 	public ngOnInit(): void {
@@ -117,7 +115,7 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 
 	private openRemoveModal(event: MenuItemEvent<Competence>) {
 
-		const dialogRef = this.dialog.open(DeleteCompetenceDialog);
+		const dialogRef = this.dialog.open(ConfirmDeleteDialog);
 
 		dialogRef.componentInstance.entityId = event.item.Id;
 

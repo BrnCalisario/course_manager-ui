@@ -11,10 +11,10 @@
 		</div>
 	</div>
 	<div class="actions">
-		<button mat-icon-button color="accent" matTooltip="Edit">
+		<button (click)="this.onUpdateClick()" mat-icon-button color="accent" matTooltip="Edit">
 			<mat-icon>edit</mat-icon>
 		</button>
-		<button mat-icon-button color="warn" matTooltip="Delete">
+		<button (click)="this.onDeleteClick()" mat-icon-button color="warn" matTooltip="Delete">
 			<mat-icon>close</mat-icon>
 		</button>
 	</div>

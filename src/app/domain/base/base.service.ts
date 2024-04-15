@@ -3,6 +3,7 @@ import { ODataListResponse, ODataSingleResponse } from 'src/lib/odata/types/ODat
 
 import { Injectable } from '@angular/core';
 
+import { Observable } from 'rxjs';
 import { BaseEndpoint } from './base.endpoint';
 import BaseEntity from './base.entity';
 
@@ -11,6 +12,10 @@ abstract class BaseService<TKey, TEntity extends BaseEntity<TKey>> {
 	protected _queryCommand?: ODataQueryCommand<TEntity, ODataListResponse<TEntity>>;
 
 	constructor(protected readonly endpoint: BaseEndpoint<TKey, TEntity>) { }
+
+	public getById(id: TKey): Observable<TEntity> {
+		return this.endpoint.get(id);
+	}
 
 	public listCommand(): ODataQueryCommand<TEntity, ODataListResponse<TEntity>> {
 		if (!this._queryCommand) {

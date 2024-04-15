@@ -17,12 +17,13 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
+import { ConfirmDeleteDialog } from './components/delete-dialog/confirm-delete.component';
 import { DraggableList } from './components/draggable-list/draggable-list.component';
 import { Header } from './components/header/header.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { SelectChipComponent } from './components/select-chip/select-chip.component';
 @NgModule({
-	declarations: [Header, SelectChipComponent, PaginatorComponent, DraggableList, ContextMenuComponent],
+	declarations: [Header, SelectChipComponent, PaginatorComponent, DraggableList, ContextMenuComponent, ConfirmDeleteDialog],
 	imports: [
 		MatPaginatorModule,
 		CommonModule,
@@ -67,7 +68,8 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		DragDropModule,
 		CdkMenuModule,
 		MatMenuModule,
-		MatDialogModule
+		MatDialogModule,
+		ConfirmDeleteDialog
 	],
 	providers: [Router],
 })

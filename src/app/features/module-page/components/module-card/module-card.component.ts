@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import Module from '@domain/module/module.model';
 import { SharedModule } from '@shared/shared.module';
 
@@ -13,4 +13,18 @@ export class ModuleCardComponent {
 
 	@Input()
 	public module !: Module;
+
+	@Output()
+	public onUpdate: EventEmitter<Module> = new EventEmitter();
+
+	@Output()
+	public onDelete: EventEmitter<Module> = new EventEmitter();
+
+	public onDeleteClick() {
+		this.onDelete.emit(this.module);
+	}
+
+	public onUpdateClick() {
+		this.onUpdate.emit(this.module);
+	}
 }
