@@ -26,6 +26,11 @@ type ODataParams<T> = {
 	 * Specifies the order in which to return items.
 	 */
 	$orderby?: keyof T;
+
+	/**
+	 * Specifies the field that wants to expand.
+	 */
+	$expand?: string;
 };
 
 export type ODataFilter<T> = {

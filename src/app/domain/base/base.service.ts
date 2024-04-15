@@ -17,6 +17,14 @@ abstract class BaseService<TKey, TEntity extends BaseEntity<TKey>> {
 		return this.endpoint.get(id);
 	}
 
+	public findCommand(fnId: () => TKey): ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>> {
+		const command = new ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>>(() => {
+			return this.endpoint.get(fnId());
+		})
+
+		return command;
+	}
+
 	public listCommand(): ODataQueryCommand<TEntity, ODataListResponse<TEntity>> {
 		if (!this._queryCommand) {
 			const command = new ODataQueryCommand<TEntity, ODataListResponse<TEntity>>((command) =>

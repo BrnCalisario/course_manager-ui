@@ -2,9 +2,11 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Competence } from '@domain/competence/competence.models';
+import Module from '@domain/module/module.model';
 import CompetenceSelectChipComponent from '@features/module-page/components/competence-select-chip/competence-select-chip.component';
 import ModuleService from '@shared/services/module.service';
 import { SharedModule } from '@shared/shared.module';
+import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
 @Component({
 	selector: 'app-module-form',
@@ -49,19 +51,46 @@ export default class ModuleFormComponent implements OnInit {
 
 		this.isEdit = true;
 
-		this.service.getById(id)
+		const findCommand = this.service.findCommand(() => id);
+
+
+		findCommand.params = {
+			$expand: "Competences"
+		};
+
+		findCommand.response$
 			.subscribe({
-				next: value => {
-					console.log(value);
+				next: (res: ODataSingleResponse<Module>) => {
 
-					const module = value;
+					const { '@odata.context': _, ...module } = res;
 
-					this.moduleForm.setValue({ ...module, Competences: [] })
+					this.moduleForm.setValue(module);
+
 				},
 				error: _ => {
 					this.router.navigate(["/module", "form"]);
 				}
-			});
+			})
+
+
+
+
+		findCommand.execute();
+
+
+		// this.service.getById(id)
+		// 	.subscribe({
+		// 		next: (value: Module) => {
+
+
+		// 			const { Name, Description, Objective, Workload } = value;
+
+		// 			this.moduleForm.setValue({ Name, Description, Objective, Workload, Competences: [] })
+		// 		},
+		// 		error: _ => {
+		// 			this.router.navigate(["/module", "form"]);
+		// 		}
+		// 	});
 
 	}
 
