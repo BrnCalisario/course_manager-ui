@@ -6,7 +6,8 @@ import Module from '@domain/module/module.model';
 import CompetenceSelectChipComponent from '@features/module-page/components/competence-select-chip/competence-select-chip.component';
 import ModuleService from '@shared/services/module.service';
 import { SharedModule } from '@shared/shared.module';
-import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
+import { map } from 'rxjs';
+import { removeODataProperties } from 'src/lib/odata/types/ODataResponse';
 
 @Component({
 	selector: 'app-module-form',
@@ -35,8 +36,9 @@ export default class ModuleFormComponent implements OnInit {
 		Competences: new FormControl<Competence[]>([]),
 	});
 
-
 	public isEdit: boolean = false;
+
+	public entityId?: Module["Id"] = undefined;
 
 	constructor(
 		private readonly service: ModuleService,
@@ -49,49 +51,27 @@ export default class ModuleFormComponent implements OnInit {
 
 		if (!id) return;
 
+		this.entityId = id;
 		this.isEdit = true;
 
 		const findCommand = this.service.findCommand(() => id);
 
-
 		findCommand.params = {
-			$expand: "Competences"
+			$expand: "Competences",
 		};
 
-		findCommand.response$
+		findCommand.response$.pipe(
+			map(res => removeODataProperties(res)))
 			.subscribe({
-				next: (res: ODataSingleResponse<Module>) => {
-
-					const { '@odata.context': _, ...module } = res;
-
-					this.moduleForm.setValue(module);
-
+				next: (res: Partial<Module>) => {
+					this.moduleForm.setValue(res);
 				},
 				error: _ => {
 					this.router.navigate(["/module", "form"]);
 				}
 			})
 
-
-
-
 		findCommand.execute();
-
-
-		// this.service.getById(id)
-		// 	.subscribe({
-		// 		next: (value: Module) => {
-
-
-		// 			const { Name, Description, Objective, Workload } = value;
-
-		// 			this.moduleForm.setValue({ Name, Description, Objective, Workload, Competences: [] })
-		// 		},
-		// 		error: _ => {
-		// 			this.router.navigate(["/module", "form"]);
-		// 		}
-		// 	});
-
 	}
 
 	public get competences(): Competence[] {
@@ -99,13 +79,10 @@ export default class ModuleFormComponent implements OnInit {
 	}
 
 	public onSubmit() {
-		const command = this.service.postCommand(() => this.moduleForm.value);
-
-		command.response$.subscribe({
-			next: () => this.router.navigate(['/module', 'list']),
-			error: () => alert('An error occurred while creating the module.'), // Todo - Use feedback service
-		});
-
-		command.execute();
+		this.service.save({ Id: this.entityId ?? '', ...this.moduleForm.value }, this.isEdit)
+			.subscribe({
+				next: () => this.router.navigate(['/module', 'list']),
+				error: () => alert('An error occurred while creating the module.'), // Todo - Use feedback service
+			});
 	}
 }

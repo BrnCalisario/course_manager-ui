@@ -34,7 +34,8 @@
 			<app-competence-select-chip [(competences)]="competences" />
 		</div>
 
-		<button style="justify-self: flex-end;" mat-raised-button color="primary" (click)="onSubmit()">Create</button>
+		<button style="justify-self: flex-end;" mat-raised-button color="primary" (click)="onSubmit()">{{ this.isEdit ?
+			"Edit" : "Create" }}</button>
 	</form>
 
 </div>

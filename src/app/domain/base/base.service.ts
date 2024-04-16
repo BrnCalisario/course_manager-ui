@@ -13,13 +13,18 @@ abstract class BaseService<TKey, TEntity extends BaseEntity<TKey>> {
 
 	constructor(protected readonly endpoint: BaseEndpoint<TKey, TEntity>) { }
 
+	save(entity: TEntity, isEdit: boolean): Observable<TEntity> {
+		const method = isEdit ? this.endpoint.update.bind(this.endpoint) : this.endpoint.create.bind(this.endpoint);
+		return method(entity);
+	}
+
 	public getById(id: TKey): Observable<TEntity> {
 		return this.endpoint.get(id);
 	}
 
 	public findCommand(fnId: () => TKey): ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>> {
-		const command = new ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>>(() => {
-			return this.endpoint.get(fnId());
+		const command = new ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>>((command) => {
+			return this.endpoint.get(fnId(), command.build());
 		})
 
 		return command;

@@ -20,8 +20,8 @@ export abstract class BaseEndpoint<TKey, TEntity extends BaseEntity<TKey>> {
 	constructor(protected http: HttpClient) {
 	}
 
-	public get(id: TKey): Observable<ODataSingleResponse<TEntity>> {
-		return this.http.get<ODataSingleResponse<TEntity>>(`${this.baseURL}/${id}`);
+	public get(id: TKey, query?: string): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.get<ODataSingleResponse<TEntity>>(`${this.baseURL}/${id}?${query}`);
 	}
 
 	public getAll(query?: string): Observable<ODataListResponse<TEntity>> {

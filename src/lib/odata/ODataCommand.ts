@@ -87,6 +87,10 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 			builder.push(`$orderby=${String(this._params.$orderby)}`);
 		}
 
+		if (this._params?.$expand) {
+			builder.push(`$expand=${String(this._params.$expand)}`);
+		}
+
 		return builder.join('&');
 	}
 
