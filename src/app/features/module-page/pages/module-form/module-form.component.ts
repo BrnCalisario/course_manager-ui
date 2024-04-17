@@ -51,10 +51,10 @@ export default class ModuleFormComponent implements OnInit {
 
 		if (!id) return;
 
-		this.entityId = id;
+		this.entityId = Number(id);
 		this.isEdit = true;
 
-		const findCommand = this.service.findCommand(() => id);
+		const findCommand = this.service.findCommand(() => Number(id));
 
 		findCommand.params = {
 			$expand: "Competences",

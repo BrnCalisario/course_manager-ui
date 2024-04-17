@@ -38,7 +38,7 @@ export default class CompetenceSelectChipComponent implements OnInit, OnDestroy 
 
 	public nameMaxLength = 100;
 
-	public selectedId?: string;
+	public selectedId?: number;
 
 	public searchInput = new FormControl<string>('', [
 		Validators.maxLength(this.nameMaxLength),

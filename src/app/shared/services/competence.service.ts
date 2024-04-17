@@ -4,7 +4,7 @@ import CompetenceEndpoint from '@domain/competence/competence.endpoint';
 import { Competence } from '@domain/competence/competence.models';
 
 @Injectable({ providedIn: 'root' })
-export default class CompetenceService extends BaseService<string, Competence> {
+export default class CompetenceService extends BaseService<number, Competence> {
 	constructor(protected override endpoint: CompetenceEndpoint) {
 		super(endpoint)
 	}
