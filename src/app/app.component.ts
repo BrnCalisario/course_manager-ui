@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { inject } from "@vercel/analytics";
 import { SideNavComponent } from './features/side-nav/side-nav.component';
 
 @Component({
@@ -9,5 +10,10 @@ import { SideNavComponent } from './features/side-nav/side-nav.component';
 	templateUrl: './app.component.html',
 	styleUrl: './app.component.scss'
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
+
+	public ngOnInit(): void {
+		inject();
+	}
+
 }

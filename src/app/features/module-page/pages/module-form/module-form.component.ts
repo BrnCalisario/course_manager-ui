@@ -1,4 +1,5 @@
-import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
+import { map } from 'rxjs';
+import { removeODataProperties } from 'src/lib/odata/types/ODataResponse';
 
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
@@ -33,8 +34,9 @@ export default class ModuleFormComponent implements OnInit {
 		Dependencies: new FormControl<Module[]>([]),
 	});
 
-
 	public isEdit: boolean = false;
+
+	public entityId?: Module["Id"] = undefined;
 
 	constructor(
 		private readonly service: ModuleService,
@@ -47,49 +49,27 @@ export default class ModuleFormComponent implements OnInit {
 
 		if (!id) return;
 
+		this.entityId = Number(id);
 		this.isEdit = true;
 
-		const findCommand = this.service.findCommand(() => id);
-
+		const findCommand = this.service.findCommand(() => Number(id));
 
 		findCommand.params = {
-			$expand: "Competences"
+			$expand: "Competences",
 		};
 
-		findCommand.response$
+		findCommand.response$.pipe(
+			map(res => removeODataProperties(res)))
 			.subscribe({
-				next: (res: ODataSingleResponse<Module>) => {
-
-					const { '@odata.context': _, ...module } = res;
-
-					this.moduleForm.setValue(module);
-
+				next: (res: Partial<Module>) => {
+					this.moduleForm.setValue(res);
 				},
 				error: _ => {
 					this.router.navigate(["/module", "form"]);
 				}
 			})
 
-
-
-
 		findCommand.execute();
-
-
-		// this.service.getById(id)
-		// 	.subscribe({
-		// 		next: (value: Module) => {
-
-
-		// 			const { Name, Description, Objective, Workload } = value;
-
-		// 			this.moduleForm.setValue({ Name, Description, Objective, Workload, Competences: [] })
-		// 		},
-		// 		error: _ => {
-		// 			this.router.navigate(["/module", "form"]);
-		// 		}
-		// 	});
-
 	}
 
 	public get competences(): Competence[] {
@@ -101,15 +81,10 @@ export default class ModuleFormComponent implements OnInit {
 	}
 
 	public onSubmit() {
-		console.log("aaa")
-		console.log(this.moduleForm.value)
-		// const command = this.service.postCommand(() => this.moduleForm.value);
-
-		// command.response$.subscribe({
-		// 	next: () => this.router.navigate(['/module', 'list']),
-		// 	error: () => alert('An error occurred while creating the module.'), // Todo - Use feedback service
-		// });
-
-		// command.execute();
+		this.service.save({ Id: this.entityId, ...this.moduleForm.value }, this.isEdit)
+			.subscribe({
+				next: () => this.router.navigate(['/module', 'list']),
+				error: () => alert('An error occurred while creating the module.'), // Todo - Use feedback service
+			});
 	}
 }

@@ -1,8 +1,8 @@
 import BaseEntity from '@domain/base/base.entity';
 import { Competence } from '@domain/competence/competence.models';
 
-export default class Module implements BaseEntity<string> {
-	Id: string = '';
+export default class Module implements BaseEntity<number> {
+	Id: number = 0;
 	Name: string = '';
 	Description?: string = '';
 	Objective: string = '';

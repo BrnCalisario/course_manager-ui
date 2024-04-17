@@ -13,7 +13,7 @@
 					</div>
 					<div id="workload">
 						<mat-form-field>
-							<mat-label>Workload ( Hours ) </mat-label>
+							<mat-label>Workload ( Hours )</mat-label>
 							<input matInput formControlName="Workload" #Workload type="number">
 						</mat-form-field>
 					</div>
@@ -41,7 +41,7 @@
 		</div>
 
 		<button type="button" style="justify-self: flex-end;" mat-raised-button color="primary" (click)="onSubmit()"
-			[disabled]="!moduleForm.valid">Create</button>
+			[disabled]="!moduleForm.valid">{{ this.isEdit ? "Edit" : "Create" }}</button>
 	</form>
 
 </div>

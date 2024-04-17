@@ -4,7 +4,7 @@ import { ModuleEndpoint } from '@domain/module/module.endpoint';
 import Module from '@domain/module/module.model';
 
 @Injectable({ providedIn: 'root' })
-export default class ModuleService extends BaseService<string, Module> {
+export default class ModuleService extends BaseService<number, Module> {
 	constructor(protected override endpoint: ModuleEndpoint) {
 		super(endpoint)
 	}

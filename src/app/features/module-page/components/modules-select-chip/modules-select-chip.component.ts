@@ -3,16 +3,14 @@ import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
 import {
-	Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild
+    Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Competence } from '@domain/competence/competence.models';
 import Module from '@domain/module/module.model';
-import {
-	DeleteCompetenceDialog
-} from '@features/competence-dialog/delete-competence-dialog/delete-competence-dialog.component';
 import { ContextMenuComponent } from '@shared/components/context-menu/context-menu.component';
+import { ConfirmDeleteDialog } from '@shared/components/delete-dialog/confirm-delete.component';
 import { ContextMenuData, MenuItemEvent } from '@shared/models/context-menu.models';
 import ModuleService from '@shared/services/module.service';
 import { SharedModule } from '@shared/shared.module';
@@ -37,7 +35,7 @@ export default class ModulesSelectChipComponent implements OnInit {
 
 	public modulesOptions: Module[] = [];
 
-	public selectedId?: string;
+	public selectedId?: number;
 
 	public searchInput = new FormControl<string>('');
 
@@ -46,7 +44,7 @@ export default class ModulesSelectChipComponent implements OnInit {
 		private readonly moduleService: ModuleService
 	) {
 		this.queryCommand = this.moduleService.listCommand();
-		this.deleteCommand = this.moduleService.deleteCommand(() => this.selectedId ?? '');
+		this.deleteCommand = this.moduleService.deleteCommand(() => this.selectedId ?? 0);
 	}
 
 	public ngOnInit(): void {
@@ -88,7 +86,7 @@ export default class ModulesSelectChipComponent implements OnInit {
 
 	private openRemoveModal(event: MenuItemEvent<Competence>) {
 
-		const dialogRef = this.dialog.open(DeleteCompetenceDialog);
+		const dialogRef = this.dialog.open(ConfirmDeleteDialog);
 
 		dialogRef.componentInstance.entityId = event.item.Id;
 

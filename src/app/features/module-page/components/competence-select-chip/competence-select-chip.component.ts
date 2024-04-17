@@ -35,7 +35,9 @@ export default class CompetenceSelectChipComponent implements OnInit {
 
 	public competenceOptions: Competence[] = [];
 
-	public selectedId?: string;
+	public nameMaxLength = 100;
+
+	public selectedId?: number;
 
 	public searchInput = new FormControl<string>('');
 

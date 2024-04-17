@@ -14,10 +14,10 @@ export class ConfirmDeleteDialog {
 	public confirmMessage: string = "Are you sure you want to delete this ?";
 
 	@Output()
-	public onConfirm: EventEmitter<string> = new EventEmitter<string>();
+	public onConfirm: EventEmitter<any> = new EventEmitter<any>();
 
 	@Input({ required: true })
-	public entityId!: string;
+	public entityId!: any;
 
 	confirmDelete() {
 		this.onConfirm.emit(this.entityId);

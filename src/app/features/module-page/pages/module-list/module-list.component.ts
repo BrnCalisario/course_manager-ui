@@ -25,7 +25,7 @@ export class ModuleListComponent implements OnInit, OnDestroy {
 
 	private deleteCommand: ODataQueryCommand<Module, ODataSingleResponse<Module>>;
 
-	private targetId?: string;
+	private targetId?: Module["Id"];
 
 	private destroy$: Subject<void> = new Subject<void>();
 
