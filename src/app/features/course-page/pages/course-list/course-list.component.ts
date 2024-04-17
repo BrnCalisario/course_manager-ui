@@ -1,7 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import Course from '@domain/course/course.model';
 import { CourseCardComponent } from '@features/course-page/components/course-card/course-card.component';
+import CourseService from '@shared/services/course.service';
 import { SharedModule } from '@shared/shared.module';
+import { Subject, takeUntil } from 'rxjs';
+import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 
 @Component({
 	selector: 'app-course-list',
@@ -10,15 +13,25 @@ import { SharedModule } from '@shared/shared.module';
 	templateUrl: './course-list.component.html',
 	styleUrl: './course-list.component.scss'
 })
-export class CourseListComponent {
+export class CourseListComponent implements OnInit {
 
-	constructor() { }
+	queryCommand: ODataQueryCommand<Course>;
 
+	destroy$: Subject<void> = new Subject();
 	courses: Course[] = [];
-	// 	{ Id: '1', Name: "FullStack Developer", TotalWorkload: 300, Description: "Load of techs and stuff,Load of techs and stuff, Load of techs and stuff,Load of techs and stuffLoad of techs and stuffLoad of techs and stuffLoad of techs and stuff" },
-	// 	{ Id: '1', Name: "FullStack Developer", TotalWorkload: 300, Description: "Load of techs and stuff" },
-	// 	{ Id: '1', Name: "FullStack Developer", TotalWorkload: 300, Description: "Load of techs and stuff" },
-	// 	{ Id: '1', Name: "FullStack Developer", TotalWorkload: 300, Description: "Load of techs and stuff" }
-	// ]
+
+	constructor(entityService: CourseService) {
+		this.queryCommand = entityService.listCommand();
+	}
+
+	public ngOnInit(): void {
+		this.queryCommand.response$.pipe(takeUntil(this.destroy$))
+			.subscribe(res => {
+				this.courses = res.value;
+			})
+
+		this.queryCommand.execute();
+	}
+
 
 }

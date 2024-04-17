@@ -1,0 +1,25 @@
+<h2 mat-dialog-title>Select a module for your course</h2>
+<div class="content">
+    <div class="grid">
+        <div class="column">
+            <h3>Your List</h3>
+
+            <div cdkDropList #selectedList="cdkDropList" [cdkDropListConnectedTo]="[optionsList]" class="example-list"
+                [cdkDropListData]="selected" (cdkDropListDropped)="drop($event)">
+                @for(item of selected; track item) {
+                <div class="example-box" cdkDrag>{{ item }}</div>
+                }
+                <div class="empty-list" *ngIf="selected.length == 0">Empty List</div>
+            </div>
+        </div>
+        <div class="column">
+            <h3>Options</h3>
+            <div cdkDropList #optionsList="cdkDropList" [cdkDropListConnectedTo]="[selectedList]" class="example-list"
+                [cdkDropListData]="options" (cdkDropListDropped)="drop($event)">
+                @for(item of options; track item) {
+                <div class="example-box" cdkDrag>{{ item }}</div>
+                }
+            </div>
+        </div>
+    </div>
+</div>

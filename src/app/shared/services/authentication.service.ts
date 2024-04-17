@@ -54,6 +54,6 @@ export default class AuthenticationService {
 			this.storageService.setToken(res);
 
 			return true;
-		}));
+		}), this.logout);
 	}
 }
