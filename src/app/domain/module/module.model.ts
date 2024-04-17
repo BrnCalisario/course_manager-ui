@@ -3,10 +3,11 @@ import { Competence } from '@domain/competence/competence.models';
 
 export default class Module implements BaseEntity<string> {
 	Id: string = '';
-	Name: string = 'Basic Python';
+	Name: string = '';
 	Description?: string = '';
-	Objective: string = 'Objectives';
-	Workload: number = 10;
-	Dependencies: Module[] | undefined = [];
-	Competences: Competence[] | undefined = [];
+	Objective: string = '';
+	Workload: number = 0;
+	Competences: Competence[] = [];
+	Dependencies: Module[] = [];
+	Dependents: Module[] = [];
 }

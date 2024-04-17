@@ -8,12 +8,9 @@
 		</button>
 		}
 	</mat-form-field>
-	<button type="button" mat-fab color="primary" (click)="openCreateDialog()">
-		<mat-icon>add</mat-icon>
-	</button>
 </div>
 
-<app-select-chip [contextMenuFn]="showContextMenu.bind(this)" [(selectedValues)]="competences"
-	[options]="competenceOptions" [toLabel]="ToLabel" />
+<app-select-chip [contextMenuFn]="showContextMenu.bind(this)" [(selectedValues)]="modules" [options]="modulesOptions"
+	[toLabel]="ToLabel" />
 
 <app-context-menu #contextmenu [display]="this.displayContextMenu" [contextMenuItems]="contextMenuOptions" />

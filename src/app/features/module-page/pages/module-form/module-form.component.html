@@ -1,10 +1,9 @@
 <app-header [back]="true" title="{{ this.isEdit ? 'Edit' : 'Create'}} Module"></app-header>
 
 <div class="form-card">
-
 	<form #form class="form" [formGroup]="moduleForm">
 		<div class="form-grid">
-			<div id="module" class="column">
+			<div id="module">
 				<div style="display: flex; gap: 5px;">
 					<div id="name">
 						<mat-form-field>
@@ -31,10 +30,18 @@
 				</mat-form-field>
 			</div>
 
-			<app-competence-select-chip [(competences)]="competences" />
+			<mat-tab-group>
+				<mat-tab label="Competences">
+					<app-competence-select-chip [(competences)]="competences" />
+				</mat-tab>
+				<mat-tab label="Modules">
+					<app-modules-select-chip [(modules)]="modules" />
+				</mat-tab>
+			</mat-tab-group>
 		</div>
 
-		<button style="justify-self: flex-end;" mat-raised-button color="primary" (click)="onSubmit()">Create</button>
+		<button type="button" style="justify-self: flex-end;" mat-raised-button color="primary" (click)="onSubmit()"
+			[disabled]="!moduleForm.valid">Create</button>
 	</form>
 
 </div>

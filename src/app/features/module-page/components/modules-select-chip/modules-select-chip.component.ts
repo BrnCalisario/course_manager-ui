@@ -3,37 +3,39 @@ import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
 import {
-    Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild
+	Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Competence } from '@domain/competence/competence.models';
-import { CompetenceDialogComponent } from '@features/competence-dialog/competence-dialog.component';
+import Module from '@domain/module/module.model';
+import {
+	DeleteCompetenceDialog
+} from '@features/competence-dialog/delete-competence-dialog/delete-competence-dialog.component';
 import { ContextMenuComponent } from '@shared/components/context-menu/context-menu.component';
-import { ConfirmDeleteDialog } from '@shared/components/delete-dialog/confirm-delete.component';
 import { ContextMenuData, MenuItemEvent } from '@shared/models/context-menu.models';
-import CompetenceService from '@shared/services/competence.service';
+import ModuleService from '@shared/services/module.service';
 import { SharedModule } from '@shared/shared.module';
 
 @Component({
-	selector: 'app-competence-select-chip',
+	selector: 'app-modules-select-chip',
 	standalone: true,
 	imports: [SharedModule],
-	templateUrl: './competence-select-chip.component.html',
-	styleUrl: './competence-select-chip.component.scss',
+	templateUrl: './modules-select-chip.component.html',
+	styleUrl: './modules-select-chip.component.scss',
 })
-export default class CompetenceSelectChipComponent implements OnInit {
+export default class ModulesSelectChipComponent implements OnInit {
 	@Input({ required: true })
-	public competences!: Competence[];
+	public modules!: Module[];
 
 	@Output()
-	public competencesChange = new EventEmitter<Competence[]>();
+	public modulesChange = new EventEmitter<Module[]>();
 
-	public queryCommand: ODataQueryCommand<Competence>;
+	public queryCommand: ODataQueryCommand<Module>;
 
-	public deleteCommand: ODataQueryCommand<Competence, ODataSingleResponse<Competence>>;
+	public deleteCommand: ODataQueryCommand<Module, ODataSingleResponse<Module>>;
 
-	public competenceOptions: Competence[] = [];
+	public modulesOptions: Module[] = [];
 
 	public selectedId?: string;
 
@@ -41,10 +43,10 @@ export default class CompetenceSelectChipComponent implements OnInit {
 
 	constructor(
 		private readonly dialog: MatDialog,
-		private readonly competenceService: CompetenceService
+		private readonly moduleService: ModuleService
 	) {
-		this.queryCommand = this.competenceService.listCommand();
-		this.deleteCommand = this.competenceService.deleteCommand(() => this.selectedId!);
+		this.queryCommand = this.moduleService.listCommand();
+		this.deleteCommand = this.moduleService.deleteCommand(() => this.selectedId ?? '');
 	}
 
 	public ngOnInit(): void {
@@ -56,7 +58,7 @@ export default class CompetenceSelectChipComponent implements OnInit {
 		this.queryCommand.response$.pipe(
 			take(1))
 			.subscribe((res) => {
-				this.competenceOptions = res.value;
+				this.modulesOptions = res.value;
 			});
 
 		this.queryCommand.execute();
@@ -80,30 +82,13 @@ export default class CompetenceSelectChipComponent implements OnInit {
 		this.searchInput.setValue('');
 	}
 
-	public ToLabel(competence: Competence): string {
+	public ToLabel(competence: Module): string {
 		return competence.Name;
-	}
-
-	public openCreateDialog(): void {
-		const dialogRef = this.dialog.open(CompetenceDialogComponent);
-
-		dialogRef.componentInstance.editMode = false;
-
-		dialogRef.componentInstance.onSave
-			.pipe(take(1))
-			.subscribe(
-				(competence: Competence) => {
-					this.competenceOptions = [
-						...this.competenceOptions,
-						competence,
-					];
-				}
-			);
 	}
 
 	private openRemoveModal(event: MenuItemEvent<Competence>) {
 
-		const dialogRef = this.dialog.open(ConfirmDeleteDialog);
+		const dialogRef = this.dialog.open(DeleteCompetenceDialog);
 
 		dialogRef.componentInstance.entityId = event.item.Id;
 
@@ -118,34 +103,10 @@ export default class CompetenceSelectChipComponent implements OnInit {
 			.subscribe({
 				next: () => {
 					dialogRef.close();
-					// this.competenceOptions = this.competenceOptions.filter(competence => competence.Id !== res.Id)
 					this.queryCommand.execute();
 				},
 				error: () => alert("Erro ao deletar") // TODO: Feedback Service
-			});
-	}
-
-	private openEditModal(event: MenuItemEvent<Competence>) {
-		const dialogRef = this.dialog.open(CompetenceDialogComponent);
-
-		dialogRef.componentInstance.editMode = true;
-		dialogRef.componentInstance.entity = event.item;
-
-		dialogRef.componentInstance.onSave
-			.pipe(take(1))
-			.subscribe(
-				(res: Competence) => {
-					this.competenceOptions = this.competenceOptions.map(comp => {
-
-						if (comp.Id === res.Id) {
-							comp.Name = res.Name;
-						}
-
-						return comp;
-					})
-
-				}
-			);
+			})
 	}
 
 	//#region ContextMenu Properties and Functions
@@ -156,7 +117,6 @@ export default class CompetenceSelectChipComponent implements OnInit {
 	public displayContextMenu: boolean = false;
 
 	public contextMenuOptions: Array<ContextMenuData<Competence>> = [
-		{ label: 'Edit', icon: 'edit', func: this.openEditModal.bind(this) },
 		{ label: 'Remove', icon: 'delete', func: this.openRemoveModal.bind(this) }
 	];
 
