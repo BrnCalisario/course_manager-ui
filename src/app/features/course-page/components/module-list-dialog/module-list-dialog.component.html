@@ -1,5 +1,12 @@
 <h2 mat-dialog-title>Select a module for your course</h2>
 <div class="content">
+    <mat-form-field class="search">
+        <mat-label>Search for modules</mat-label>
+        <input matInput />
+        <button type="button" matSuffix mat-icon-button aria-label="Search">
+            <mat-icon>search</mat-icon>
+        </button>
+    </mat-form-field>
     <div class="grid">
         <div class="column">
             <h3>Your List</h3>
@@ -9,7 +16,7 @@
                 @for(item of selected; track item) {
                 <div class="example-box" cdkDrag>{{ item }}</div>
                 }
-                <div class="empty-list" *ngIf="selected.length == 0">Empty List</div>
+                <div class="empty-list" *ngIf="selected.length == 0">No items</div>
             </div>
         </div>
         <div class="column">
@@ -19,6 +26,7 @@
                 @for(item of options; track item) {
                 <div class="example-box" cdkDrag>{{ item }}</div>
                 }
+                <div class="empty-list" *ngIf="options.length == 0">No items</div>
             </div>
         </div>
     </div>
