@@ -1,4 +1,4 @@
-import { Observable, Subject, switchMap, take } from 'rxjs';
+import { BehaviorSubject, Observable, Subject, finalize, switchMap, take } from 'rxjs';
 
 import ICommand from './types/ICommand';
 import ODataParams, { ODataFilter } from './types/ODataParams';
@@ -13,6 +13,7 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 	private _params: ODataParams<TEntity> = {};
 	private _executeOnChange = false;
 
+	private _isExecuting$ = new BehaviorSubject(false);
 	private _request$: Subject<{}> = new Subject();
 	private _response$: Subject<TResponse> = new Subject();
 
@@ -24,6 +25,10 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 	 */
 	public get params(): ODataParams<TEntity> {
 		return this._params;
+	}
+
+	public get isExecuting$(): Observable<boolean> {
+		return this._isExecuting$;
 	}
 
 	/**
@@ -95,9 +100,11 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 	}
 
 	public execute(): void {
+		this._isExecuting$.next(true);
 		this._request$.pipe(
 			switchMap(() => this.requestConstructor(this)),
-			take(1)
+			take(1),
+			finalize(() => this._isExecuting$.next(false))
 		).subscribe(res => {
 			this._response$.next(res);
 		});

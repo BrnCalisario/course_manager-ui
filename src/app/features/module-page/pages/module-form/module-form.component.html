@@ -1,5 +1,9 @@
 <app-header [back]="true" title="{{ this.isEdit ? 'Edit' : 'Create'}} Module"></app-header>
 
+<div *ngIf="this.isLoading">Loading...</div>
+
+@if(!this.isLoading) {
+
 <div class="form-card">
 
 	<form #form class="form" [formGroup]="moduleForm">
@@ -39,3 +43,4 @@
 	</form>
 
 </div>
+}

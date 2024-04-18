@@ -6,7 +6,7 @@ import Module from '@domain/module/module.model';
 import CompetenceSelectChipComponent from '@features/module-page/components/competence-select-chip/competence-select-chip.component';
 import ModuleService from '@shared/services/module.service';
 import { SharedModule } from '@shared/shared.module';
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 import { removeODataProperties } from 'src/lib/odata/types/ODataResponse';
 
 @Component({
@@ -40,6 +40,8 @@ export default class ModuleFormComponent implements OnInit {
 
 	public entityId?: Module["Id"] = undefined;
 
+	public isLoading: boolean = false;
+
 	constructor(
 		private readonly service: ModuleService,
 		private readonly router: Router,
@@ -61,16 +63,23 @@ export default class ModuleFormComponent implements OnInit {
 		};
 
 		findCommand.response$.pipe(
-			map(res => removeODataProperties(res)))
+			map(res => removeODataProperties(res)),
+			take(1))
 			.subscribe({
 				next: (res: Partial<Module>) => {
 					this.moduleForm.setValue(res);
+					// this.isLoading = false;
 				},
 				error: _ => {
 					this.router.navigate(["/module", "form"]);
+				},
+				complete: () => {
+					console.log('complete');
+					this.isLoading = false;
 				}
 			})
 
+		this.isLoading = true;
 		findCommand.execute();
 	}
 
