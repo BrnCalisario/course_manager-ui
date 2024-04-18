@@ -40,7 +40,7 @@ export class ModuleListDialogComponent implements OnInit, OnDestroy {
 		this.queryCommand.response$
 			.pipe(takeUntil(this.destroy$))
 			.subscribe(res => {
-				this.options = res.value;
+				this.options = res.value.filter(module => !this.selected.find(m => m.Id === module.Id));
 			});
 
 		this.searchControl.valueChanges.pipe(
@@ -51,7 +51,6 @@ export class ModuleListDialogComponent implements OnInit, OnDestroy {
 				this.queryCommand.params = {
 					$filter: { contains: { Name: text! } }
 				};
-
 
 				this.queryCommand.execute();
 

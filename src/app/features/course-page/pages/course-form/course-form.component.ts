@@ -4,6 +4,7 @@ import Module from "@domain/module/module.model";
 import EditableHeader from "@features/course-page/components/editable-header/editable-header.component";
 import { ModuleListDialogComponent } from "@features/course-page/components/module-list-dialog/module-list-dialog.component";
 import { SharedModule } from "@shared/shared.module";
+import { filter, map } from "rxjs";
 
 @Component({
 	selector: 'app-course-form',
@@ -18,7 +19,7 @@ export default class CourseFormComponent {
 
 	}
 
-	public modules: Module[] = [new Module(), new Module(), new Module()];
+	public modules: Module[] = [];
 
 	public formatModule(module: Module): string {
 		return `${module.Name} - Workload: ${module.Workload} h`;
@@ -30,7 +31,15 @@ export default class CourseFormComponent {
 			height: '800px'
 		});
 
+		dialogRef.componentInstance.selected = [...this.modules];
 
+		dialogRef.afterClosed().pipe(
+			filter(res => res),
+			map(_ => dialogRef.componentInstance.selected)
+		)
+			.subscribe(selected => {
+				this.modules = selected;
+			})
 
 	}
 }
