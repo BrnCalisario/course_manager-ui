@@ -124,8 +124,6 @@ $course-manager-theme: mat.define-light-theme((color: (primary: $course-manager-
 
 }
 
-
-
 html,
 body {
 	height: 100%;
@@ -139,4 +137,12 @@ body {
 p {
 	font-family: var(--text-font);
 	font-weight: 400;
+}
+
+.spinner {
+	position: absolute !important;
+	top: 50% !important;
+	left: 50% !important;
+	margin-left: -5% !important;
+	margin-top: -5% !important;
 }

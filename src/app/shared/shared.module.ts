@@ -14,6 +14,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
@@ -22,6 +23,7 @@ import { DraggableList } from './components/draggable-list/draggable-list.compon
 import { Header } from './components/header/header.component';
 import { PaginatorComponent } from './components/paginator/paginator.component';
 import { SelectChipComponent } from './components/select-chip/select-chip.component';
+
 @NgModule({
 	declarations: [Header, SelectChipComponent, PaginatorComponent, DraggableList, ContextMenuComponent, ConfirmDeleteDialog],
 	imports: [
@@ -42,7 +44,8 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		DragDropModule,
 		CdkMenuModule,
 		MatMenuModule,
-		MatDialogModule
+		MatDialogModule,
+		MatProgressSpinnerModule
 	],
 	exports: [
 		CommonModule,
@@ -69,7 +72,8 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		CdkMenuModule,
 		MatMenuModule,
 		MatDialogModule,
-		ConfirmDeleteDialog
+		ConfirmDeleteDialog,
+		MatProgressSpinnerModule
 	],
 	providers: [Router],
 })

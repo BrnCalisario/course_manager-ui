@@ -4,7 +4,7 @@ import Module from "@domain/module/module.model";
 import EditableHeader from "@features/course-page/components/editable-header/editable-header.component";
 import { ModuleListDialogComponent } from "@features/course-page/components/module-list-dialog/module-list-dialog.component";
 import { SharedModule } from "@shared/shared.module";
-import { filter, map } from "rxjs";
+import { BehaviorSubject, filter, map } from "rxjs";
 
 @Component({
 	selector: 'app-course-form',
@@ -15,11 +15,9 @@ import { filter, map } from "rxjs";
 })
 export default class CourseFormComponent {
 
-	constructor(private readonly dialog: MatDialog) {
+	constructor(private readonly dialog: MatDialog) { }
 
-	}
-
-	public modules: Module[] = [];
+	public modules = new BehaviorSubject<Module[]>([]);
 
 	public formatModule(module: Module): string {
 		return `${module.Name} - Workload: ${module.Workload} h`;
@@ -31,14 +29,14 @@ export default class CourseFormComponent {
 			height: '800px'
 		});
 
-		dialogRef.componentInstance.selected = [...this.modules];
+		dialogRef.componentInstance.selected = [...this.modules.value];
 
 		dialogRef.afterClosed().pipe(
-			filter(res => res),
+			filter((res: boolean) => res),
 			map(_ => dialogRef.componentInstance.selected)
 		)
 			.subscribe(selected => {
-				this.modules = selected;
+				this.modules.next(selected);
 			})
 
 	}

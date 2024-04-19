@@ -21,8 +21,9 @@
 		</div>
 		<div class="column">
 			<h3>Options</h3>
-			<div cdkDropList #optionsList="cdkDropList" [cdkDropListConnectedTo]="[selectedList]" class="example-list"
-				[cdkDropListData]="options" (cdkDropListDropped)="drop($event)">
+			<div cdkDropList #optionsList="cdkDropList" [cdkDropListConnectedTo]="[selectedList]"
+				cdkDropListSortingDisabled class="example-list" [cdkDropListData]="options"
+				(cdkDropListDropped)="drop($event)">
 				@for(item of options; track item) {
 				<app-module-item [item]="item"></app-module-item>
 				}

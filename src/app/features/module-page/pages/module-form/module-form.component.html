@@ -1,6 +1,6 @@
 <app-header [back]="true" title="{{ this.isEdit ? 'Edit' : 'Create'}} Module"></app-header>
 
-<div *ngIf="this.isLoading">Loading...</div>
+<mat-spinner class="spinner" *ngIf="this.isLoading">Loading...</mat-spinner>
 
 @if(!this.isLoading) {
 
