@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import Course from '@domain/course/course.model';
 import { CourseCardComponent } from '@features/course-page/components/course-card/course-card.component';
 import CourseService from '@shared/services/course.service';
 import { SharedModule } from '@shared/shared.module';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, debounceTime, takeUntil } from 'rxjs';
 import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 
 @Component({
@@ -14,6 +15,8 @@ import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 	styleUrl: './course-list.component.scss'
 })
 export class CourseListComponent implements OnInit {
+
+	searchControl: FormControl<string | null> = new FormControl<string>('');
 
 	queryCommand: ODataQueryCommand<Course>;
 
@@ -28,6 +31,16 @@ export class CourseListComponent implements OnInit {
 		this.queryCommand.response$.pipe(takeUntil(this.destroy$))
 			.subscribe(res => {
 				this.courses = res.value;
+			})
+
+		this.searchControl.valueChanges
+			.pipe(takeUntil(this.destroy$), debounceTime(500))
+			.subscribe((text: string | null) => {
+				this.queryCommand.params = {
+					$filter: { contains: { Name: text! } }
+				}
+
+				this.queryCommand.execute();
 			})
 
 		this.queryCommand.execute();

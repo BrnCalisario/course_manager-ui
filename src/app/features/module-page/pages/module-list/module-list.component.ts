@@ -1,4 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Module from '@domain/module/module.model';
@@ -6,7 +7,7 @@ import { ModuleCardComponent } from '@features/module-page/components/module-car
 import { ConfirmDeleteDialog } from '@shared/components/delete-dialog/confirm-delete.component';
 import ModuleService from '@shared/services/module.service';
 import { SharedModule } from '@shared/shared.module';
-import { Subject, take, takeUntil } from 'rxjs';
+import { Subject, debounceTime, take, takeUntil } from 'rxjs';
 import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
@@ -18,6 +19,8 @@ import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 	styleUrl: './module-list.component.scss'
 })
 export class ModuleListComponent implements OnInit, OnDestroy {
+
+	public searchControl: FormControl<string | null> = new FormControl<string>('');
 
 	public modules: Module[] = [];
 
@@ -42,6 +45,16 @@ export class ModuleListComponent implements OnInit, OnDestroy {
 			.subscribe((res) => {
 				this.modules = res.value;
 			});
+
+		this.searchControl.valueChanges.pipe(debounceTime(500))
+			.subscribe((text: string | null) => {
+				this.queryCommand.params = {
+					$filter: { contains: { Name: text! } }
+				};
+
+				this.queryCommand.execute();
+			})
+
 
 		this.queryCommand.execute();
 	}

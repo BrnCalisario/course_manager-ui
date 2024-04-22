@@ -88,7 +88,14 @@ export default class ModuleFormComponent implements OnInit {
 	}
 
 	public onSubmit() {
-		this.service.save({ Id: this.entityId ?? '', ...this.moduleForm.value }, this.isEdit)
+
+		const body = this.moduleForm.value;
+
+		if (this.entityId) {
+			body.Id = this.entityId;
+		}
+
+		this.service.save(body, this.isEdit)
 			.subscribe({
 				next: () => this.router.navigate(['/module', 'list']),
 				error: () => alert('An error occurred while creating the module.'), // Todo - Use feedback service
