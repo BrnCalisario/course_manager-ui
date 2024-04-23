@@ -10,9 +10,50 @@ import { SharedModule } from '@shared/shared.module';
 })
 export class SchedulePageComponent {
 
-	months: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	year: Array<Array<boolean>> = [];
 
-	dayLabels: string[] = ["D", "S", "T", "Q", "Q", "S", "S"];
+	monthNames: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-	days: boolean[] = Array(42).fill(false);
+	constructor() {
+		this.foo();
+	}
+
+	foo() {
+		const today = new Date();
+		var temp = null;
+
+		for (let month = 0; month < 12; month++) {
+
+			this.year.push([])
+
+			const firstDay = new Date(today.getFullYear(), month, 1);
+
+			const firstSunday = new Date(firstDay.getFullYear(), firstDay.getMonth(), 1 - firstDay.getDay());
+
+			temp = new Date(firstSunday);
+
+			for (let day = 0; day < 42; day++) {
+				this.year[month].push(temp.getMonth() === firstDay.getMonth());
+				temp.setDate(temp.getDate() + 1);
+			}
+
+		}
+
+		// const today = new Date();
+		// const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
+		// const firstSunday = new Date(firstDay.getFullYear(), firstDay.getMonth(), 1 - firstDay.getDay());
+
+		// const temp = new Date(firstSunday);
+
+		// for (let i = 0; i < 42; i++) {
+
+		// 	this.days.push(temp.getMonth() === firstDay.getMonth());
+		// 	temp.setDate(temp.getDate() + 1);
+
+		// }
+
+
+
+
+	}
 }
