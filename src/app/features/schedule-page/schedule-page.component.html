@@ -8,7 +8,10 @@
 			</div>
 			<div class="day-grid">
 				<!-- Make a loop that makes a 6x7 grid w -->
-				<div *ngFor="let day of month" class="day" [ngClass]="day ? '' : 'disabled'">
+				<div *ngFor="let dayLabel of weekNames" class="day-label">{{ dayLabel }}</div>
+
+				<div *ngFor="let day of month" class="day" [ngClass]="day.visible ? day.type : 'disabled'">
+					{{ day.day }}
 				</div>
 			</div>
 		</div>

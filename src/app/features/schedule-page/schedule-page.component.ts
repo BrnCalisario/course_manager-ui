@@ -1,6 +1,16 @@
 import { Component } from '@angular/core';
 import { SharedModule } from '@shared/shared.module';
 
+
+export type DayType = 'weekday' | 'weekend' | 'holiday';
+
+export type DayInfo = {
+	day: number;
+	type: DayType;
+	visible: boolean;
+};
+
+
 @Component({
 	selector: 'app-schedule-page',
 	standalone: true,
@@ -10,15 +20,16 @@ import { SharedModule } from '@shared/shared.module';
 })
 export class SchedulePageComponent {
 
-	year: Array<Array<boolean>> = [];
+	year: Array<Array<DayInfo>> = [];
 
 	monthNames: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+	weekNames: string[] = ["D", "S", "T", "Q", "Q", "S", "S"];
 
 	constructor() {
-		this.foo();
+		this.generateYear();
 	}
 
-	foo() {
+	private generateYear(): void {
 		const today = new Date();
 		var temp = null;
 
@@ -33,27 +44,21 @@ export class SchedulePageComponent {
 			temp = new Date(firstSunday);
 
 			for (let day = 0; day < 42; day++) {
-				this.year[month].push(temp.getMonth() === firstDay.getMonth());
+
+				// this.year[month].push(temp.getMonth() === firstDay.getMonth());
+
+				const dayInfo: DayInfo = {
+					day: temp.getDate(),
+					type: temp.getDay() === 0 || temp.getDay() === 6 ? 'weekend' : 'weekday',
+					visible: temp.getMonth() === firstDay.getMonth()
+				};
+
+				this.year[month].push(dayInfo);
 				temp.setDate(temp.getDate() + 1);
 			}
 
+
 		}
-
-		// const today = new Date();
-		// const firstDay = new Date(today.getFullYear(), today.getMonth(), 1);
-		// const firstSunday = new Date(firstDay.getFullYear(), firstDay.getMonth(), 1 - firstDay.getDay());
-
-		// const temp = new Date(firstSunday);
-
-		// for (let i = 0; i < 42; i++) {
-
-		// 	this.days.push(temp.getMonth() === firstDay.getMonth());
-		// 	temp.setDate(temp.getDate() + 1);
-
-		// }
-
-
-
-
 	}
 }
+
