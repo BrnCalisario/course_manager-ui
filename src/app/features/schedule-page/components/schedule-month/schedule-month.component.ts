@@ -35,6 +35,10 @@ export class ScheduleMonthComponent implements OnInit {
 		this.generateMonth();
 	}
 
+	formatDate(date: Date) {
+		return `${date.getMonth() + 1}/${date.getFullYear()}`
+	}
+
 
 	generateMonth(): void {
 

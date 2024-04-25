@@ -1,4 +1,5 @@
-<p>schedule-month works!</p>
+<app-header [title]="formatDate(this.date)" [back]="true"></app-header>
+
 <div class="day-grid">
 	@for(dayLabel of dayLabels; track dayLabel) {
 	<div class="day-label">
