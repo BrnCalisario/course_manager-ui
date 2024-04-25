@@ -8,7 +8,7 @@
 	}
 
 	@for(day of monthDays; track day) {
-	<div class="day" [ngClass]="day.visible ? day.type : 'disabled'">
+	<div class="day" [ngClass]="day.visible ? day.type : 'disabled'" (click)="changeState(day)">
 		{{ day.date.getDate() }}
 	</div>
 	}

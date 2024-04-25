@@ -2,7 +2,7 @@ import { Component } from "@angular/core";
 import { Router } from "@angular/router";
 import { SharedModule } from "@shared/shared.module";
 
-export type DayType = 'weekday' | 'weekend' | 'holiday';
+export type DayType = 'weekday' | 'weekend' | 'holiday' | 'selected';
 
 export type DateInfo = {
 	date: Date;

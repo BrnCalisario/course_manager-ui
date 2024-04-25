@@ -32,6 +32,12 @@
 			opacity: 0.5;
 		}
 
+		&.selected {
+			background-color: var(--primary);
+			border: 1px solid var(--primary);
+			color: white;
+		}
+
 		&:hover {
 			transform: scale(1.05);
 		}

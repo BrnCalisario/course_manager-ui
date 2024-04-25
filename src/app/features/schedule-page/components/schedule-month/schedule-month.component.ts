@@ -39,6 +39,13 @@ export class ScheduleMonthComponent implements OnInit {
 		return `${date.getMonth() + 1}/${date.getFullYear()}`
 	}
 
+	changeState(day: DateInfo) {
+
+		if (day.type != 'selected' && day.type != 'weekday') return;
+
+		day.type = day.type === 'selected' ? 'weekday' : 'selected';
+	}
+
 
 	generateMonth(): void {
 
@@ -62,5 +69,7 @@ export class ScheduleMonthComponent implements OnInit {
 			temp.setDate(temp.getDate() + 1);
 		}
 	}
+
+
 
 }
