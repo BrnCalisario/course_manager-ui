@@ -1,0 +1,14 @@
+<p>schedule-month works!</p>
+<div class="day-grid">
+	@for(dayLabel of dayLabels; track dayLabel) {
+	<div class="day-label">
+		{{ dayLabel }}
+	</div>
+	}
+
+	@for(day of monthDays; track day) {
+	<div class="day" [ngClass]="day.visible ? day.type : 'disabled'">
+		{{ day.date.getDate() }}
+	</div>
+	}
+</div>

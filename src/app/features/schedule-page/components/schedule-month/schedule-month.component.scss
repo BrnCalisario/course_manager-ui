@@ -1,0 +1,50 @@
+.day-grid {
+
+	display: grid;
+	width: fit-content;
+	margin: auto;
+
+	grid-template-columns: repeat(7, 1fr);
+	grid-gap: 16px;
+
+	.day {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+
+		aspect-ratio: 1 / 1;
+		width: 75px;
+		cursor: pointer;
+
+		transition: all 0.2s;
+
+		border: 1px solid #888;
+
+		&.weekend {
+			background-color: rgb(44, 44, 44);
+			border: 1px solid rgb(44, 44, 44);
+			color: white;
+		}
+
+		&.disabled {
+			color: black;
+			background-color: #888;
+			opacity: 0.5;
+		}
+
+		&:hover {
+			transform: scale(1.05);
+		}
+
+	}
+
+	.day-label {
+		font-size: 2rem;
+		font-weight: bold;
+
+		width: 75px;
+
+		aspect-ratio: 2/1;
+		text-align: center;
+	}
+}
