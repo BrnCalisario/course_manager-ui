@@ -12,18 +12,18 @@ import { DateInfo } from '../schedule-page/schedule-page.component';
 })
 export class ScheduleMonthComponent implements OnInit {
 
-	date!: Date;
+	public date!: Date;
 
-	monthDays: Array<DateInfo> = [];
-	dayLabels = ["D", "S", "T", "Q", "Q", "S", "S"];
+	public monthDays: Array<DateInfo> = [];
+
+	public dayLabels = ["D", "S", "T", "Q", "Q", "S", "S"];
 
 	constructor(
 		private readonly router: Router,
 		private readonly route: ActivatedRoute) {
-
 	}
 
-	ngOnInit(): void {
+	public ngOnInit(): void {
 		const month = this.route.snapshot.paramMap.get('month');
 
 		if (!month) {
@@ -35,11 +35,36 @@ export class ScheduleMonthComponent implements OnInit {
 		this.generateMonth();
 	}
 
-	formatDate(date: Date) {
-		return `${date.getMonth() + 1}/${date.getFullYear()}`
+	public previous() {
+		this.date.setMonth(this.date.getMonth() - 1);
+
+		this.router.navigate(['schedule', "month", this.date.toDateString()]);
+
+		this.generateMonth();
 	}
 
-	changeState(day: DateInfo) {
+	public next() {
+		this.date.setMonth(this.date.getMonth() + 1);
+
+		this.router.navigate(['schedule', "month", this.date.toDateString()]);
+
+		this.generateMonth();
+	}
+
+	public returnToSchedule() {
+		this.router.navigate(["schedule", "year"])
+	}
+
+	public formatDate(date: Date) {
+
+		const month = date.getMonth() + 1;
+
+		const formatedMonth = month < 10 ? `0${month}` : month;
+
+		return `${formatedMonth}/${date.getFullYear()}`
+	}
+
+	public changeState(day: DateInfo) {
 
 		if (day.type != 'selected' && day.type != 'weekday') return;
 
@@ -47,9 +72,9 @@ export class ScheduleMonthComponent implements OnInit {
 	}
 
 
-	generateMonth(): void {
+	private generateMonth(): void {
 
-		const today = new Date();
+		this.monthDays = [];
 
 		const firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
 
@@ -69,7 +94,6 @@ export class ScheduleMonthComponent implements OnInit {
 			temp.setDate(temp.getDate() + 1);
 		}
 	}
-
 
 
 }
