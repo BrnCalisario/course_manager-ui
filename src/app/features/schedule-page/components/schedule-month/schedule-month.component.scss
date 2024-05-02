@@ -63,8 +63,23 @@
 			color: white;
 		}
 
-		&:hover {
-			transform: scale(1.05);
+		&.middle {
+
+			&::after {
+				position: absolute;
+
+				content: '';
+				border: 0px solid #fff;
+
+				padding: 4px;
+
+				width: calc((75px + 16px) * 7);
+				height: 75px;
+			}
+
+			&:hover::after {
+				border: 2px solid var(--primary);
+			}
 		}
 	}
 

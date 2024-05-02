@@ -55,6 +55,19 @@ export class ScheduleMonthComponent implements OnInit {
 		this.router.navigate(["schedule", "year"])
 	}
 
+	public getDayClass(dateInfo: DateInfo, index: number): string {
+
+		const classes = [];
+
+		classes.push(dateInfo.visible ? dateInfo.type : "disabled");
+
+		if (index % 7 == 3) {
+			classes.push('middle');
+		}
+
+		return classes.join(' ');
+	}
+
 	public formatDate(date: Date) {
 
 		const month = date.getMonth() + 1;
@@ -63,14 +76,6 @@ export class ScheduleMonthComponent implements OnInit {
 
 		return `${formatedMonth}/${date.getFullYear()}`
 	}
-
-	public changeState(day: DateInfo) {
-
-		if (day.type != 'selected' && day.type != 'weekday') return;
-
-		day.type = day.type === 'selected' ? 'weekday' : 'selected';
-	}
-
 
 	private generateMonth(): void {
 
@@ -94,6 +99,4 @@ export class ScheduleMonthComponent implements OnInit {
 			temp.setDate(temp.getDate() + 1);
 		}
 	}
-
-
 }
