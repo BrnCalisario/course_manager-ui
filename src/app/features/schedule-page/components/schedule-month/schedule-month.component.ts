@@ -51,6 +51,10 @@ export class ScheduleMonthComponent implements OnInit {
 		this.generateMonth();
 	}
 
+	public gotoWeek(date: Date): void {
+		this.router.navigate(["schedule", "week", date.toDateString()]);
+	}
+
 	public returnToSchedule() {
 		this.router.navigate(["schedule", "year"])
 	}
