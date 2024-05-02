@@ -1,5 +1,18 @@
-@for(day of weekDays; track day) {
-<div>
-	{{ day.date }}
+<div class="week-label">
+	@for(day of weekDays; track day; let i = $index) {
+	<div>
+
+		<div class="day-label">
+			<p class="day-value">{{ formatDate(day.date) }}</p>
+			<p>{{ this.weekLabels[i] }}</p>
+		</div>
+
+		<div class="day-period">
+			<section class="morning">
+			</section>
+			<section class="afternoon">
+			</section>
+		</div>
+	</div>
+	}
 </div>
-}

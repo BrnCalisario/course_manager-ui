@@ -15,12 +15,12 @@ export class ScheduleWeekComponent implements OnInit {
 	public date!: Date;
 	public weekDays: DateInfo[] = [];
 
+	public weekLabels: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
 	constructor(
 		private readonly router: Router,
 		private readonly route: ActivatedRoute
-	) {
-
-	}
+	) { }
 
 	public ngOnInit(): void {
 		const date = this.route.snapshot.paramMap.get('date');
@@ -34,17 +34,27 @@ export class ScheduleWeekComponent implements OnInit {
 		this.generateWeek();
 	}
 
+	public formatDate(date: Date): string | number {
+
+		var day = date.getDate();
+
+		if (day < 10) {
+			return '0' + day;
+		}
+
+		return day;
+	}
+
 	private generateWeek(): void {
 
 		this.weekDays = [];
 
-		/// First day of week
 		const firstDay = new Date(this.date);
-		firstDay.setDate(firstDay.getDate() - firstDay.getDay());
+		firstDay.setDate(firstDay.getDate() - firstDay.getDay() + 1);
 
 		var temp = new Date(firstDay);
 
-		for (let i = 0; i < 7; i++) {
+		for (let i = 0; i < 5; i++) {
 
 			this.weekDays.push({
 				date: new Date(temp),
@@ -54,7 +64,6 @@ export class ScheduleWeekComponent implements OnInit {
 
 			temp.setDate(temp.getDate() + 1);
 		}
-
 	}
 
 }

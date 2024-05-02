@@ -1,0 +1,49 @@
+.week-label {
+	display: grid;
+	grid-template-columns: repeat(5, 1fr);
+}
+
+.day-label {
+
+	padding: 0.5rem 1rem;
+
+	border: 1px solid black;
+	border-left: none;
+
+	cursor: pointer;
+
+	&:first-child {
+		border-left: 1px solid black;
+	}
+
+	&:hover p {
+		color: var(--primary);
+	}
+
+	p {
+		padding: 0;
+		margin: 0;
+	}
+
+	.day-value {
+		font-size: 1.5rem;
+		font-weight: bold;
+		color: var(--primary);
+	}
+}
+
+
+.day-period {
+	display: flex;
+	flex-direction: column;
+	border: 1px solid lightgray;
+
+	section {
+		height: 100px;
+	}
+
+	section:first-child {
+		border-bottom: 1px solid lightgray;
+	}
+
+}
