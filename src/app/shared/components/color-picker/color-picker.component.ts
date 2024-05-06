@@ -11,5 +11,5 @@ import { ColorPickerModule } from 'ngx-color-picker';
 })
 export class ColorPickerComponent {
 
-  public color: string = "#FFF";
+  public color: string = "#2fa296";
 }
