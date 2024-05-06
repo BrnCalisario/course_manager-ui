@@ -99,7 +99,7 @@
 }
 
 mat-button-toggle-group {
-	margin-top: 12px;
+	margin-top: 1rem;
 }
 
 .mat-button-toggle {
@@ -115,4 +115,27 @@ mat-button-toggle-group {
 .mat-button-toggle-checked {
 	background-color: var(--primary) !important;
 	color: white !important;
+}
+
+
+.modules {
+
+	margin-top: 1rem;
+
+	display: flex;
+	gap: 1rem;
+
+
+	.module {
+
+		display: flex;
+		place-items: center;
+
+		gap: 1rem;
+
+		padding: 0.5rem;
+
+		border: 1px solid lightgray;
+	}
+
 }

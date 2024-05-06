@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ColorPickerComponent } from '@shared/components/color-picker/color-picker.component';
 import { SharedModule } from '@shared/shared.module';
 import { DateInfo } from '../schedule-page/schedule-page.component';
 
 @Component({
 	selector: 'app-schedule-week',
 	standalone: true,
-	imports: [SharedModule, MatButtonToggleModule],
+	imports: [SharedModule, MatButtonToggleModule, ColorPickerComponent],
 	templateUrl: './schedule-week.component.html',
 	styleUrl: './schedule-week.component.scss'
 })
