@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DateInfo, DateService } from '@shared/services/date.service';
 import { SharedModule } from '@shared/shared.module';
-import { DateInfo } from '../schedule-page/schedule-page.component';
 
 @Component({
 	selector: 'app-schedule-month',
@@ -20,7 +20,8 @@ export class ScheduleMonthComponent implements OnInit {
 
 	constructor(
 		private readonly router: Router,
-		private readonly route: ActivatedRoute) {
+		private readonly route: ActivatedRoute,
+		public readonly dateService: DateService) {
 	}
 
 	public ngOnInit(): void {
@@ -32,7 +33,8 @@ export class ScheduleMonthComponent implements OnInit {
 		}
 
 		this.date = new Date(month);
-		this.generateMonth();
+
+		this.monthDays = this.dateService.generateMonth(this.date);
 	}
 
 	public previous() {
@@ -40,7 +42,7 @@ export class ScheduleMonthComponent implements OnInit {
 
 		this.router.navigate(['schedule', "month", this.date.toDateString()]);
 
-		this.generateMonth();
+		this.monthDays = this.dateService.generateMonth(this.date);
 	}
 
 	public next() {
@@ -48,7 +50,7 @@ export class ScheduleMonthComponent implements OnInit {
 
 		this.router.navigate(['schedule', "month", this.date.toDateString()]);
 
-		this.generateMonth();
+		this.monthDays = this.dateService.generateMonth(this.date);
 	}
 
 	public gotoWeek(date: Date): void {
@@ -70,37 +72,5 @@ export class ScheduleMonthComponent implements OnInit {
 		}
 
 		return classes.join(' ');
-	}
-
-	public formatDate(date: Date) {
-
-		const month = date.getMonth() + 1;
-
-		const formatedMonth = month < 10 ? `0${month}` : month;
-
-		return `${formatedMonth}/${date.getFullYear()}`
-	}
-
-	private generateMonth(): void {
-
-		this.monthDays = [];
-
-		const firstDay = new Date(this.date.getFullYear(), this.date.getMonth(), 1);
-
-		const firstSunday = new Date(firstDay.getFullYear(), firstDay.getMonth(), 1 - firstDay.getDay());
-
-		var temp = new Date(firstSunday);
-
-		for (let day = 0; day < 42; day++) {
-
-			const dayInfo: DateInfo = {
-				date: new Date(temp),
-				type: temp.getDay() === 0 || temp.getDay() === 6 ? 'weekend' : 'weekday',
-				visible: temp.getMonth() === firstDay.getMonth()
-			};
-
-			this.monthDays.push(dayInfo);
-			temp.setDate(temp.getDate() + 1);
-		}
 	}
 }

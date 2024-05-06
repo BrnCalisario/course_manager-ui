@@ -9,7 +9,7 @@
 			</mat-icon>
 		</button>
 
-		<h2 class="title">{{ formatDate(this.date) }}</h2>
+		<h2 class="title">{{ this.dateService.formatDateYear(this.date) }}</h2>
 
 		<button mat-icon-button color="primary" (click)="next()">
 			<mat-icon>

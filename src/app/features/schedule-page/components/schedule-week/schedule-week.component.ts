@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ColorPickerComponent } from '@shared/components/color-picker/color-picker.component';
+import { DateInfo, DateService } from '@shared/services/date.service';
 import { SharedModule } from '@shared/shared.module';
-import { DateInfo } from '../schedule-page/schedule-page.component';
 
 @Component({
 	selector: 'app-schedule-week',
@@ -21,7 +21,8 @@ export class ScheduleWeekComponent implements OnInit {
 
 	constructor(
 		private readonly router: Router,
-		private readonly route: ActivatedRoute
+		private readonly route: ActivatedRoute,
+		public readonly dateService: DateService
 	) { }
 
 	public ngOnInit(): void {
@@ -33,43 +34,13 @@ export class ScheduleWeekComponent implements OnInit {
 		}
 
 		this.date = new Date(date);
-		this.generateWeek();
-	}
-
-	public formatDate(date: Date): string | number {
-
-		var day = date.getDate();
-
-		if (day < 10) {
-			return '0' + day;
-		}
-
-		return day;
+		this.weekDays = this.dateService.generateWeek(this.date);
 	}
 
 	public onChange(event: MatButtonToggleChange) {
 		console.log(event);
 	}
 
-	private generateWeek(): void {
 
-		this.weekDays = [];
-
-		const firstDay = new Date(this.date);
-		firstDay.setDate(firstDay.getDate() - firstDay.getDay() + 1);
-
-		var temp = new Date(firstDay);
-
-		for (let i = 0; i < 5; i++) {
-
-			this.weekDays.push({
-				date: new Date(temp),
-				type: 'weekday',
-				visible: true
-			});
-
-			temp.setDate(temp.getDate() + 1);
-		}
-	}
 
 }
