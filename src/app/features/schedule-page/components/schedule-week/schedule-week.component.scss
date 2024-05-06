@@ -1,22 +1,29 @@
 .week-label {
 	display: grid;
 	grid-template-columns: 0.4fr repeat(5, 1fr);
+
+	.day-block:last-child {
+		.day-label {
+			border-right: 1px solid black;
+		}
+
+		.day-period {
+			border-right: 1px solid lightgray;
+		}
+	}
 }
 
 .day-label {
-
 	padding: 0.5rem 1rem;
 
-	height: 60px;
+	box-sizing: border-box;
+
+	height: 75px;
 
 	border: 1px solid black;
-	border-left: none;
+	border-right: none;
 
 	cursor: pointer;
-
-	&:first-child {
-		border-left: 1px solid black;
-	}
 
 	&:hover p {
 		color: var(--primary);
@@ -35,8 +42,10 @@
 }
 
 .side-label {
+
 	.day-label {
-		border: none;
+		border-color: lightgray;
+		border-bottom: none;
 	}
 
 	.day-period {
@@ -49,34 +58,18 @@
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			border: 1px solid;
+			border: 1px solid lightgray;
+			border-right: none;
 
 			p {
 				border-radius: 16px;
 
 				padding: 0.4rem;
 				margin: 0;
-
 			}
 
 			&.morning {
-
-				p {
-					color: var(--primary);
-				}
-
-				border-color: var(--primary);
-				border-bottom: 2px solid lightgray;
-			}
-
-			&.afternoon {
-
-				p {
-					color: var(--accent);
-				}
-
-				border-color: var(--accent);
-				border-top: 1px solid lightgray;
+				border-bottom: none;
 			}
 		}
 
@@ -92,17 +85,34 @@
 	justify-content: center;
 
 	border: 1px solid lightgray;
-
-
-
+	border-right: none;
 
 	section {
+		cursor: pointer;
 		height: 100px;
-
 	}
 
 	section:first-child {
 		border-bottom: 1px solid lightgray;
 	}
 
+}
+
+mat-button-toggle-group {
+	margin-top: 12px;
+}
+
+.mat-button-toggle {
+	background-color: #fff;
+	color: var(--primary) !important;
+}
+
+.mat-button-toggle:hover {
+	background-color: var(--primary);
+	color: white !important;
+}
+
+.mat-button-toggle-checked {
+	background-color: var(--primary) !important;
+	color: white !important;
 }

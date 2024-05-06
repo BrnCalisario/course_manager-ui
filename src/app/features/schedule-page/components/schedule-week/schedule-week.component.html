@@ -15,7 +15,7 @@
 	</div>
 
 	@for(day of weekDays; track day; let i = $index) {
-	<div>
+	<div class="day-block">
 
 		<div class="day-label">
 			<p class="day-value">{{ formatDate(day.date) }}</p>
@@ -31,3 +31,12 @@
 	</div>
 	}
 </div>
+
+<mat-button-toggle-group name="click-option" (change)="onChange($event)">
+	<mat-button-toggle matTooltip="Edit" value="edit">
+		<mat-icon>edit</mat-icon>
+	</mat-button-toggle>
+	<mat-button-toggle matTooltip="Clear" value="clear">
+		<mat-icon>clear</mat-icon>
+	</mat-button-toggle>
+</mat-button-toggle-group>

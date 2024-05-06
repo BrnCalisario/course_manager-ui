@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
 import { SharedModule } from '@shared/shared.module';
 import { DateInfo } from '../schedule-page/schedule-page.component';
@@ -6,7 +7,7 @@ import { DateInfo } from '../schedule-page/schedule-page.component';
 @Component({
 	selector: 'app-schedule-week',
 	standalone: true,
-	imports: [SharedModule],
+	imports: [SharedModule, MatButtonToggleModule],
 	templateUrl: './schedule-week.component.html',
 	styleUrl: './schedule-week.component.scss'
 })
@@ -43,6 +44,10 @@ export class ScheduleWeekComponent implements OnInit {
 		}
 
 		return day;
+	}
+
+	public onChange(event: MatButtonToggleChange) {
+		console.log(event);
 	}
 
 	private generateWeek(): void {
