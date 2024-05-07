@@ -148,14 +148,15 @@ section {
 	padding: 1rem;
 
 	.lesson {
-		border: 1px solid black;
+		border: 1px solid;
+
 		background-color: var(--primary);
 
 		height: 100%;
 
-		p {
-			// margin-top: 1rem;
+		box-shadow: 2px 2px 0 gray;
 
+		p {
 			margin: 0;
 			padding: 0;
 
