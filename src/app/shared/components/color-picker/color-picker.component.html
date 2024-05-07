@@ -1,3 +1,4 @@
 <div class="color-box" [style.background]="color" (click)="(inputColor.click())">
-    <input #inputColor [(colorPicker)]="color" [cpPosition]="'top'" [style.background]="color" />
+    <input #inputColor [(colorPicker)]="color" [cpPosition]="'top'" [style.background]="color" [cpOKButton]="true"
+        (colorPickerClose)="this.colorChange.emit($event)" />
 </div>

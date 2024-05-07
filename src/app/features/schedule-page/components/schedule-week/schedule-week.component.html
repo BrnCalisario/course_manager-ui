@@ -24,8 +24,14 @@
 
 		<div class="day-period">
 			<section class="morning">
+				<div class="lesson" [style.background]="moduleColor">
+					<p>Module 1</p>
+				</div>
 			</section>
 			<section class="afternoon">
+				<div class="lesson" [style.background]="moduleColor2">
+					<p>Module 1</p>
+				</div>
 			</section>
 		</div>
 	</div>
@@ -43,13 +49,13 @@
 
 <div class="modules">
 	<div class="module">
-		<app-color-picker></app-color-picker>
+		<app-color-picker [(color)]="moduleColor"></app-color-picker>
 		<div class="module-name">
 			<span>Module 1</span>
 		</div>
 	</div>
 	<div class="module">
-		<app-color-picker></app-color-picker>
+		<app-color-picker [(color)]="moduleColor2"></app-color-picker>
 		<div class="module-name">
 			<span>Module 2</span>
 		</div>

@@ -17,6 +17,11 @@ export class ScheduleWeekComponent implements OnInit {
 	public date!: Date;
 	public weekDays: DateInfo[] = [];
 
+	public moduleColor: string = "#2fa296";
+
+	public moduleColor2: string = "#fb9e00";
+
+
 	public weekLabels: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
 
 	constructor(

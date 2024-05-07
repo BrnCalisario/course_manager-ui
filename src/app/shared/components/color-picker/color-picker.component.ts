@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ColorPickerModule } from 'ngx-color-picker';
 
 @Component({
@@ -11,5 +11,9 @@ import { ColorPickerModule } from 'ngx-color-picker';
 })
 export class ColorPickerComponent {
 
+  @Input({ required: true })
   public color: string = "#2fa296";
+
+  @Output()
+  public colorChange = new EventEmitter<string>();
 }
