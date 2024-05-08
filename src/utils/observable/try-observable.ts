@@ -1,6 +1,6 @@
 import { Observable, catchError, map, of } from "rxjs";
 
-export function tryObservable<T>(observable: Observable<T>, verifyFn?: (res: T) => boolean): Observable<boolean> {
+export function tryObservable<T>(observable: Observable<T>, verifyFn?: (res: T) => boolean, onError?: (error: any) => void): Observable<boolean> {
     return observable.pipe(
         map((res) => {
             if (!verifyFn) return true;
@@ -8,7 +8,9 @@ export function tryObservable<T>(observable: Observable<T>, verifyFn?: (res: T) 
             return verifyFn(res);
         }),
         catchError(err => {
-            console.log("Error", err);
+            if (onError) {
+                onError(err);
+            }
             return of(false);
         })
     )

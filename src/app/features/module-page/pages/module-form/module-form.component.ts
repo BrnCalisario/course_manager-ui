@@ -1,4 +1,4 @@
-import { map } from 'rxjs';
+import { map, take } from 'rxjs';
 import { removeODataProperties } from 'src/lib/odata/types/ODataResponse';
 
 import { Component, OnInit } from '@angular/core';
@@ -38,6 +38,8 @@ export default class ModuleFormComponent implements OnInit {
 
 	public entityId?: Module["Id"] = undefined;
 
+	public isLoading: boolean = false;
+
 	constructor(
 		private readonly service: ModuleService,
 		private readonly router: Router,
@@ -59,16 +61,23 @@ export default class ModuleFormComponent implements OnInit {
 		};
 
 		findCommand.response$.pipe(
-			map(res => removeODataProperties(res)))
+			map(res => removeODataProperties(res)),
+			take(1))
 			.subscribe({
 				next: (res: Partial<Module>) => {
 					this.moduleForm.setValue(res);
+					// this.isLoading = false;
 				},
 				error: _ => {
 					this.router.navigate(["/module", "form"]);
+				},
+				complete: () => {
+					console.log('complete');
+					this.isLoading = false;
 				}
 			})
 
+		this.isLoading = true;
 		findCommand.execute();
 	}
 
@@ -81,7 +90,14 @@ export default class ModuleFormComponent implements OnInit {
 	}
 
 	public onSubmit() {
-		this.service.save({ Id: this.entityId, ...this.moduleForm.value }, this.isEdit)
+
+		const body = this.moduleForm.value;
+
+		if (this.entityId) {
+			body.Id = this.entityId;
+		}
+
+		this.service.save(body, this.isEdit)
 			.subscribe({
 				next: () => this.router.navigate(['/module', 'list']),
 				error: () => alert('An error occurred while creating the module.'), // Todo - Use feedback service

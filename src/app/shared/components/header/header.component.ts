@@ -1,5 +1,5 @@
 import { Location } from "@angular/common";
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
 
 @Component({
 	selector: "app-header",
@@ -17,16 +17,21 @@ export class Header implements OnInit {
 	@Input()
 	public back: boolean = false;
 
-	@Input()
-	public backFn !: ($event: MouseEvent) => void;
+	@Output()
+	public onBack: EventEmitter<void> = new EventEmitter<void>();
 
 	constructor(private readonly _location: Location) { }
 
 	public ngOnInit(): void {
-		if (!this.backFn) this.backFn = this._backFn;
+
 	}
 
 	public _backFn() {
+
+		this.onBack.emit();
+
+		if (this.back) return;
+
 		this._location.back();
 	}
 }

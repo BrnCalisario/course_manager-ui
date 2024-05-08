@@ -6,16 +6,18 @@ import { LoginComponent } from '@features/login/login.component';
 import { ModulePageComponent } from '@features/module-page/module-page.component';
 import { moduleRoutes } from '@features/module-page/module-page.routes';
 import { RootComponent } from '@features/root/root.component';
-import { canActivateGuard } from '@shared/guards/auth.guard';
+import { SchedulePageComponent } from '@features/schedule-page/schedule-page.component';
+import { scheduleRoutes } from '@features/schedule-page/schedule-page.routes';
 
 export const routes: Routes = [
 	{
-		path: '', canActivate: [canActivateGuard], component: RootComponent,
+		path: '', component: RootComponent,
 		children: [
 			{ path: '', redirectTo: 'home', pathMatch: 'full' },
 			{ path: 'home', component: HomePageComponent },
 			{ path: 'course', component: CoursePageComponent, children: courseRoutes },
-			{ path: 'module', component: ModulePageComponent, children: moduleRoutes }
+			{ path: 'module', component: ModulePageComponent, children: moduleRoutes },
+			{ path: "schedule", component: SchedulePageComponent, children: scheduleRoutes }
 		]
 	},
 	{ path: 'login', component: LoginComponent },

@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Select a module for your course</h2>
+<div class="content">
+	<mat-form-field class="search">
+		<mat-label>Search for modules</mat-label>
+		<input matInput [formControl]="this.searchControl" />
+		<button type="button" matSuffix mat-icon-button aria-label="Search">
+			<mat-icon>search</mat-icon>
+		</button>
+	</mat-form-field>
+	<div class="grid">
+		<div class="column">
+			<h3>Your List</h3>
+
+			<div cdkDropList #selectedList="cdkDropList" [cdkDropListConnectedTo]="[optionsList]" class="example-list"
+				[cdkDropListData]="selected" (cdkDropListDropped)="drop($event)">
+				@for(item of selected; track $index) {
+				<app-module-item [item]="item"></app-module-item>
+				}
+				<div class="empty-list" *ngIf="selected.length == 0">No items</div>
+			</div>
+		</div>
+		<div class="column">
+			<h3>Options</h3>
+			<div cdkDropList #optionsList="cdkDropList" [cdkDropListConnectedTo]="[selectedList]"
+				cdkDropListSortingDisabled class="example-list" [cdkDropListData]="options"
+				(cdkDropListDropped)="drop($event)">
+				@for(item of options; track item) {
+				<app-module-item [item]="item"></app-module-item>
+				}
+				<div class="empty-list" *ngIf="options.length == 0">No items</div>
+			</div>
+		</div>
+	</div>
+	<mat-dialog-actions>
+		<button mat-button [mat-dialog-close]="false">Cancel</button>
+		<button mat-button color="primary" [mat-dialog-close]="true">Add</button>
+	</mat-dialog-actions>
+</div>

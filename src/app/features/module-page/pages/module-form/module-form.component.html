@@ -1,5 +1,9 @@
 <app-header [back]="true" title="{{ this.isEdit ? 'Edit' : 'Create'}} Module"></app-header>
 
+<mat-spinner class="spinner" *ngIf="this.isLoading">Loading...</mat-spinner>
+
+@if(!this.isLoading) {
+
 <div class="form-card">
 	<form #form class="form" [formGroup]="moduleForm">
 		<div class="form-grid">
@@ -45,3 +49,4 @@
 	</form>
 
 </div>
+}

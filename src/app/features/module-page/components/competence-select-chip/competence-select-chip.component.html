@@ -1,12 +1,13 @@
 <div class="actions">
 	<mat-form-field>
 		<mat-label>Search</mat-label>
-		<input matInput [formControl]="this.searchInput">
-		@if (this.searchInput.value) {
-		<button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+		<input matInput [formControl]="this.searchInput" [maxlength]="nameMaxLength">
+
+		<button *ngIf="this.searchInput.value" type="button" matSuffix mat-icon-button aria-label="Clear"
+			(click)="clearInput()">
 			<mat-icon>close</mat-icon>
 		</button>
-		}
+
 	</mat-form-field>
 	<button type="button" mat-fab color="primary" (click)="openCreateDialog()">
 		<mat-icon>add</mat-icon>

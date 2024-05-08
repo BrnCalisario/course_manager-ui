@@ -1,7 +1,10 @@
 import { Component } from "@angular/core";
+import { MatDialog } from "@angular/material/dialog";
 import Module from "@domain/module/module.model";
 import EditableHeader from "@features/course-page/components/editable-header/editable-header.component";
+import { ModuleListDialogComponent } from "@features/course-page/components/module-list-dialog/module-list-dialog.component";
 import { SharedModule } from "@shared/shared.module";
+import { BehaviorSubject, filter, map } from "rxjs";
 
 @Component({
 	selector: 'app-course-form',
@@ -12,10 +15,29 @@ import { SharedModule } from "@shared/shared.module";
 })
 export default class CourseFormComponent {
 
-	public modules: Module[] = [new Module(), new Module(), new Module()];
+	constructor(private readonly dialog: MatDialog) { }
+
+	public modules = new BehaviorSubject<Module[]>([]);
 
 	public formatModule(module: Module): string {
 		return `${module.Name} - Workload: ${module.Workload} h`;
 	}
 
+	public openModuleListDialog() {
+		const dialogRef = this.dialog.open(ModuleListDialogComponent, {
+			width: '1000px',
+			height: '800px'
+		});
+
+		dialogRef.componentInstance.selected = [...this.modules.value];
+
+		dialogRef.afterClosed().pipe(
+			filter((res: boolean) => res),
+			map(_ => dialogRef.componentInstance.selected)
+		)
+			.subscribe(selected => {
+				this.modules.next(selected);
+			})
+
+	}
 }

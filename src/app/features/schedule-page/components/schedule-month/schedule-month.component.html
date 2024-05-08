@@ -1,0 +1,34 @@
+<app-header class="header" [back]="true" (onBack)="returnToSchedule()"></app-header>
+
+<div class="month-schedule">
+
+	<div class="title-wrap">
+		<button mat-icon-button color="primary" (click)="previous()">
+			<mat-icon>
+				arrow_left
+			</mat-icon>
+		</button>
+
+		<h2 class="title">{{ this.dateService.formatDateYear(this.date) }}</h2>
+
+		<button mat-icon-button color="primary" (click)="next()">
+			<mat-icon>
+				arrow_right
+			</mat-icon>
+		</button>
+	</div>
+
+	<div class="day-grid">
+		@for(dayLabel of dayLabels; track dayLabel) {
+		<div class="day-label">
+			{{ dayLabel }}
+		</div>
+		}
+		@for(day of monthDays; track day; let i = $index) {
+		<div class="day" [ngClass]="getDayClass(day, i)" (click)="this.gotoWeek(day.date)">
+			{{ day.date.getDate() }}
+		</div>
+		}
+	</div>
+
+</div>

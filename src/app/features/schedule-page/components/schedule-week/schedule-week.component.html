@@ -1,0 +1,63 @@
+<div class="week-label">
+	<div class="side-label">
+
+		<div class="day-label">
+		</div>
+
+		<div class="day-period">
+			<section class="morning">
+				<p>Morning</p>
+			</section>
+			<section class="afternoon">
+				<p>Afternoon</p>
+			</section>
+		</div>
+	</div>
+
+	@for(day of weekDays; track day; let i = $index) {
+	<div class="day-block">
+
+		<div class="day-label">
+			<p class="day-value">{{ this.dateService.formatDay(day.date) }}</p>
+			<p>{{ this.weekLabels[i] }}</p>
+		</div>
+
+		<div class="day-period">
+			<section class="morning">
+				<div class="lesson" [style.background]="moduleColor">
+					<p>Module 1</p>
+				</div>
+			</section>
+			<section class="afternoon">
+				<div class="lesson" [style.background]="moduleColor2">
+					<p>Module 1</p>
+				</div>
+			</section>
+		</div>
+	</div>
+	}
+</div>
+
+<mat-button-toggle-group name="click-option" (change)="onChange($event)">
+	<mat-button-toggle matTooltip="Edit" value="edit">
+		<mat-icon>edit</mat-icon>
+	</mat-button-toggle>
+	<mat-button-toggle matTooltip="Clear" value="clear">
+		<mat-icon>clear</mat-icon>
+	</mat-button-toggle>
+</mat-button-toggle-group>
+
+<div class="modules">
+	<div class="module">
+		<app-color-picker [(color)]="moduleColor"></app-color-picker>
+		<div class="module-name">
+			<span>Module 1</span>
+		</div>
+	</div>
+	<div class="module">
+		<app-color-picker [(color)]="moduleColor2"></app-color-picker>
+		<div class="module-name">
+			<span>Module 2</span>
+		</div>
+	</div>
+</div>

@@ -4,8 +4,8 @@ import { Injectable } from '@angular/core';
 import { BaseEndpoint } from '../base/base.endpoint';
 import Course from './course.model';
 
-@Injectable()
-export class CourseEndpoint extends BaseEndpoint<string, Course> {
+@Injectable({ providedIn: 'root' })
+export class CourseEndpoint extends BaseEndpoint<number, Course> {
 	override get route(): string {
 		return "/odata/Course";
 	}

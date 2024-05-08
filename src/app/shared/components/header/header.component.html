@@ -3,9 +3,9 @@
 
     <div class="title-wrap">
         @if (back) {
-            <button mat-mini-fab color="primary" (click)="backFn($event)">
-                <mat-icon>keyboard_arrow_left</mat-icon>
-            </button>
+        <button mat-mini-fab color="primary" (click)="_backFn()">
+            <mat-icon>keyboard_arrow_left</mat-icon>
+        </button>
         }
         <div class="content">
             <h2>{{ title }}</h2>

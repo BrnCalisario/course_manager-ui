@@ -69,7 +69,7 @@ export default class CompetenceSelectChipComponent implements OnInit {
 				this.queryCommand.params = {
 					$filter: {
 						contains: {
-							Name: text ?? '',
+							Name: text!,
 						},
 					},
 				};
