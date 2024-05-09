@@ -47,17 +47,8 @@
 	</mat-button-toggle>
 </mat-button-toggle-group>
 
-<div class="modules">
-	<div class="module">
-		<app-color-picker [(color)]="moduleColor"></app-color-picker>
-		<div class="module-name">
-			<span>Module 1</span>
-		</div>
-	</div>
-	<div class="module">
-		<app-color-picker [(color)]="moduleColor2"></app-color-picker>
-		<div class="module-name">
-			<span>Module 2</span>
-		</div>
-	</div>
-</div>
+<app-module-select>
+	<app-module-option name="Module 1" />
+	<app-module-option name="brn" />
+	<app-module-option />
+</app-module-select>

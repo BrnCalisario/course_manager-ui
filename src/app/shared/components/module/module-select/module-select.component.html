@@ -1,0 +1,20 @@
+<!-- <ul class="nav nav-tabs" id="myTab" role="tablist">
+	<li *ngFor="let opt of options; let i = index" class="nav-item">
+		<a class="nav-link" id="{{i}}-tab" data-toggle="tab" href="#{{i}}" role="tab" [attr.aria-controls]="'aria-' + i"
+			[attr.aria-selected]="i === 0 ? true : false">{{ opt.style }}</a>
+	</li>
+</ul>
+
+<div class="tab-content" id="myTabContent">
+	<div *ngFor="let opt of options; let i = index" class="tab-pane" id="{{i}}" role="tabpanel"
+		attr.aria-labelledby="{{i}}-tab">
+		<ng-container *ngTemplateOutlet="opt.template"></ng-container>
+	</div>
+</div>` -->
+
+
+<div class="options">
+	<div *ngFor="let opt of options; let i = index" class="option">
+		<ng-container *ngTemplateOutlet="opt.template"></ng-container>
+	</div>
+</div>
