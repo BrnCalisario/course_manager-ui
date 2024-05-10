@@ -23,13 +23,13 @@
 		</div>
 
 		<div class="day-period">
-			<section class="morning">
-				<div class="lesson" [style.background]="moduleColor">
+			<section class="morning" (click)="editPeriod(day)">
+				<div class="lesson">
 					<p>Module 1</p>
 				</div>
 			</section>
-			<section class="afternoon">
-				<div class="lesson" [style.background]="moduleColor2">
+			<section class="afternoon" (click)="editPeriod(day)">
+				<div class="lesson">
 					<p>Module 1</p>
 				</div>
 			</section>
@@ -39,7 +39,7 @@
 </div>
 
 <mat-button-toggle-group name="click-option" (change)="onChange($event)">
-	<mat-button-toggle matTooltip="Edit" value="edit">
+	<mat-button-toggle matTooltip="Edit" value="add">
 		<mat-icon>edit</mat-icon>
 	</mat-button-toggle>
 	<mat-button-toggle matTooltip="Clear" value="clear">
@@ -47,7 +47,7 @@
 	</mat-button-toggle>
 </mat-button-toggle-group>
 
-<app-module-select>
+<app-module-select (onSelect)="this.selectedModule = $event">
 	<app-module-option name="Module 1" />
 	<app-module-option name="Module 2" />
 </app-module-select>

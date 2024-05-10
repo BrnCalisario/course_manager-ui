@@ -16,13 +16,16 @@ export class ScheduleWeekComponent implements OnInit {
 
 	public date!: Date;
 	public weekDays: DateInfo[] = [];
-
-	public moduleColor: string = "#2fa296";
-
-	public moduleColor2: string = "#fb9e00";
-
-
 	public weekLabels: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+
+	public modules: { name: string, color: string }[] = [
+		{ name: "Module 1", color: "#25b4da" },
+		{ name: "Module 2", color: "#f5a623" },
+	]
+
+	public cursorType: "add" | "clear" | null = null;
+
+	public selectedModule: { name: string, color: string } | null = null;
 
 	constructor(
 		private readonly router: Router,
@@ -43,9 +46,19 @@ export class ScheduleWeekComponent implements OnInit {
 	}
 
 	public onChange(event: MatButtonToggleChange) {
-		console.log(event);
+		this.cursorType = event.value;
 	}
 
+	public editPeriod(date: DateInfo) {
 
+		if (this.cursorType == "clear") {
+			date.module = null;
+		}
+
+		if (this.cursorType == "add") {
+			date.module = this.selectedModule;
+		}
+
+	}
 
 }
