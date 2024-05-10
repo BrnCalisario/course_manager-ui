@@ -14,11 +14,17 @@ export class ModuleSelectComponent implements AfterContentInit {
 	options!: ModuleOption[];
 
 	ngAfterContentInit(): void {
-
-		this.moduleOptions.forEach(opt => {
-			console.log(opt.template);
-		});
-		
 		this.options = this.moduleOptions.toArray();
+	}
+
+	public onSelect(option: ModuleOption): void {
+
+		const { selected } = option;
+
+		this.options.forEach(opt => {
+			opt.selected = false;
+		});
+
+		option.selected = !selected;
 	}
 }

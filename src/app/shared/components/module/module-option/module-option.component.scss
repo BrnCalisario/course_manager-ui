@@ -6,10 +6,13 @@
 	gap: 1rem;
 
 	padding: 0.5rem;
-
-	border: 1px solid lightgray;
+	cursor: pointer;
 
 	&.active {
-		border: 2px dashed crimson;
+		border: 2px dashed var(--primary);
+	}
+
+	&.inactive {
+		border: 2px dashed lightgray;
 	}
 }

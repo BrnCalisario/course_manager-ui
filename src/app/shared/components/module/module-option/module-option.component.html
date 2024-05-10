@@ -1,5 +1,5 @@
 <ng-template>
-	<div class="module">
+	<div class="module" [ngClass]="this.style">
 		<app-color-picker [(color)]="color"></app-color-picker>
 		<div class="module-name">
 			<span>{{ this.name }}</span>
