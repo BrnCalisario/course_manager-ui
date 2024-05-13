@@ -49,16 +49,22 @@ export class ScheduleWeekComponent implements OnInit {
 		this.cursorType = event.value;
 	}
 
-	public editPeriod(date: DateInfo) {
+	public editPeriod(date: DateInfo, isMorning: boolean) {
+
+		console.log('cursor', this.cursorType);
+		console.log('selected', this.selectedModule);
 
 		if (this.cursorType == "clear") {
-			date.module = null;
+			if (isMorning) date.moduleA = null;
+			else date.moduleB = null;
 		}
 
 		if (this.cursorType == "add") {
-			date.module = this.selectedModule;
+			if (isMorning) date.moduleA = this.selectedModule;
+			else date.moduleB = this.selectedModule;
 		}
 
+		console.log(date);
 	}
 
 }

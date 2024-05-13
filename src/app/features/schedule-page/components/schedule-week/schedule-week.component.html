@@ -23,14 +23,14 @@
 		</div>
 
 		<div class="day-period">
-			<section class="morning" (click)="editPeriod(day)">
-				<div class="lesson">
-					<p>Module 1</p>
+			<section class="morning" (click)="editPeriod(day, true)">
+				<div *ngIf="day.moduleA; let module" [style.background]="module.color" class="lesson">
+					<p>{{ module.name }}</p>
 				</div>
 			</section>
-			<section class="afternoon" (click)="editPeriod(day)">
-				<div class="lesson">
-					<p>Module 1</p>
+			<section class="afternoon" (click)="editPeriod(day, false)">
+				<div *ngIf="day.moduleB; let module" [style.background]="module.color" class="lesson">
+					<p>{{ module.name }}</p>
 				</div>
 			</section>
 		</div>

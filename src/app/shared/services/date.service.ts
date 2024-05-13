@@ -6,7 +6,8 @@ export type DateInfo = {
 	date: Date;
 	type: DayType;
 	visible: boolean;
-	module?: { name: string, color: string } | null;
+	moduleA?: { name: string, color: string } | null;
+	moduleB?: { name: string, color: string } | null;
 };
 
 @Injectable({
