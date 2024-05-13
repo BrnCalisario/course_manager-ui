@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ColorPickerComponent } from '@shared/components/color-picker/color-picker.component';
+import { ModuleItem } from '@shared/components/module/module-select/module-select.component';
 import { DateInfo, DateService } from '@shared/services/date.service';
 import { SharedModule } from '@shared/shared.module';
 
@@ -25,7 +26,7 @@ export class ScheduleWeekComponent implements OnInit {
 
 	public cursorType: "add" | "clear" | null = null;
 
-	public selectedModule: { name: string, color: string } | null = null;
+	public selectedModule: ModuleItem | null = null;
 
 	constructor(
 		private readonly router: Router,
@@ -51,9 +52,6 @@ export class ScheduleWeekComponent implements OnInit {
 
 	public editPeriod(date: DateInfo, isMorning: boolean) {
 
-		console.log('cursor', this.cursorType);
-		console.log('selected', this.selectedModule);
-
 		if (this.cursorType == "clear") {
 			if (isMorning) date.moduleA = null;
 			else date.moduleB = null;
@@ -63,8 +61,6 @@ export class ScheduleWeekComponent implements OnInit {
 			if (isMorning) date.moduleA = this.selectedModule;
 			else date.moduleB = this.selectedModule;
 		}
-
-		console.log(date);
 	}
 
 }

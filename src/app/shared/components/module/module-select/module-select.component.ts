@@ -1,5 +1,11 @@
-import { AfterContentInit, Component, ContentChildren, EventEmitter, Output, QueryList } from '@angular/core';
+import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
 import { ModuleOption } from '../module-option/module-option.component';
+
+export type ModuleItem = {
+	name: string,
+	color: string
+};
+
 
 @Component({
 	selector: 'app-module-select',
@@ -13,10 +19,14 @@ export class ModuleSelectComponent implements AfterContentInit {
 
 	options!: ModuleOption[];
 
-	selected: ModuleOption | null = null;
+	@Input()
+	selected: ModuleItem | null = null;
 
 	@Output()
-	public onSelect: EventEmitter<ModuleOption> = new EventEmitter<ModuleOption>();
+	selectedChange: EventEmitter<ModuleItem | null> = new EventEmitter();
+
+	// @Output()
+	// public onSelect: EventEmitter<ModuleOption> = new EventEmitter<ModuleOption>();
 
 	ngAfterContentInit(): void {
 		this.options = this.moduleOptions.toArray();
@@ -32,8 +42,8 @@ export class ModuleSelectComponent implements AfterContentInit {
 
 		option.selected = !selected;
 
-		this.selected = option.selected ? option : null;
+		this.selected = { name: option.name, color: option.color } ? option : null;
 
-		if (selected) this.onSelect.emit(option);
+		this.selectedChange.emit(this.selected);
 	}
 }

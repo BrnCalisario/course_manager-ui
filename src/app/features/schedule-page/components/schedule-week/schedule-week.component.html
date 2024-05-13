@@ -47,7 +47,7 @@
 	</mat-button-toggle>
 </mat-button-toggle-group>
 
-<app-module-select (onSelect)="this.selectedModule = $event">
+<app-module-select [(selected)]="selectedModule">
 	<app-module-option name="Module 1" />
 	<app-module-option name="Module 2" />
 </app-module-select>
