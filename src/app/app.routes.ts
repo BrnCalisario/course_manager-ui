@@ -8,11 +8,10 @@ import { moduleRoutes } from '@features/module-page/module-page.routes';
 import { RootComponent } from '@features/root/root.component';
 import { SchedulePageComponent } from '@features/schedule-page/schedule-page.component';
 import { scheduleRoutes } from '@features/schedule-page/schedule-page.routes';
-import { canActivateGuard } from '@shared/guards/auth.guard';
 
 export const routes: Routes = [
 	{
-		path: '', canActivate: [canActivateGuard], component: RootComponent,
+		path: '', component: RootComponent,
 		children: [
 			{ path: '', redirectTo: 'home', pathMatch: 'full' },
 			{ path: 'home', component: HomePageComponent },
