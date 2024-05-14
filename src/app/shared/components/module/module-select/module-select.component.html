@@ -1,0 +1,5 @@
+<div class="options">
+	<div *ngFor="let opt of options; let i = index" class="option" (click)="_onSelect(opt)">
+		<ng-container *ngTemplateOutlet="opt.template"></ng-container>
+	</div>
+</div>

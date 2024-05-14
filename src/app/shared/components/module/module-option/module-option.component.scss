@@ -1,0 +1,18 @@
+.module {
+
+	display: flex;
+	place-items: center;
+
+	gap: 1rem;
+
+	padding: 0.5rem;
+	cursor: pointer;
+
+	&.active {
+		border: 2px dashed var(--primary);
+	}
+
+	&.inactive {
+		border: 2px dashed lightgray;
+	}
+}
