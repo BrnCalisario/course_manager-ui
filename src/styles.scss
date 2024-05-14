@@ -146,3 +146,14 @@ p {
 	margin-left: -5% !important;
 	margin-top: -5% !important;
 }
+
+.buttons {
+
+	mat-icon {
+		color: gray;
+	}
+
+	mat-icon-button:hover {
+		color: var(--primary) !important;
+	}
+}

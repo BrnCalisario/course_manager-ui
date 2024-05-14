@@ -1,3 +1,14 @@
+.week-control {
+
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+
+	.buttons {
+		color: gray;
+	}
+}
+
 .week-label {
 	display: grid;
 	grid-template-columns: 0.4fr repeat(5, 1fr);

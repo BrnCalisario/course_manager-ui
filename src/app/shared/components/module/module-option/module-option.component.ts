@@ -14,7 +14,7 @@ export class ModuleOption {
 	public name: string = "";
 
 	@Input()
-	public color: string = "#25b4da";
+	public color: string = "#52B2A8";
 
 	public colorChange: EventEmitter<string> = new EventEmitter<string>();
 

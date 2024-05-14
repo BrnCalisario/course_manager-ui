@@ -112,4 +112,22 @@ export class DateService {
 
 		return day < 10 ? `0${day}` : day;
 	}
+
+	public formatWeekString(date: Date) {
+
+		date ??= new Date();
+
+		date.setDate(date.getDate() - date.getDay() + 1);
+
+		const monday = this.formatDay(date);
+
+		date.setDate(date.getDate() + 4);
+
+		const friday = this.formatDay(date);
+
+		const monthString = date.toString().split(' ')[1];
+
+		return `${monthString}, ${monday} - ${friday}, ${date.getFullYear()}`
+
+	}
 }
