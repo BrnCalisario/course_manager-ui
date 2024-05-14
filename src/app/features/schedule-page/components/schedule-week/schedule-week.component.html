@@ -25,12 +25,12 @@
 		<div class="day-period">
 			<section class="morning" (click)="editPeriod(day, true)">
 				<div *ngIf="day.moduleA; let module" [style.background]="module.color" class="lesson">
-					<p>{{ module.name }}</p>
+					<p [style.color]="this.formatTextColor(day.moduleA.color)">{{ module.name }}</p>
 				</div>
 			</section>
 			<section class="afternoon" (click)="editPeriod(day, false)">
 				<div *ngIf="day.moduleB; let module" [style.background]="module.color" class="lesson">
-					<p>{{ module.name }}</p>
+					<p [style.color]="this.formatTextColor(day.moduleB.color)">{{ module.name }}</p>
 				</div>
 			</section>
 		</div>
@@ -47,7 +47,10 @@
 	</mat-button-toggle>
 </mat-button-toggle-group>
 
-<app-module-select [(selected)]="selectedModule">
-	<app-module-option name="Module 1" />
-	<app-module-option name="Module 2" />
-</app-module-select>
+<div>
+	<h3>Modules</h3>
+	<app-module-select [(selected)]="selectedModule">
+		<app-module-option name="Module 1" />
+		<app-module-option name="Module 2" />
+	</app-module-select>
+</div>
