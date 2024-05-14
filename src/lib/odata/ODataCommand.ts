@@ -1,4 +1,4 @@
-import { BehaviorSubject, Observable, Subject, finalize, switchMap, take } from 'rxjs';
+import { BehaviorSubject, finalize, Observable, Subject, switchMap } from 'rxjs';
 
 import ICommand from './types/ICommand';
 import ODataParams, { ODataFilter } from './types/ODataParams';
@@ -103,7 +103,6 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 		this._isExecuting$.next(true);
 		this._request$.pipe(
 			switchMap(() => this.requestConstructor(this)),
-			take(1),
 			finalize(() => this._isExecuting$.next(false))
 		).subscribe(res => {
 			this._response$.next(res);
@@ -134,7 +133,7 @@ class ODataQueryCommand<TEntity, TResponse extends ODataResponse<TEntity> = ODat
 			for (const column of Object.keys(comparerEntity)) {
 				const value = comparerEntity[column as keyof typeof comparerEntity];
 
-				if (expression === 'contains' || expression === 'startsWith' || expression === 'endsWith') {
+				if (expression === 'contains') {
 					filterParts.push(`${expression}(${column}, '${value}')`);
 					continue;
 				}

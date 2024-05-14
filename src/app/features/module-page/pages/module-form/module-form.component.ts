@@ -20,11 +20,10 @@ import { SharedModule } from '@shared/shared.module';
 	styleUrl: './module-form.component.scss',
 })
 export default class ModuleFormComponent implements OnInit {
-
 	public moduleForm: FormGroup = new FormGroup({
 		Name: new FormControl<string>('', [Validators.required, Validators.maxLength(100)]),
-		Description: new FormControl<string>('', Validators.maxLength(500)),
-		Objective: new FormControl<string>('', Validators.maxLength(500)),
+		Description: new FormControl<string>('', [Validators.required, Validators.maxLength(500)]),
+		Objective: new FormControl<string>('', [Validators.required, Validators.maxLength(500)]),
 		Workload: new FormControl<number | null>(null, [
 			Validators.required,
 			Validators.min(1),
@@ -36,9 +35,9 @@ export default class ModuleFormComponent implements OnInit {
 
 	public isEdit: boolean = false;
 
-	public entityId?: Module["Id"] = undefined;
-
 	public isLoading: boolean = false;
+
+	public formModuleId?: number;
 
 	constructor(
 		private readonly service: ModuleService,
@@ -47,32 +46,30 @@ export default class ModuleFormComponent implements OnInit {
 	) { }
 
 	public ngOnInit(): void {
-		const id: string | undefined = this.route.snapshot.params['id'];
+		this.formModuleId = Number(this.route.snapshot.params['id']);
 
-		if (!id) return;
+		if (!this.formModuleId) return;
 
-		this.entityId = Number(id);
 		this.isEdit = true;
 
-		const findCommand = this.service.findCommand(() => Number(id));
+		const findCommand = this.service.findCommand(() => this.formModuleId!);
 
 		findCommand.params = {
-			$expand: "Competences",
+			$expand: "Competences, Dependencies"
 		};
 
-		findCommand.response$.pipe(
-			map(res => removeODataProperties(res)),
-			take(1))
+		findCommand.response$
+			.pipe(
+				map(res => removeODataProperties(res)),
+				take(1))
 			.subscribe({
-				next: (res: Partial<Module>) => {
+				next: (res: any) => {
 					this.moduleForm.setValue(res);
-					// this.isLoading = false;
 				},
 				error: _ => {
 					this.router.navigate(["/module", "form"]);
 				},
 				complete: () => {
-					console.log('complete');
 					this.isLoading = false;
 				}
 			})
@@ -93,8 +90,8 @@ export default class ModuleFormComponent implements OnInit {
 
 		const body = this.moduleForm.value;
 
-		if (this.entityId) {
-			body.Id = this.entityId;
+		if (this.formModuleId) {
+			body.Id = this.formModuleId;
 		}
 
 		this.service.save(body, this.isEdit)

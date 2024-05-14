@@ -55,8 +55,7 @@ export default class CompetenceSelectChipComponent implements OnInit {
 			$top: 20,
 		};
 
-		this.queryCommand.response$.pipe(
-			take(1))
+		this.queryCommand.response$
 			.subscribe((res) => {
 				this.competenceOptions = res.value;
 			});
