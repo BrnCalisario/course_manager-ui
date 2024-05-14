@@ -1,9 +1,9 @@
+import { Observable } from 'rxjs';
 import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 import { ODataListResponse, ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
 import { Injectable } from '@angular/core';
 
-import { Observable } from 'rxjs';
 import { BaseEndpoint } from './base.endpoint';
 import BaseEntity from './base.entity';
 
@@ -31,15 +31,11 @@ abstract class BaseService<TKey, TEntity extends BaseEntity<TKey>> {
 	}
 
 	public listCommand(): ODataQueryCommand<TEntity, ODataListResponse<TEntity>> {
-		if (!this._queryCommand) {
-			const command = new ODataQueryCommand<TEntity, ODataListResponse<TEntity>>((command) =>
-				this.endpoint.getAll(command.build())
-			);
+		const command = new ODataQueryCommand<TEntity, ODataListResponse<TEntity>>((command) =>
+			this.endpoint.getAll(command.build())
+		);
 
-			this._queryCommand = command;
-		}
-
-		return this._queryCommand;
+		return command;
 	}
 
 	public postCommand(builder: () => TEntity): ODataQueryCommand<TEntity, ODataSingleResponse<TEntity>> {

@@ -90,9 +90,9 @@ export default class ModuleFormComponent implements OnInit {
 
 		const body = this.moduleForm.value;
 
-		// // if (this.entityId) {
-		// // 	body.Id = this.entityId;
-		// // }
+		if (this.formModuleId) {
+			body.Id = this.formModuleId;
+		}
 
 		this.service.save(body, this.isEdit)
 			.subscribe({
