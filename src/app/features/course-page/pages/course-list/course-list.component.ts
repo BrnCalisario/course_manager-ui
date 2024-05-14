@@ -1,11 +1,14 @@
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import ODataQueryCommand from 'src/lib/odata/ODataCommand';
+
 import { Component, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import Course from '@domain/course/course.model';
-import { CourseCardComponent } from '@features/course-page/components/course-card/course-card.component';
+import {
+    CourseCardComponent
+} from '@features/course-page/components/course-card/course-card.component';
 import CourseService from '@shared/services/course.service';
 import { SharedModule } from '@shared/shared.module';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
-import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 
 @Component({
 	selector: 'app-course-list',
@@ -16,12 +19,12 @@ import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 })
 export class CourseListComponent implements OnInit {
 
-	searchControl: FormControl<string | null> = new FormControl<string>('');
+	public searchControl: FormControl<string | null> = new FormControl('');
 
-	queryCommand: ODataQueryCommand<Course>;
+	public queryCommand: ODataQueryCommand<Course>;
 
-	destroy$: Subject<void> = new Subject();
-	courses: Course[] = [];
+	private destroy$: Subject<void> = new Subject();
+	public courses: Course[] = [];
 
 	constructor(entityService: CourseService) {
 		this.queryCommand = entityService.listCommand();

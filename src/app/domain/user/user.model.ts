@@ -5,6 +5,7 @@ export default class User implements BaseEntity<string> {
 	UserName: string = '';
 	Password: string = '';
 	Email: string = '';
+	Deleted: boolean = false;
 }
 
 export class RegisterDto {

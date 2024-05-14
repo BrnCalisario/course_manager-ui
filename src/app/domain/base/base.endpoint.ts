@@ -28,7 +28,7 @@ export abstract class BaseEndpoint<TKey, TEntity extends BaseEntity<TKey>> {
 		return this.http.get<ODataListResponse<TEntity>>(`${this.baseURL}?${query}`);
 	}
 
-	public create(entity: Omit<TEntity, 'Id'>): Observable<ODataSingleResponse<TEntity>> {
+	public create(entity: Omit<TEntity, 'Id' | 'Deleted'>): Observable<ODataSingleResponse<TEntity>> {
 		return this.http.post<ODataSingleResponse<TEntity>>(this.baseURL, entity);
 	}
 

@@ -40,12 +40,7 @@ export type ODataFilter<T> = {
 	ge?: Partial<Record<keyof T, string>>;
 	lt?: Partial<Record<keyof T, string>>;
 	le?: Partial<Record<keyof T, string>>;
-	startsWith?: Partial<Record<keyof T, string>>;
-	endsWith?: Partial<Record<keyof T, string>>;
 	contains?: Partial<Record<keyof T, string>>;
-	and?: ODataFilter<T>[];
-	or?: ODataFilter<T>[];
-	not?: ODataFilter<T>[];
 };
 
 export default ODataParams;

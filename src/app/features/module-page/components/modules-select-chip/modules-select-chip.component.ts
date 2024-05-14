@@ -23,6 +23,9 @@ import { SharedModule } from '@shared/shared.module';
 	styleUrl: './modules-select-chip.component.scss',
 })
 export default class ModulesSelectChipComponent implements OnInit {
+	@Input()
+	public formModuleId?: number;
+
 	@Input({ required: true })
 	public modules!: Module[];
 
@@ -51,10 +54,14 @@ export default class ModulesSelectChipComponent implements OnInit {
 		this.queryCommand.params = {
 			$orderby: 'Name',
 			$top: 20,
+			$filter: this.formModuleId ? {
+				ne: {
+					Id: `${this.formModuleId}`
+				}
+			} : {}
 		};
 
-		this.queryCommand.response$.pipe(
-			take(1))
+		this.queryCommand.response$
 			.subscribe((res) => {
 				this.modulesOptions = res.value;
 			});
@@ -69,6 +76,9 @@ export default class ModulesSelectChipComponent implements OnInit {
 						contains: {
 							Name: text ?? '',
 						},
+						ne: this.formModuleId ? {
+							Id: `${this.formModuleId}`
+						} : {}
 					},
 				};
 
