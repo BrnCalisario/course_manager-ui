@@ -130,4 +130,24 @@ export class DateService {
 		return `${monthString}, ${monday} - ${friday}, ${date.getFullYear()}`
 
 	}
+
+	public static getDaysInActualMonth(date: Date) {
+
+		const month = date.getMonth();
+		const year = date.getFullYear();
+
+		return this.getDaysInMonth(year, month);
+	}
+
+
+	public static getDaysInMonth(year: number, month: number) {
+
+		if (month < 0 || month > 11) throw Error("Invalid month");
+
+		return [31, (this.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+	}
+
+	public static isLeapYear(year: number) {
+		return ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)
+	}
 }

@@ -1,4 +1,4 @@
-import { AfterContentInit, Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
+import { AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren, EventEmitter, Input, Output, QueryList } from '@angular/core';
 import { ModuleOption } from '../module-option/module-option.component';
 
 export type ModuleItem = {
@@ -6,13 +6,13 @@ export type ModuleItem = {
 	color: string
 };
 
-
 @Component({
+	changeDetection: ChangeDetectionStrategy.OnPush,
 	selector: 'app-module-select',
 	templateUrl: './module-select.component.html',
 	styleUrl: './module-select.component.scss'
 })
-export class ModuleSelectComponent implements AfterContentInit {
+export class ModuleSelectComponent implements AfterContentChecked {
 
 	@ContentChildren(ModuleOption)
 	moduleOptions!: QueryList<ModuleOption>;
@@ -25,11 +25,12 @@ export class ModuleSelectComponent implements AfterContentInit {
 	@Output()
 	selectedChange: EventEmitter<ModuleItem | null> = new EventEmitter();
 
-	// @Output()
-	// public onSelect: EventEmitter<ModuleOption> = new EventEmitter<ModuleOption>();
+	constructor(private cdref: ChangeDetectorRef) { }
 
-	ngAfterContentInit(): void {
+	ngAfterContentChecked(): void {
 		this.options = this.moduleOptions.toArray();
+
+		this.cdref.detectChanges();
 	}
 
 	public _onSelect(option: ModuleOption): void {
