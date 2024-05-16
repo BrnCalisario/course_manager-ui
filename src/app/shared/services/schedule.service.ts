@@ -15,11 +15,13 @@ export default class ScheduleService {
 
     private _scheduleDays: DayInfo[] = [];
 
-    constructor() { }
+    constructor(private readonly dateService: DateService) {
+        this.scheduleDays = dateService.mockYearLessons(new Date().getFullYear());
+    }
 
     /** 
-     * @param month Month Number between 0 and 11
-     * @param year  Year Number
+     * @param month - number between 0 and 11
+     * @param year  - year number
      */
     public getMonth(month: number, year: number): DayInfo[] {
         const result: DayInfo[] = []
