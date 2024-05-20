@@ -1,5 +1,6 @@
 import BaseEntity from "@domain/base/base.entity";
 import Module from "@domain/module/module.model";
+import { DateService } from "@shared/services/date.service";
 
 export class Lesson implements BaseEntity<number> {
     Id: number = 0;
@@ -19,8 +20,8 @@ export class DayInfo {
 
     type: DayType = 'weekday';
 
-    morning: Lesson | undefined;
-    afternoon: Lesson | undefined;
+    morning: Lesson | undefined = undefined;
+    afternoon: Lesson | undefined = undefined;
 
     constructor(date?: Date | void) {
         if (date) this.setDate(date);
@@ -35,12 +36,16 @@ export class DayInfo {
         this.month = date.getMonth();
         this.year = date.getFullYear();
 
-        this.type = date.getDay() === 0 || date.getDay() === 6 ? 'weekday' : 'weekend';
+        this.type = DateService.isWeekend(date) ? "weekend" : "weekday";
     }
 
     public equals(date: Date): boolean {
         return this.day === date.getDate() &&
             this.month === date.getMonth() &&
             this.year === date.getFullYear();
+    }
+
+    public getDate(): Date {
+        return new Date(this.year, this.month, this.day);
     }
 }

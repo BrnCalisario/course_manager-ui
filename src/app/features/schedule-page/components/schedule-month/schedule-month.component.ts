@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { DayInfo } from '@domain/lesson/lesson.model';
 import { DateInfo, DateService } from '@shared/services/date.service';
+import ScheduleService from '@shared/services/schedule.service';
 import { SharedModule } from '@shared/shared.module';
 
 @Component({
@@ -16,12 +18,16 @@ export class ScheduleMonthComponent implements OnInit {
 
 	public monthDays: Array<DateInfo> = [];
 
+	public month: DayInfo[] = [];
+
 	public dayLabels = ["D", "S", "T", "Q", "Q", "S", "S"];
 
 	constructor(
 		private readonly router: Router,
 		private readonly route: ActivatedRoute,
-		public readonly dateService: DateService) {
+		private readonly scheduleService: ScheduleService,
+		public readonly dateService: DateService,
+	) {
 	}
 
 	public ngOnInit(): void {
@@ -34,7 +40,7 @@ export class ScheduleMonthComponent implements OnInit {
 
 		this.date = new Date(month);
 
-		this.monthDays = this.dateService.generateMonth(this.date);
+		this.month = this.scheduleService.getMonthByDate(this.date, true);
 	}
 
 	public previous() {
@@ -42,7 +48,7 @@ export class ScheduleMonthComponent implements OnInit {
 
 		this.router.navigate(['schedule', "month", this.date.toDateString()]);
 
-		this.monthDays = this.dateService.generateMonth(this.date);
+		this.month = this.scheduleService.getMonthByDate(this.date, true);
 	}
 
 	public next() {
@@ -50,7 +56,7 @@ export class ScheduleMonthComponent implements OnInit {
 
 		this.router.navigate(['schedule', "month", this.date.toDateString()]);
 
-		this.monthDays = this.dateService.generateMonth(this.date);
+		this.month = this.scheduleService.getMonthByDate(this.date, true);
 	}
 
 	public gotoWeek(date: Date): void {
@@ -61,11 +67,11 @@ export class ScheduleMonthComponent implements OnInit {
 		this.router.navigate(["schedule", "year"])
 	}
 
-	public getDayClass(dateInfo: DateInfo, index: number): string {
+	public getDayClass(dayInfo: DayInfo, index: number): string {
 
 		const classes = [];
 
-		classes.push(dateInfo.visible ? dateInfo.type : "disabled");
+		classes.push(dayInfo.month == this.date.getMonth() ? dayInfo.type : "disabled");
 
 		if (index % 7 == 3) {
 			classes.push('middle');
