@@ -1,4 +1,6 @@
 import { Injectable } from "@angular/core";
+import { DayInfo, Lesson } from "@domain/lesson/lesson.model";
+import Module from "@domain/module/module.model";
 
 export type DayType = 'weekday' | 'weekend' | 'holiday' | 'selected';
 
@@ -97,6 +99,40 @@ export class DateService {
 		return year;
 	}
 
+	public mockYearLessons(year: number): DayInfo[] {
+
+		const init = new Date(year, 0, 1);
+
+		const result: DayInfo[] = [];
+
+		const total = DateService.isLeapYear(init.getFullYear()) ? 366 : 365;
+
+		var morningModule = new Module();
+		morningModule.Name = "Module 1";
+
+		var afternoonModule = new Module();
+		afternoonModule.Name = "Module 2";
+		morningModule.Color = "#FFaa33";
+
+		var morningLesson = new Lesson();
+		morningLesson.Module = morningModule;
+
+		var afternoonLesson = new Lesson();
+		afternoonLesson.Module = afternoonModule;
+
+		for (var i = 0; i < total; ++i) {
+
+			let dayInfo = new DayInfo(init);
+
+			dayInfo.morning = morningLesson;
+			dayInfo.afternoon = afternoonLesson;
+
+			init.setDate(init.getDate() + 1);
+		}
+
+		return result;
+	}
+
 	public formatDateYear(date: Date) {
 
 		const month = date.getMonth() + 1;
@@ -111,5 +147,42 @@ export class DateService {
 		const day = date.getDate();
 
 		return day < 10 ? `0${day}` : day;
+	}
+
+	public formatWeekString(date: Date) {
+
+		date ??= new Date();
+
+		date.setDate(date.getDate() - date.getDay() + 1);
+
+		const monday = this.formatDay(date);
+
+		date.setDate(date.getDate() + 4);
+
+		const friday = this.formatDay(date);
+
+		const monthString = date.toString().split(' ')[1];
+
+		return `${monthString}, ${monday} - ${friday}, ${date.getFullYear()}`;
+	}
+
+	public static getDaysInActualMonth(date: Date) {
+
+		const month = date.getMonth();
+		const year = date.getFullYear();
+
+		return this.getDaysInMonth(year, month);
+	}
+
+
+	public static getDaysInMonth(year: number, month: number) {
+
+		if (month < 0 || month > 11) throw Error("Invalid month");
+
+		return [31, (this.isLeapYear(year) ? 29 : 28), 31, 30, 31, 30, 31, 31, 30, 31, 30, 31][month];
+	}
+
+	public static isLeapYear(year: number) {
+		return ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)
 	}
 }

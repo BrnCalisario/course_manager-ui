@@ -63,22 +63,32 @@
 			color: white;
 		}
 
-		&.middle {
+		&.weekday {
 
+			position: relative;
+			color: gray;
+
+			&::before,
 			&::after {
-				position: absolute;
-
 				content: '';
-				border: 0px solid #fff;
 
-				padding: 6px 4px;
+				position: absolute;
+				left: 0;
 
-				width: calc((75px + 16px) * 7);
-				height: 75px;
+				width: 100%;
+				height: 50%;
+
+				opacity: 0.35;
 			}
 
-			&:hover::after {
-				border: 2px solid var(--primary);
+			&::before {
+				top: 0;
+				background-color: var(--primary);
+			}
+
+			&::after {
+				top: 50%;
+				background-color: var(--accent);
 			}
 		}
 	}

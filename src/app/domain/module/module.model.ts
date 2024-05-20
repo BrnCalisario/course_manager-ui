@@ -10,5 +10,6 @@ export default class Module implements BaseEntity<number> {
 	Competences: Competence[] = [];
 	Dependencies: Module[] = [];
 	Dependents: Module[] = [];
+	Color: string = '#AAEE33';
 	Deleted: boolean = false;
 }

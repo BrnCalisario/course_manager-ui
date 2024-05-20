@@ -71,7 +71,7 @@ export class ScheduleWeekComponent implements OnInit {
 
 		const brightness = this.getBrightness(color);
 
-		return brightness > 0.7 ? "#000" : "#FFF";
+		return brightness > 0.75 ? "#000" : "#FFF";
 	}
 
 	private hexToRgb(hex: string) {
@@ -84,7 +84,6 @@ export class ScheduleWeekComponent implements OnInit {
 	}
 
 	private getBrightness(rgb: { r: number, g: number, b: number }): number {
-
 		const { r, g, b } = rgb;
 
 		return (((r * 299) + (g * 587) + (b * 114)) / 1000) / 255;

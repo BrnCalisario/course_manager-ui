@@ -1,3 +1,13 @@
+<div class="week-control">
+	<div class="buttons">
+		<button mat-icon-button><mat-icon>keyboard_arrow_left</mat-icon></button>
+		<button mat-icon-button><mat-icon>keyboard_arrow_right</mat-icon></button>
+	</div>
+	<div>
+		{{ this.dateService.formatWeekString(this.date)}}
+	</div>
+</div>
+
 <div class="week-label">
 	<div class="side-label">
 
