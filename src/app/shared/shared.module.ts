@@ -17,10 +17,12 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
 import { Router, RouterModule } from '@angular/router';
+
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { ContextMenuComponent } from './components/context-menu/context-menu.component';
 import { ConfirmDeleteDialog } from './components/delete-dialog/confirm-delete.component';
 import { DraggableList } from './components/draggable-list/draggable-list.component';
+import EditableText from './components/editable-text/editable-title.component';
 import { Header } from './components/header/header.component';
 import { ModuleOption } from './components/module/module-option/module-option.component';
 import { ModuleSelectComponent } from './components/module/module-select/module-select.component';
@@ -28,14 +30,16 @@ import { PaginatorComponent } from './components/paginator/paginator.component';
 import { SelectChipComponent } from './components/select-chip/select-chip.component';
 
 @NgModule({
-	declarations: [Header,
+	declarations: [
+		Header,
+		EditableText,
 		SelectChipComponent,
 		PaginatorComponent,
 		DraggableList,
 		ContextMenuComponent,
 		ConfirmDeleteDialog,
 		ModuleSelectComponent,
-		ModuleOption
+		ModuleOption,
 	],
 	imports: [
 		MatPaginatorModule,
@@ -57,7 +61,7 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		MatMenuModule,
 		MatDialogModule,
 		MatProgressSpinnerModule,
-		ColorPickerComponent
+		ColorPickerComponent,
 	],
 	exports: [
 		CommonModule,
@@ -78,6 +82,7 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		Header,
 		ContextMenuComponent,
 		SelectChipComponent,
+		EditableText,
 		PaginatorComponent,
 		DraggableList,
 		DragDropModule,
@@ -87,8 +92,8 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		ConfirmDeleteDialog,
 		MatProgressSpinnerModule,
 		ModuleSelectComponent,
-		ModuleOption
+		ModuleOption,
 	],
 	providers: [Router],
 })
-export class SharedModule { }
+export class SharedModule {}

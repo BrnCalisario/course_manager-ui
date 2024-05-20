@@ -1,23 +1,133 @@
-import { Component } from "@angular/core";
-import { MatDialog } from "@angular/material/dialog";
-import Module from "@domain/module/module.model";
-import EditableHeader from "@features/course-page/components/editable-header/editable-header.component";
-import { ModuleListDialogComponent } from "@features/course-page/components/module-list-dialog/module-list-dialog.component";
-import { SharedModule } from "@shared/shared.module";
-import { BehaviorSubject, filter, map } from "rxjs";
+import { filter, map } from 'rxjs';
+
+import { Component, Input, OnInit } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { Competence } from '@domain/competence/competence.models';
+import Course from '@domain/course/course.model';
+import Module from '@domain/module/module.model';
+import {
+    ModuleListDialogComponent
+} from '@features/course-page/components/module-list-dialog/module-list-dialog.component';
+import CourseService from '@shared/services/course.service';
+import { SharedModule } from '@shared/shared.module';
 
 @Component({
 	selector: 'app-course-form',
 	standalone: true,
-	imports: [SharedModule, EditableHeader],
+	imports: [SharedModule],
 	templateUrl: './course-form.component.html',
-	styleUrl: './course-form.component.scss'
+	styleUrl: './course-form.component.scss',
 })
-export default class CourseFormComponent {
+export default class CourseFormComponent implements OnInit {
+	@Input({ required: true })
+	public courseEntity?: Course;
 
-	constructor(private readonly dialog: MatDialog) { }
+	public mainCompetences: Competence[] = [];
 
-	public modules = new BehaviorSubject<Module[]>([]);
+	public competencesOverflow: number = 0;
+
+	public readonly courseForm: FormGroup;
+
+	private readonly _maxCompetences = 15;
+
+	public get isEdit() {
+		return !!this.courseEntity && this.courseEntity.Id !== 0;
+	}
+
+	private get courseName() {
+		return this.courseForm.get('name')?.value as string;
+	}
+
+	public get courseNameForm() {
+		return this.courseForm.get('name') as FormControl<string>;
+	}
+
+	public get courseDescription() {
+		return this.courseForm.get('description')?.value as string;
+	}
+
+	private get courseModules() {
+		return this.courseForm.get('modules')?.value as Module[];
+	}
+
+	private set courseModules(modules: Module[]) {
+		this.courseForm.get('modules')?.setValue(modules);
+	}
+
+	private get courseModulesForm() {
+		return this.courseForm.get('modules') as FormControl<Module[]>;
+	}
+
+	constructor(
+		private readonly dialog: MatDialog,
+		private readonly courseService: CourseService
+	) {
+		this.courseForm = new FormGroup({
+			name: new FormControl<string>('', [
+				Validators.required,
+				Validators.maxLength(255),
+			]),
+
+			description: new FormControl<string>('', [
+				Validators.required,
+				Validators.minLength(10),
+				Validators.maxLength(5000),
+			]),
+
+			modules: new FormControl<Module[]>([]),
+		});
+
+		this.courseModulesForm.valueChanges.subscribe((modules) => {
+			const competencesCount = this.countCompetences(modules);
+
+			this.mainCompetences = competencesCount
+				.slice(0, this._maxCompetences)
+				.map((c) => c.Competence);
+
+			this.competencesOverflow =
+				competencesCount.length - this._maxCompetences;
+		});
+	}
+
+	public ngOnInit(): void {
+		if (this.courseEntity) {
+			this.courseForm.patchValue({
+				name: this.courseEntity?.Name,
+				description: this.courseEntity?.Description,
+				modules: this.courseEntity?.Modules,
+			});
+		}
+	}
+
+	public onSubmit() {
+		const createCommand = this.courseService.postCommand(
+			() =>
+				new Course(
+					this.courseName,
+					this.courseDescription,
+					this.courseModules
+				)
+		);
+
+		createCommand.response$.subscribe({
+			next: () => {
+				console.log('Course created');
+			},
+			error: () => {
+				console.error('Error creating course');
+				console.log(
+					new Course(
+						this.courseName,
+						this.courseDescription,
+						this.courseModules
+					)
+				);
+			},
+		});
+
+		createCommand.execute();
+	}
 
 	public formatModule(module: Module): string {
 		return `${module.Name} - Workload: ${module.Workload} h`;
@@ -26,18 +136,49 @@ export default class CourseFormComponent {
 	public openModuleListDialog() {
 		const dialogRef = this.dialog.open(ModuleListDialogComponent, {
 			width: '1000px',
-			height: '800px'
+			height: '800px',
 		});
 
-		dialogRef.componentInstance.selected = [...this.modules.value];
+		dialogRef.componentInstance.selected = [...this.courseModules];
 
-		dialogRef.afterClosed().pipe(
-			filter((res: boolean) => res),
-			map(_ => dialogRef.componentInstance.selected)
-		)
-			.subscribe(selected => {
-				this.modules.next(selected);
-			})
+		dialogRef
+			.afterClosed()
+			.pipe(
+				filter((res: boolean) => res),
+				map((_) => dialogRef.componentInstance.selected)
+			)
+			.subscribe((selected) => {
+				this.courseModules = selected;
+			});
+	}
 
+	private countCompetences(modules: Module[]) {
+		const competenceCounts: {
+			[name: string]: { Competence: Competence; Count: number };
+		} = {};
+
+		modules.forEach((module) => {
+			module.Competences.forEach((competence) => {
+				const competenceName = competence.Name;
+
+				if (competenceCounts[competenceName]) {
+					competenceCounts[competenceName].Count++;
+				} else {
+					competenceCounts[competenceName] = {
+						Competence: competence,
+						Count: 1,
+					};
+				}
+			});
+		});
+
+		const result = Object.keys(competenceCounts)
+			.map((competence) => ({
+				Competence: competenceCounts[competence].Competence,
+				Count: competenceCounts[competence].Count,
+			}))
+			.sort((l, r) => r.Count - l.Count);
+
+		return result;
 	}
 }

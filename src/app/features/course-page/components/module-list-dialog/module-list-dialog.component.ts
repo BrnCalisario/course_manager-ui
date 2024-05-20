@@ -1,11 +1,15 @@
-import { CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
+import ODataQueryCommand from 'src/lib/odata/ODataCommand';
+
+import {
+    CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem
+} from '@angular/cdk/drag-drop';
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import Module from '@domain/module/module.model';
 import ModuleService from '@shared/services/module.service';
 import { SharedModule } from '@shared/shared.module';
-import { Subject, debounceTime, takeUntil } from 'rxjs';
-import ODataQueryCommand from 'src/lib/odata/ODataCommand';
+
 import { ModuleItemComponent } from '../module-item/module-item.component';
 
 @Component({
@@ -36,6 +40,9 @@ export class ModuleListDialogComponent implements OnInit, OnDestroy {
 	}
 
 	public ngOnInit(): void {
+		this.queryCommand.params = {
+			$expand: "Competences"
+		}
 
 		this.queryCommand.response$
 			.pipe(takeUntil(this.destroy$))
