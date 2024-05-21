@@ -34,7 +34,7 @@
 				"src/app/features/*"
 			],
 			"@environment/*": [
-				"src/environment/*"
+				"src/assets/environment/*"
 			]
 		}
 	},

@@ -6,9 +6,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Competence } from '@domain/competence/competence.models';
 import Course from '@domain/course/course.model';
 import Module from '@domain/module/module.model';
-import {
-    ModuleListDialogComponent
-} from '@features/course-page/components/module-list-dialog/module-list-dialog.component';
+import { ModuleListDialogComponent } from '@features/course-page/components/module-list-dialog/module-list-dialog.component';
 import CourseService from '@shared/services/course.service';
 import { SharedModule } from '@shared/shared.module';
 
@@ -35,8 +33,13 @@ export default class CourseFormComponent implements OnInit {
 		return !!this.courseEntity && this.courseEntity.Id !== 0;
 	}
 
-	private get courseColor() {
+	public get courseColor() {
 		return this.courseForm.get('color')?.value as string;
+	}
+
+	public set courseColor(color: string) {
+		console.log(color);
+		this.courseForm.get('color')?.setValue(color);
 	}
 
 	private get courseName() {
@@ -107,6 +110,15 @@ export default class CourseFormComponent implements OnInit {
 	}
 
 	public onSubmit() {
+		console.log(
+			new Course(
+				this.courseName,
+				this.courseDescription,
+				this.courseModules,
+				this.courseColor
+			)
+		);
+
 		const createCommand = this.courseService.postCommand(
 			() =>
 				new Course(

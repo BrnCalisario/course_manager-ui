@@ -2,7 +2,11 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { CdkMenuModule } from '@angular/cdk/menu';
 import { AsyncPipe, CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
-import { FormControlDirective, FormsModule, ReactiveFormsModule } from '@angular/forms';
+import {
+	FormControlDirective,
+	FormsModule,
+	ReactiveFormsModule,
+} from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
@@ -40,7 +44,6 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		ConfirmDeleteDialog,
 		ModuleSelectComponent,
 		ModuleOption,
-		ColorPickerComponent,
 	],
 	imports: [
 		MatPaginatorModule,

@@ -17,7 +17,6 @@ export default class Course implements BaseEntity<number> {
 	Id: number = 0;
 	Name: string;
 	Description: string;
-	TotalWorkload: number = 0;
 	Modules: Module[] = [];
 	Deleted: boolean = false;
 	Color: string = '';
