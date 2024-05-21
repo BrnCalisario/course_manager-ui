@@ -1,9 +1,12 @@
-<app-header title="Courses" description="Manage your courses here!"></app-header>
+<app-header
+	title="Courses"
+	description="Manage your courses here!"
+></app-header>
 
 <div class="filter-wrap">
 	<mat-form-field class="search-bar" appearance="outline">
 		<mat-label>Search for courses</mat-label>
-		<input matInput #search [formControl]="searchControl">
+		<input matInput #search [formControl]="searchControl" />
 		<button mat-icon-button color="primary" matSuffix>
 			<mat-icon>search</mat-icon>
 		</button>
@@ -17,6 +20,9 @@
 
 <div class="course-grid">
 	@for (course of courses; track $index) {
-	<app-course-card [course]="course"></app-course-card>
+	<app-course-card
+		[course]="course"
+		(onDeleteCourse)="updateList()"
+	></app-course-card>
 	}
 </div>
