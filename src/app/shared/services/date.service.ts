@@ -112,7 +112,6 @@ export class DateService {
 
 		var afternoonModule = new Module();
 		afternoonModule.Name = "Module 2";
-		morningModule.Color = "#FFaa33";
 
 		var morningLesson = new Lesson();
 		morningLesson.Module = morningModule;
@@ -126,6 +125,7 @@ export class DateService {
 
 			dayInfo.morning = morningLesson;
 			dayInfo.afternoon = afternoonLesson;
+			result.push(dayInfo);
 
 			init.setDate(init.getDate() + 1);
 		}
@@ -184,5 +184,11 @@ export class DateService {
 
 	public static isLeapYear(year: number) {
 		return ((year % 4 === 0 && year % 100 !== 0) || year % 400 === 0)
+	}
+
+	public static isWeekend(date: Date) {
+		const day = date.getDay();
+
+		return day < 1 || day > 5;
 	}
 }
