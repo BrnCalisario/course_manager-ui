@@ -11,20 +11,25 @@ import { SharedModule } from '@shared/shared.module';
 	standalone: true,
 	imports: [SharedModule, MatButtonToggleModule, ColorPickerComponent],
 	templateUrl: './schedule-week.component.html',
-	styleUrl: './schedule-week.component.scss'
+	styleUrl: './schedule-week.component.scss',
 })
 export class ScheduleWeekComponent implements OnInit {
-
 	public date!: Date;
 	public weekDays: DateInfo[] = [];
-	public weekLabels: string[] = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"];
+	public weekLabels: string[] = [
+		'Monday',
+		'Tuesday',
+		'Wednesday',
+		'Thursday',
+		'Friday',
+	];
 
-	public modules: { name: string, color: string }[] = [
-		{ name: "Module 1", color: "#25b4da" },
-		{ name: "Module 2", color: "#f5a623" },
-	]
+	public modules: { name: string; color: string }[] = [
+		{ name: 'Module 1', color: '#25b4da' },
+		{ name: 'Module 2', color: '#f5a623' },
+	];
 
-	public cursorType: "add" | "clear" | null = null;
+	public cursorType: 'add' | 'clear' | null = null;
 
 	public selectedModule: ModuleItem | null = null;
 
@@ -32,7 +37,7 @@ export class ScheduleWeekComponent implements OnInit {
 		private readonly router: Router,
 		private readonly route: ActivatedRoute,
 		public readonly dateService: DateService
-	) { }
+	) {}
 
 	public ngOnInit(): void {
 		const date = this.route.snapshot.paramMap.get('date');
@@ -51,42 +56,41 @@ export class ScheduleWeekComponent implements OnInit {
 	}
 
 	public editPeriod(date: DateInfo, isMorning: boolean) {
-
-		if (this.cursorType == "clear") {
+		if (this.cursorType == 'clear') {
 			if (isMorning) date.moduleA = null;
 			else date.moduleB = null;
 		}
 
-		if (this.cursorType == "add") {
+		if (this.cursorType == 'add') {
 			if (isMorning) date.moduleA = this.selectedModule;
 			else date.moduleB = this.selectedModule;
 		}
 	}
 
 	public formatTextColor(backgroundColor: string) {
-
 		const color = this.hexToRgb(backgroundColor);
 
-		if (!color) return "#FFF";
+		if (!color) return '#FFF';
 
 		const brightness = this.getBrightness(color);
 
-		return brightness > 0.75 ? "#000" : "#FFF";
+		return brightness > 0.75 ? '#000' : '#FFF';
 	}
 
 	private hexToRgb(hex: string) {
 		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-		return result ? {
-			r: parseInt(result[1], 16),
-			g: parseInt(result[2], 16),
-			b: parseInt(result[3], 16)
-		} : null;
+		return result
+			? {
+					r: parseInt(result[1], 16),
+					g: parseInt(result[2], 16),
+					b: parseInt(result[3], 16),
+			  }
+			: null;
 	}
 
-	private getBrightness(rgb: { r: number, g: number, b: number }): number {
+	private getBrightness(rgb: { r: number; g: number; b: number }): number {
 		const { r, g, b } = rgb;
 
-		return (((r * 299) + (g * 587) + (b * 114)) / 1000) / 255;
+		return (r * 299 + g * 587 + b * 114) / 1000 / 255;
 	}
-
 }

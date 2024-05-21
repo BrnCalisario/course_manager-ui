@@ -40,6 +40,7 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		ConfirmDeleteDialog,
 		ModuleSelectComponent,
 		ModuleOption,
+		ColorPickerComponent,
 	],
 	imports: [
 		MatPaginatorModule,
@@ -93,6 +94,7 @@ import { SelectChipComponent } from './components/select-chip/select-chip.compon
 		MatProgressSpinnerModule,
 		ModuleSelectComponent,
 		ModuleOption,
+		ColorPickerComponent,
 	],
 	providers: [Router],
 })

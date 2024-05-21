@@ -35,6 +35,10 @@ export default class CourseFormComponent implements OnInit {
 		return !!this.courseEntity && this.courseEntity.Id !== 0;
 	}
 
+	private get courseColor() {
+		return this.courseForm.get('color')?.value as string;
+	}
+
 	private get courseName() {
 		return this.courseForm.get('name')?.value as string;
 	}
@@ -76,6 +80,8 @@ export default class CourseFormComponent implements OnInit {
 			]),
 
 			modules: new FormControl<Module[]>([]),
+
+			color: new FormControl<string>(''),
 		});
 
 		this.courseModulesForm.valueChanges.subscribe((modules) => {
@@ -106,7 +112,8 @@ export default class CourseFormComponent implements OnInit {
 				new Course(
 					this.courseName,
 					this.courseDescription,
-					this.courseModules
+					this.courseModules,
+					this.courseColor
 				)
 		);
 
@@ -116,13 +123,6 @@ export default class CourseFormComponent implements OnInit {
 			},
 			error: () => {
 				console.error('Error creating course');
-				console.log(
-					new Course(
-						this.courseName,
-						this.courseDescription,
-						this.courseModules
-					)
-				);
 			},
 		});
 
