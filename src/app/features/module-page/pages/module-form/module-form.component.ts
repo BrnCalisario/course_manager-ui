@@ -15,23 +15,17 @@ import { SharedModule } from '@shared/shared.module';
 @Component({
 	selector: 'app-module-form',
 	standalone: true,
-	imports: [SharedModule, CompetenceSelectChipComponent, ModulesSelectChipComponent, MatTabsModule],
+	imports: [
+		SharedModule,
+		CompetenceSelectChipComponent,
+		ModulesSelectChipComponent,
+		MatTabsModule,
+	],
 	templateUrl: './module-form.component.html',
 	styleUrl: './module-form.component.scss',
 })
 export default class ModuleFormComponent implements OnInit {
-	public moduleForm: FormGroup = new FormGroup({
-		Name: new FormControl<string>('', [Validators.required, Validators.maxLength(100)]),
-		Description: new FormControl<string>('', [Validators.required, Validators.maxLength(500)]),
-		Objective: new FormControl<string>('', [Validators.required, Validators.maxLength(500)]),
-		Workload: new FormControl<number | null>(null, [
-			Validators.required,
-			Validators.min(1),
-			Validators.max(200),
-		]),
-		Competences: new FormControl<Competence[]>([]),
-		Dependencies: new FormControl<Module[]>([]),
-	});
+	public moduleForm: FormGroup;
 
 	public isEdit: boolean = false;
 
@@ -42,8 +36,30 @@ export default class ModuleFormComponent implements OnInit {
 	constructor(
 		private readonly service: ModuleService,
 		private readonly router: Router,
-		private readonly route: ActivatedRoute,
-	) { }
+		private readonly route: ActivatedRoute
+	) {
+		this.moduleForm = new FormGroup({
+			Name: new FormControl<string>('', [
+				Validators.required,
+				Validators.maxLength(100),
+			]),
+			Description: new FormControl<string>('', [
+				Validators.required,
+				Validators.maxLength(500),
+			]),
+			Objective: new FormControl<string>('', [
+				Validators.required,
+				Validators.maxLength(500),
+			]),
+			Workload: new FormControl<number | null>(null, [
+				Validators.required,
+				Validators.min(1),
+				Validators.max(200),
+			]),
+			Competences: new FormControl<Competence[]>([]),
+			Dependencies: new FormControl<Module[]>([]),
+		});
+	}
 
 	public ngOnInit(): void {
 		this.formModuleId = Number(this.route.snapshot.params['id']);
@@ -55,24 +71,27 @@ export default class ModuleFormComponent implements OnInit {
 		const findCommand = this.service.findCommand(() => this.formModuleId!);
 
 		findCommand.params = {
-			$expand: "Competences, Dependencies"
+			$expand: 'Competences, Dependencies',
 		};
 
 		findCommand.response$
 			.pipe(
-				map(res => removeODataProperties(res)),
-				take(1))
+				map((res) => removeODataProperties(res)),
+				take(1)
+			)
 			.subscribe({
 				next: (res: any) => {
+					delete res.Deleted;
+
 					this.moduleForm.setValue(res);
 				},
-				error: _ => {
-					this.router.navigate(["/module", "form"]);
+				error: (_) => {
+					this.router.navigate(['/module', 'form']);
 				},
 				complete: () => {
 					this.isLoading = false;
-				}
-			})
+				},
+			});
 
 		this.isLoading = true;
 		findCommand.execute();
@@ -87,17 +106,15 @@ export default class ModuleFormComponent implements OnInit {
 	}
 
 	public onSubmit() {
-
 		const body = this.moduleForm.value;
 
 		if (this.formModuleId) {
 			body.Id = this.formModuleId;
 		}
 
-		this.service.save(body, this.isEdit)
-			.subscribe({
-				next: () => this.router.navigate(['/module', 'list']),
-				error: () => alert('An error occurred while creating the module.'), // Todo - Use feedback service
-			});
+		this.service.save(body, this.isEdit).subscribe({
+			next: () => this.router.navigate(['/module', 'list']),
+			error: () => alert('An error occurred while creating the module.'),
+		});
 	}
 }

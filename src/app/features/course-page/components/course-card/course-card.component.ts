@@ -67,6 +67,6 @@ export class CourseCardComponent {
 	}
 
 	public onUpdate(): void {
-		this.router.navigate(['/module', 'form', this.course.Id]);
+		this.router.navigate(['/course', 'form', this.course.Id]);
 	}
 }

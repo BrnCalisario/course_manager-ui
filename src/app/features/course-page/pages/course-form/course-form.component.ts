@@ -1,8 +1,14 @@
-import { filter, map } from 'rxjs';
+import { filter, map, take } from 'rxjs';
+import ODataQueryCommand from 'src/lib/odata/ODataCommand';
+import {
+	ODataSingleResponse,
+	removeODataProperties,
+} from 'src/lib/odata/types/ODataResponse';
 
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Competence } from '@domain/competence/competence.models';
 import Course from '@domain/course/course.model';
 import Module from '@domain/module/module.model';
@@ -25,66 +31,77 @@ export default class CourseFormComponent implements OnInit {
 
 	public competencesOverflow: number = 0;
 
+	public isLoading: boolean = false;
+
 	public readonly courseForm: FormGroup;
 
 	private readonly _maxCompetences = 15;
 
-	public get isEdit() {
-		return !!this.courseEntity && this.courseEntity.Id !== 0;
-	}
+	public isEdit: boolean = false;
+
+	private courseId?: number;
+
+	//#region
+
+	private findCommand: ODataQueryCommand<Course, ODataSingleResponse<Course>>;
+
+	private saveCommand: ODataQueryCommand<Course, ODataSingleResponse<Course>>;
+
+	//#endregion
 
 	public get courseColor() {
-		return this.courseForm.get('color')?.value as string;
+		return this.courseForm.get('Color')?.value as string;
 	}
 
 	public set courseColor(color: string) {
-		console.log(color);
-		this.courseForm.get('color')?.setValue(color);
+		this.courseForm.get('Color')?.setValue(color);
 	}
 
 	private get courseName() {
-		return this.courseForm.get('name')?.value as string;
+		return this.courseForm.get('Name')?.value as string;
 	}
 
 	public get courseNameForm() {
-		return this.courseForm.get('name') as FormControl<string>;
+		return this.courseForm.get('Name') as FormControl<string>;
 	}
 
 	public get courseDescription() {
-		return this.courseForm.get('description')?.value as string;
+		return this.courseForm.get('Description')?.value as string;
 	}
 
 	private get courseModules() {
-		return this.courseForm.get('modules')?.value as Module[];
+		return this.courseForm.get('Modules')?.value as Module[];
 	}
 
 	private set courseModules(modules: Module[]) {
-		this.courseForm.get('modules')?.setValue(modules);
+		this.courseForm.get('Modules')?.setValue(modules);
 	}
 
 	private get courseModulesForm() {
-		return this.courseForm.get('modules') as FormControl<Module[]>;
+		return this.courseForm.get('Modules') as FormControl<Module[]>;
 	}
 
 	constructor(
 		private readonly dialog: MatDialog,
-		private readonly courseService: CourseService
+		private readonly courseService: CourseService,
+		private readonly router: Router,
+		private readonly route: ActivatedRoute
 	) {
 		this.courseForm = new FormGroup({
-			name: new FormControl<string>('', [
+			Name: new FormControl<string>('', [
 				Validators.required,
 				Validators.maxLength(255),
 			]),
 
-			description: new FormControl<string>('', [
+			Description: new FormControl<string>('', [
 				Validators.required,
 				Validators.minLength(10),
 				Validators.maxLength(5000),
 			]),
 
-			modules: new FormControl<Module[]>([]),
+			Modules: new FormControl<Module[]>([]),
 
-			color: new FormControl<string>(''),
+			Color: new FormControl<string>(''),
 		});
 
 		this.courseModulesForm.valueChanges.subscribe((modules) => {
@@ -97,39 +114,15 @@ export default class CourseFormComponent implements OnInit {
 			this.competencesOverflow =
 				competencesCount.length - this._maxCompetences;
 		});
-	}
 
-	public ngOnInit(): void {
-		if (this.courseEntity) {
-			this.courseForm.patchValue({
-				name: this.courseEntity?.Name,
-				description: this.courseEntity?.Description,
-				modules: this.courseEntity?.Modules,
-			});
-		}
-	}
+		this.findCommand = this.courseService.findCommand(() => this.courseId!);
 
-	public onSubmit() {
-		console.log(
-			new Course(
-				this.courseName,
-				this.courseDescription,
-				this.courseModules,
-				this.courseColor
-			)
+		this.saveCommand = this.courseService.saveCommand(
+			() => this.buildCourse(),
+			this.isEdit
 		);
 
-		const createCommand = this.courseService.postCommand(
-			() =>
-				new Course(
-					this.courseName,
-					this.courseDescription,
-					this.courseModules,
-					this.courseColor
-				)
-		);
-
-		createCommand.response$.subscribe({
+		this.saveCommand.response$.subscribe({
 			next: () => {
 				console.log('Course created');
 			},
@@ -137,8 +130,44 @@ export default class CourseFormComponent implements OnInit {
 				console.error('Error creating course');
 			},
 		});
+	}
 
-		createCommand.execute();
+	public ngOnInit(): void {
+		this.courseId = Number(this.route.snapshot.params['id']);
+
+		if (!this.courseId) return;
+
+		this.isEdit = true;
+
+		this.findCommand.params = {
+			$expand: 'Modules',
+		};
+
+		this.findCommand.response$
+			.pipe(
+				map((res) => removeODataProperties(res)),
+				take(1)
+			)
+			.subscribe({
+				next: (res: any) => {
+					delete res.Deleted;
+
+					this.courseForm.setValue(res);
+				},
+				error: (_) => {
+					this.router.navigate(['/module', 'form']);
+				},
+				complete: () => {
+					this.isLoading = false;
+				},
+			});
+
+		this.isLoading = true;
+		this.findCommand.execute();
+	}
+
+	public onSubmit() {
+		this.saveCommand.execute();
 	}
 
 	public formatModule(module: Module): string {
@@ -162,6 +191,18 @@ export default class CourseFormComponent implements OnInit {
 			.subscribe((selected) => {
 				this.courseModules = selected;
 			});
+	}
+
+	private buildCourse(): Course {
+		const course = new Course(
+			this.courseId ?? 0,
+			this.courseName,
+			this.courseDescription,
+			this.courseModules,
+			this.courseColor
+		);
+
+		return course;
 	}
 
 	private countCompetences(modules: Module[]) {
