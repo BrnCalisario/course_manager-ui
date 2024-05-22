@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { Router } from "@angular/router";
-import { DateInfo, DateService } from "@shared/services/date.service";
+import { DayInfo } from "@domain/lesson/lesson.model";
+import { DateService } from "@shared/services/date.service";
+import ScheduleService from "@shared/services/schedule.service";
 import { SharedModule } from "@shared/shared.module";
 
 @Component({
@@ -12,13 +14,16 @@ import { SharedModule } from "@shared/shared.module";
 })
 export class SchedulePageComponent {
 
-	year: Array<Array<DateInfo>> = [];
+	year: Array<Array<DayInfo>> = [];
 
 	monthNames: string[] = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 	weekNames: string[] = ["D", "S", "T", "Q", "Q", "S", "S"];
 
-	constructor(private readonly router: Router, public readonly dateService: DateService) {
-		this.year = dateService.generateYear();
+	constructor(
+		private readonly router: Router,
+		public readonly dateService: DateService,
+		private readonly scheduleService: ScheduleService) {
+		this.year = this.scheduleService.getFullYear(2024);
 	}
 
 	public onMonthClick(monthNumber: number): void {

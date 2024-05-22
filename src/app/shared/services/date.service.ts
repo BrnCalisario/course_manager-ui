@@ -109,12 +109,12 @@ export class DateService {
 
 		var morningModule = new Module();
 		morningModule.Name = "Module 1";
-		morningModule.Color = "#AA33A4";
+		morningModule.Color = "#138477";
 
 
 		var afternoonModule = new Module();
 		afternoonModule.Name = "Module 2";
-		afternoonModule.Color = "#B1C4FF";
+		afternoonModule.Color = "#fa8e00";
 
 		var morningLesson = new Lesson();
 		morningLesson.Module = morningModule;
@@ -126,8 +126,11 @@ export class DateService {
 
 			let dayInfo = new DayInfo(init);
 
+
 			dayInfo.morning = morningLesson;
 			dayInfo.afternoon = afternoonLesson;
+
+
 			result.push(dayInfo);
 
 			init.setDate(init.getDate() + 1);

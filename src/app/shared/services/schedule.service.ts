@@ -72,4 +72,15 @@ export default class ScheduleService {
 
         return this.getMonth(year, month);
     }
+
+    public getFullYear(year: number): DayInfo[][] {
+        const result: DayInfo[][] = [];
+
+        for (let month = 0; month < 12; month++) {
+            const monthList = this.getMonthFilled(year, month);
+            result.push(monthList);
+        }
+
+        return result;
+    }
 }

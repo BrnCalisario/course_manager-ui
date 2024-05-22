@@ -78,30 +78,25 @@
 
 		&.weekday {
 
-			position: relative;
 			color: gray;
+			position: relative;
 
-			&::before,
-			&::after {
-				content: '';
-
+			.day-morning,
+			.day-afternoon {
 				position: absolute;
 				left: 0;
-
 				width: 100%;
 				height: 50%;
-
-				opacity: 0.25;
+				opacity: 0.3;
+				z-index: 0;
 			}
 
-			&::before {
+			.day-morning {
 				top: 0;
-				background-color: var(--primary);
 			}
 
-			&::after {
+			.day-afternoon {
 				top: 50%;
-				background-color: var(--accent);
 			}
 		}
 
