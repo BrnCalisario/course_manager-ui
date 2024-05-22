@@ -109,9 +109,12 @@ export class DateService {
 
 		var morningModule = new Module();
 		morningModule.Name = "Module 1";
+		morningModule.Color = "#AA33A4";
+
 
 		var afternoonModule = new Module();
 		afternoonModule.Name = "Module 2";
+		afternoonModule.Color = "#B1C4FF";
 
 		var morningLesson = new Lesson();
 		morningLesson.Module = morningModule;
