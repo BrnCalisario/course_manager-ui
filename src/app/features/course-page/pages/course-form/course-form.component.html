@@ -1,5 +1,8 @@
 <app-header [back]="true" title="New Course"></app-header>
 
+<mat-spinner class="spinner" *ngIf="this.isLoading">Loading...</mat-spinner>
+
+@if(!this.isLoading) {
 <div class="row">
 	<form #form class="column" [formGroup]="courseForm">
 		<editable-text [textForm]="courseNameForm" label="Title" />
@@ -8,7 +11,7 @@
 			<mat-label>Description</mat-label>
 			<textarea
 				matInput
-				formControlName="description"
+				formControlName="Description"
 				#Description
 			></textarea>
 		</mat-form-field>
@@ -66,3 +69,4 @@
 		{{ this.isEdit ? "Edit" : "Create" }}
 	</button>
 </div>
+}
