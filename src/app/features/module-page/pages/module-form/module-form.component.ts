@@ -81,6 +81,8 @@ export default class ModuleFormComponent implements OnInit {
 			)
 			.subscribe({
 				next: (res: any) => {
+					delete res.Deleted;
+
 					this.moduleForm.setValue(res);
 				},
 				error: (_) => {
