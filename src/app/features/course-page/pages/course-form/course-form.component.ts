@@ -69,11 +69,11 @@ export default class CourseFormComponent implements OnInit {
 		return this.courseForm.get('Description')?.value as string;
 	}
 
-	private get courseModules() {
+	public get courseModules() {
 		return this.courseForm.get('Modules')?.value as Module[];
 	}
 
-	private set courseModules(modules: Module[]) {
+	public set courseModules(modules: Module[]) {
 		this.courseForm.get('Modules')?.setValue(modules);
 	}
 
@@ -117,6 +117,10 @@ export default class CourseFormComponent implements OnInit {
 
 		this.findCommand = this.courseService.findCommand(() => this.courseId!);
 
+		this.findCommand.params = {
+			$expand: 'Modules($expand=Competences)',
+		};
+
 		this.saveCommand = this.courseService.saveCommand(
 			() => this.buildCourse(),
 			this.isEdit
@@ -138,10 +142,6 @@ export default class CourseFormComponent implements OnInit {
 		if (!this.courseId) return;
 
 		this.isEdit = true;
-
-		this.findCommand.params = {
-			$expand: 'Modules',
-		};
 
 		this.findCommand.response$
 			.pipe(

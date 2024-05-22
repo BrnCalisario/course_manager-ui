@@ -4,19 +4,16 @@ import { Component, Input } from '@angular/core';
 @Component({
 	selector: 'draggable-list',
 	templateUrl: './draggable-list.component.html',
-	styleUrl: './draggable-list.component.scss'
+	styleUrl: './draggable-list.component.scss',
 })
-export class DraggableList {
+export class DraggableList<T> {
+	@Input({ required: true })
+	public itemFormatter!: (item: T) => string;
 
-	@Input()
-	public itemFormatter: (item: any) => string = (item: any) => item as string;
+	@Input({ required: true })
+	public itemList!: Array<T>;
 
-	@Input()
-	public itemList !: Array<any>;
-
-	public constructor() { }
-
-	drop(event: CdkDragDrop<any[]>) {
+	drop(event: CdkDragDrop<T[]>) {
 		moveItemInArray(this.itemList, event.previousIndex, event.currentIndex);
 	}
 }
