@@ -117,4 +117,8 @@ export default class ModuleFormComponent implements OnInit {
 			error: () => alert('An error occurred while creating the module.'),
 		});
 	}
+
+	public returnToList() {
+		this.router.navigate(["module", "list"])
+	}
 }

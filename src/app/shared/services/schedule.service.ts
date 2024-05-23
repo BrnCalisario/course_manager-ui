@@ -19,10 +19,25 @@ export default class ScheduleService {
         this.scheduleDays = dateService.mockYearLessons(new Date().getFullYear());
     }
 
-    /** 
-     * @param month - number between 0 and 11
-     * @param year  - year number
-     */
+
+    public getWeek(date: Date): DayInfo[] {
+        const result: DayInfo[] = [];
+
+        const tempDate = new Date(date)
+        tempDate.setDate(date.getDate() - date.getDay() - 1);
+
+        for (let i = 0; i < 5; i++) {
+
+            let target = this._scheduleDays.find(d => d.equals(tempDate));
+
+            result.push(target ? target : new DayInfo(tempDate));
+
+            tempDate.setDate(tempDate.getDate() + 1);
+        }
+
+        return result;
+    }
+
     public getMonth(year: number, month: number): DayInfo[] {
         const result: DayInfo[] = []
 

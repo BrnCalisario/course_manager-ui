@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Input, TemplateRef, ViewChild } from '@angular/core';
+import Module from '@domain/module/module.model';
 
 @Component({
 	selector: 'app-module-option',
@@ -11,10 +12,7 @@ export class ModuleOption {
 	template!: TemplateRef<any>;
 
 	@Input()
-	public name: string = "";
-
-	@Input()
-	public color: string = "#52B2A8";
+	public module!: Module;
 
 	public colorChange: EventEmitter<string> = new EventEmitter<string>();
 

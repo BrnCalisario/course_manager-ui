@@ -28,19 +28,19 @@
 	<div class="day-block">
 
 		<div class="day-label">
-			<p class="day-value">{{ this.dateService.formatDay(day.date) }}</p>
+			<p class="day-value">{{ this.dateService.formatDay(day.getDate()) }}</p>
 			<p>{{ this.weekLabels[i] }}</p>
 		</div>
 
 		<div class="day-period">
 			<section class="morning" (click)="editPeriod(day, true)">
-				<div *ngIf="day.moduleA; let module" [style.background]="module.color" class="lesson">
-					<p [style.color]="this.formatTextColor(day.moduleA.color)">{{ module.name }}</p>
+				<div *ngIf="day.morning; let lesson" [style.background]="lesson.Module!.Color" class="lesson">
+					<p [style.color]="this.formatTextColor(lesson.Module!.Color)">{{ lesson.Module!.Name }}</p>
 				</div>
 			</section>
 			<section class="afternoon" (click)="editPeriod(day, false)">
-				<div *ngIf="day.moduleB; let module" [style.background]="module.color" class="lesson">
-					<p [style.color]="this.formatTextColor(day.moduleB.color)">{{ module.name }}</p>
+				<div *ngIf="day.afternoon; let lesson" [style.background]="lesson.Module!.Color" class="lesson">
+					<p [style.color]="this.formatTextColor(lesson.Module!.Color)">{{ lesson.Module?.Name }}</p>
 				</div>
 			</section>
 		</div>
@@ -60,7 +60,7 @@
 <div>
 	<h3>Modules</h3>
 	<app-module-select [(selected)]="selectedModule">
-		<app-module-option name="Module 1" />
-		<app-module-option name="Module 2" />
+		<app-module-option [module]="this.dateService.moduleOne" name="Module 1" />
+		<app-module-option [module]="this.dateService.moduleTwo" name="Module 2" />
 	</app-module-select>
 </div>

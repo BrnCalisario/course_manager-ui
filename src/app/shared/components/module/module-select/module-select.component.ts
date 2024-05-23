@@ -1,8 +1,9 @@
 import {
-    AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren,
-    EventEmitter, Input, Output, QueryList
+	AfterContentChecked, ChangeDetectionStrategy, ChangeDetectorRef, Component, ContentChildren,
+	EventEmitter, Input, Output, QueryList
 } from '@angular/core';
 
+import Module from '@domain/module/module.model';
 import { ModuleOption } from '../module-option/module-option.component';
 
 export type ModuleItem = {
@@ -23,12 +24,12 @@ export class ModuleSelectComponent implements AfterContentChecked {
 	options!: ModuleOption[];
 
 	@Input()
-	selected: ModuleItem | null = null;
+	selected: Module | null = null;
 
 	@Output()
-	selectedChange: EventEmitter<ModuleItem | null> = new EventEmitter();
+	selectedChange: EventEmitter<Module | null> = new EventEmitter();
 
-	constructor(private cdref: ChangeDetectorRef) {}
+	constructor(private cdref: ChangeDetectorRef) { }
 
 	ngAfterContentChecked(): void {
 		this.options = this.moduleOptions.toArray();
@@ -45,8 +46,8 @@ export class ModuleSelectComponent implements AfterContentChecked {
 
 		option.selected = !selected;
 
-		this.selected = { name: option.name, color: option.color }
-			? option
+		this.selected = option.module
+			? option.module
 			: null;
 
 		this.selectedChange.emit(this.selected);

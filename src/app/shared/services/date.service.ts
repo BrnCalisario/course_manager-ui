@@ -17,6 +17,20 @@ export type DateInfo = {
 })
 export class DateService {
 
+	moduleOne: Module;
+	moduleTwo: Module;
+
+	constructor() {
+		this.moduleOne = new Module();
+		this.moduleOne.Name = "Module 1";
+		this.moduleOne.Color = "#138477";
+
+		this.moduleTwo = new Module();
+		this.moduleTwo.Name = "Module 2";
+		this.moduleTwo.Color = "#fa8e00";
+
+	}
+
 	public generateWeek(input: Date): DateInfo[] {
 
 		const weekDays: DateInfo[] = [];
@@ -107,20 +121,11 @@ export class DateService {
 
 		const total = DateService.isLeapYear(init.getFullYear()) ? 366 : 365;
 
-		var morningModule = new Module();
-		morningModule.Name = "Module 1";
-		morningModule.Color = "#138477";
-
-
-		var afternoonModule = new Module();
-		afternoonModule.Name = "Module 2";
-		afternoonModule.Color = "#fa8e00";
-
 		var morningLesson = new Lesson();
-		morningLesson.Module = morningModule;
+		morningLesson.Module = this.moduleOne;
 
 		var afternoonLesson = new Lesson();
-		afternoonLesson.Module = afternoonModule;
+		afternoonLesson.Module = this.moduleTwo;
 
 		for (var i = 0; i < total; ++i) {
 
