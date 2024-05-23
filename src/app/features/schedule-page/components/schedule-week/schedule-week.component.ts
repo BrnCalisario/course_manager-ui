@@ -77,6 +77,8 @@ export class ScheduleWeekComponent implements OnInit {
 
 		this.date = new Date(date);
 		this.weekDays = this.scheduleService.getWeek(this.date);
+
+		console.log(this.weekDays);
 	}
 
 	public onChange(event: MatButtonToggleChange) {
@@ -84,15 +86,18 @@ export class ScheduleWeekComponent implements OnInit {
 	}
 
 	public editPeriod(date: DayInfo, isMorning: boolean) {
+
+		console.log("before", date);
+
 		if (this.cursorType == 'clear') {
-			if (isMorning) date.morning!.Module = undefined;
-			else date.afternoon!.Module = undefined;
+			this.scheduleService.updateLesson(date, undefined, isMorning);
 		}
 
 		if (this.cursorType == 'add') {
-			if (isMorning) date.morning!.Module = this.selectedModule ?? undefined;
-			else date.afternoon!.Module = this.selectedModule ?? undefined;
+			this.scheduleService.updateLesson(date, this.selectedModule ?? undefined, isMorning);
 		}
+
+		console.log("after", date);
 	}
 
 	public formatTextColor(backgroundColor: string) {

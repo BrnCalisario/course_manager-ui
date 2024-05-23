@@ -34,13 +34,13 @@
 
 		<div class="day-period">
 			<section class="morning" (click)="editPeriod(day, true)">
-				<div *ngIf="day.morning; let lesson" [style.background]="lesson.Module!.Color" class="lesson">
-					<p [style.color]="this.formatTextColor(lesson.Module!.Color)">{{ lesson.Module!.Name }}</p>
+				<div *ngIf="day.morning?.Module; let module" [style.background]="module!.Color" class="lesson">
+					<p [style.color]="this.formatTextColor( module!.Color)">{{ module!.Name }}</p>
 				</div>
 			</section>
 			<section class="afternoon" (click)="editPeriod(day, false)">
-				<div *ngIf="day.afternoon; let lesson" [style.background]="lesson.Module!.Color" class="lesson">
-					<p [style.color]="this.formatTextColor(lesson.Module!.Color)">{{ lesson.Module?.Name }}</p>
+				<div *ngIf="day.afternoon?.Module; let module" [style.background]="module!.Color" class="lesson">
+					<p [style.color]="this.formatTextColor(module!.Color)">{{ module?.Name }}</p>
 				</div>
 			</section>
 		</div>

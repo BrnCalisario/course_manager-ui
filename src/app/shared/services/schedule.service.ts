@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { DayInfo } from "@domain/lesson/lesson.model";
+import Module from "@domain/module/module.model";
 import { DateService } from "./date.service";
 
 @Injectable({ providedIn: 'root' })
@@ -17,14 +18,29 @@ export default class ScheduleService {
 
     constructor(dateService: DateService) {
         this.scheduleDays = dateService.mockYearLessons(new Date().getFullYear());
+
+        console.log("Schedule service iniciado");
     }
 
+
+    public updateLesson(dayInfo: DayInfo, module: Module | undefined, isMorning: boolean) {
+        let targetIndex = this.scheduleDays.indexOf(dayInfo);
+
+        if (targetIndex === -1) return;
+
+        if (isMorning) {
+            this.scheduleDays[targetIndex].morning!.Module = module;
+        } else {
+            this.scheduleDays[targetIndex].afternoon!.Module = module;
+        }
+
+    }
 
     public getWeek(date: Date): DayInfo[] {
         const result: DayInfo[] = [];
 
         const tempDate = new Date(date)
-        tempDate.setDate(date.getDate() - date.getDay() - 1);
+        tempDate.setDate(date.getDate() - date.getDay() + 1);
 
         for (let i = 0; i < 5; i++) {
 
