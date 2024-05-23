@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -63,6 +64,7 @@ export class ScheduleWeekComponent implements OnInit {
 	constructor(
 		private readonly router: Router,
 		private readonly route: ActivatedRoute,
+		public readonly location: Location,
 		private readonly scheduleService: ScheduleService,
 		public readonly dateService: DateService
 	) { }

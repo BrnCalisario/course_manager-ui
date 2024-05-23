@@ -33,6 +33,19 @@ export default class ScheduleService {
         } else {
             this.scheduleDays[targetIndex].afternoon!.Module = module;
         }
+    }
+
+    public updateModuleColor(dayInfo: DayInfo, color: string, isMorning: boolean) {
+
+        let targetIndex = this.scheduleDays.indexOf(dayInfo);
+
+        if (targetIndex === -1) return;
+
+        if (isMorning) {
+            this.scheduleDays[targetIndex].morning!.Module!.Color = color;
+        } else {
+            this.scheduleDays[targetIndex].afternoon!.Module!.Color = color;
+        }
 
     }
 
