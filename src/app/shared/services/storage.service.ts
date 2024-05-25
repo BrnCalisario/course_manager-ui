@@ -12,7 +12,7 @@ export default class StorageService {
 	constructor(
 		@Inject(PLATFORM_ID) private plataformId: Object
 	) {
-		this.storage = isPlatformBrowser(this.plataformId) ? sessionStorage : undefined;
+		this.storage = isPlatformBrowser(this.plataformId) ? localStorage : undefined;
 	}
 
 	public getItem(key: string): string | null {

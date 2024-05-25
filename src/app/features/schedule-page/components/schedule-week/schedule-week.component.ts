@@ -93,6 +93,17 @@ export class ScheduleWeekComponent implements OnInit {
 		this.cursorType = event.value;
 	}
 
+	public editWeekPeriod(isMorning: boolean) {
+		this.weekDays.forEach(d => {
+			this.editPeriod(d, isMorning);
+		})
+	}
+
+	public editDayPeriod(dayIndex: number) {
+		this.editPeriod(this.weekDays[dayIndex], true);
+		this.editPeriod(this.weekDays[dayIndex], false);
+	}
+
 	public editPeriod(date: DayInfo, isMorning: boolean) {
 
 		if (this.cursorType == 'clear') {

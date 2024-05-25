@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, TemplateRef, ViewChild } from '@angular/core';
 import Module from '@domain/module/module.model';
+import ScheduleService from '@shared/services/schedule.service';
 import StorageService, { StorageItem } from '@shared/services/storage.service';
 
 @Component({
@@ -9,7 +10,9 @@ import StorageService, { StorageItem } from '@shared/services/storage.service';
 })
 export class ModuleOption {
 
-	constructor(private readonly storageService: StorageService) { }
+	constructor(
+		private readonly storageService: StorageService,
+		private readonly scheduleService: ScheduleService) { }
 
 	@ViewChild(TemplateRef)
 	template!: TemplateRef<any>;
@@ -52,6 +55,8 @@ export class ModuleOption {
 
 			this.storageService.setList('modules', modules);
 		}
+
+		this.scheduleService.updateModuleColor(module.Name, color);
 
 	}
 

@@ -19,10 +19,10 @@
 		</div>
 
 		<div class="day-period">
-			<section class="morning">
+			<section class="morning" (click)="editWeekPeriod(true)">
 				<p>Morning</p>
 			</section>
-			<section class="afternoon">
+			<section class="afternoon" (click)="editWeekPeriod(false)">
 				<p>Afternoon</p>
 			</section>
 		</div>
@@ -31,7 +31,7 @@
 	@for(day of weekDays; track day; let i = $index) {
 	<div class="day-block">
 
-		<div class="day-label">
+		<div class="day-label" (click)="editDayPeriod(i)">
 			<p class="day-value">{{ this.dateService.formatDay(day.getDate()) }}</p>
 			<p>{{ this.weekLabels[i] }}</p>
 		</div>

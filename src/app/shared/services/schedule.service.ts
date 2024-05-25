@@ -14,11 +14,8 @@ export default class ScheduleService {
 	}
 
 	public set scheduleDays(dates: DayInfo[]) {
-		this._scheduleDays = dates;
 		this.storageService.setList("scheduleDays", dates);
 	}
-
-	private _scheduleDays: DayInfo[] = [];
 
 	constructor(dateService: DateService, private storageService: StorageService) {
 		const days = this.storageService.getList<DayInfo>('scheduleDays');
@@ -47,18 +44,18 @@ export default class ScheduleService {
 		this.scheduleDays = temp;
 	}
 
-	public updateModuleColor(dayInfo: DayInfo, color: string, isMorning: boolean) {
-		let targetIndex = this.scheduleDays.indexOf(dayInfo);
 
-		if (targetIndex === -1) return;
-
+	public updateModuleColor(moduleName: string, color: string) {
 		const temp = this.scheduleDays;
 
-		if (isMorning) {
-			temp[targetIndex].morning!.Module!.Color = color;
-		} else {
-			temp[targetIndex].afternoon!.Module!.Color = color;
-		}
+		temp.forEach(d => {
+			if (d.morning?.Module?.Name === moduleName) {
+				d.morning.Module!.Color = color;
+			}
+			if (d.afternoon?.Module?.Name === moduleName) {
+				d.afternoon.Module!.Color = color;
+			}
+		});
 
 		this.scheduleDays = temp;
 	}
