@@ -10,6 +10,7 @@ import Module from '@domain/module/module.model';
 import CompetenceSelectChipComponent from '@features/module-page/components/competence-select-chip/competence-select-chip.component';
 import ModulesSelectChipComponent from '@features/module-page/components/modules-select-chip/modules-select-chip.component';
 import ModuleService from '@shared/services/module.service';
+import StorageService from '@shared/services/storage.service';
 import { SharedModule } from '@shared/shared.module';
 
 @Component({
@@ -36,7 +37,8 @@ export default class ModuleFormComponent implements OnInit {
 	constructor(
 		private readonly service: ModuleService,
 		private readonly router: Router,
-		private readonly route: ActivatedRoute
+		private readonly route: ActivatedRoute,
+		private readonly storageService: StorageService,
 	) {
 		this.moduleForm = new FormGroup({
 			Name: new FormControl<string>('', [
@@ -111,6 +113,8 @@ export default class ModuleFormComponent implements OnInit {
 		if (this.formModuleId) {
 			body.Id = this.formModuleId;
 		}
+
+		this.storageService.appendList("modules", body);
 
 		this.service.save(body, this.isEdit).subscribe({
 			next: () => this.router.navigate(['/module', 'list']),

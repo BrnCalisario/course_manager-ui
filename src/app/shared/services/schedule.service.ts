@@ -2,129 +2,143 @@ import { Injectable } from "@angular/core";
 import { DayInfo } from "@domain/lesson/lesson.model";
 import Module from "@domain/module/module.model";
 import { DateService } from "./date.service";
+import StorageService from "./storage.service";
 
 @Injectable({ providedIn: 'root' })
 export default class ScheduleService {
 
-    public get scheduleDays(): DayInfo[] {
-        return this._scheduleDays;
-    }
+	public get scheduleDays(): DayInfo[] {
+		const days = this.storageService.getList<DayInfo>('scheduleDays');
+		var parsed = days.map(d => new DayInfo(d));
+		return parsed;
+	}
 
-    public set scheduleDays(dates: DayInfo[]) {
-        this._scheduleDays = dates;
-    }
+	public set scheduleDays(dates: DayInfo[]) {
+		this._scheduleDays = dates;
+		this.storageService.setList("scheduleDays", dates);
+	}
 
-    private _scheduleDays: DayInfo[] = [];
+	private _scheduleDays: DayInfo[] = [];
 
-    constructor(dateService: DateService) {
-        this.scheduleDays = dateService.mockYearLessons(new Date().getFullYear());
+	constructor(dateService: DateService, private storageService: StorageService) {
+		const days = this.storageService.getList<DayInfo>('scheduleDays');
 
-        console.log("Schedule service iniciado");
-    }
+		if (days.length < 1) {
+			this.scheduleDays = dateService.mockYearLessons(2024);
+		}
+
+		console.log("Schedule service iniciado", days.length > 0 ? "com dados" : "sem dados");
+	}
 
 
-    public updateLesson(dayInfo: DayInfo, module: Module | undefined, isMorning: boolean) {
-        let targetIndex = this.scheduleDays.indexOf(dayInfo);
+	public updateLesson(dayInfo: DayInfo, module: Module | null, isMorning: boolean) {
 
-        if (targetIndex === -1) return;
+		let targetIndex = this.scheduleDays.findIndex(d => d.equals(dayInfo.getDate()));
 
-        if (isMorning) {
-            this.scheduleDays[targetIndex].morning!.Module = module;
-        } else {
-            this.scheduleDays[targetIndex].afternoon!.Module = module;
-        }
-    }
+		if (targetIndex === -1) return;
 
-    public updateModuleColor(dayInfo: DayInfo, color: string, isMorning: boolean) {
+		const temp = this.scheduleDays;
 
-        let targetIndex = this.scheduleDays.indexOf(dayInfo);
+		if (isMorning) {
+			temp[targetIndex].morning!.Module = module;
+		} else {
+			temp[targetIndex].afternoon!.Module = module;
+		}
+		this.scheduleDays = temp;
+	}
 
-        if (targetIndex === -1) return;
+	public updateModuleColor(dayInfo: DayInfo, color: string, isMorning: boolean) {
+		let targetIndex = this.scheduleDays.indexOf(dayInfo);
 
-        if (isMorning) {
-            this.scheduleDays[targetIndex].morning!.Module!.Color = color;
-        } else {
-            this.scheduleDays[targetIndex].afternoon!.Module!.Color = color;
-        }
+		if (targetIndex === -1) return;
 
-    }
+		const temp = this.scheduleDays;
 
-    public getWeek(date: Date): DayInfo[] {
-        const result: DayInfo[] = [];
+		if (isMorning) {
+			temp[targetIndex].morning!.Module!.Color = color;
+		} else {
+			temp[targetIndex].afternoon!.Module!.Color = color;
+		}
 
-        const tempDate = new Date(date)
-        tempDate.setDate(date.getDate() - date.getDay() + 1);
+		this.scheduleDays = temp;
+	}
 
-        for (let i = 0; i < 5; i++) {
+	public getWeek(date: Date): DayInfo[] {
+		const result: DayInfo[] = [];
 
-            let target = this._scheduleDays.find(d => d.equals(tempDate));
+		const tempDate = new Date(date)
+		tempDate.setDate(date.getDate() - date.getDay() + 1);
 
-            result.push(target ? target : new DayInfo(tempDate));
+		for (let i = 0; i < 5; i++) {
 
-            tempDate.setDate(tempDate.getDate() + 1);
-        }
+			let target = this.scheduleDays.find(d => d.equals(tempDate));
 
-        return result;
-    }
+			result.push(target ? target : new DayInfo(tempDate));
 
-    public getMonth(year: number, month: number): DayInfo[] {
-        const result: DayInfo[] = []
+			tempDate.setDate(tempDate.getDate() + 1);
+		}
 
-        const tempDate = new Date(year, month);
+		return result;
+	}
 
-        const dayCount = DateService.getDaysInActualMonth(tempDate);
+	public getMonth(year: number, month: number): DayInfo[] {
+		const result: DayInfo[] = []
 
-        for (let i = 0; i < dayCount; i++) {
+		const tempDate = new Date(year, month);
 
-            let target = this._scheduleDays.find(d => d.equals(tempDate));
-            result.push(target ? target : new DayInfo(tempDate));
+		const dayCount = DateService.getDaysInActualMonth(tempDate);
 
-            tempDate.setDate(tempDate.getDate() + 1);
-        }
+		for (let i = 0; i < dayCount; i++) {
 
-        return result;
-    }
+			let target = this.scheduleDays.find(d => d.equals(tempDate));
+			result.push(target ? target : new DayInfo(tempDate));
 
-    public getMonthFilled(year: number, month: number): DayInfo[] {
+			tempDate.setDate(tempDate.getDate() + 1);
+		}
 
-        const result: DayInfo[] = [];
+		return result;
+	}
 
-        const tempDate = new Date(year, month);
+	public getMonthFilled(year: number, month: number): DayInfo[] {
 
-        /// Set to first sunday of Month Filled.
-        tempDate.setDate(tempDate.getDate() - tempDate.getDay());
+		const result: DayInfo[] = [];
 
-        for (let i = 0; i < 42; i++) {
+		const tempDate = new Date(year, month);
 
-            let target = this._scheduleDays.find(d => d.equals(tempDate));
+		/// Set to first sunday of Month Filled.
+		tempDate.setDate(tempDate.getDate() - tempDate.getDay());
 
-            result.push(target ? target : new DayInfo(tempDate))
+		for (let i = 0; i < 42; i++) {
 
-            tempDate.setDate(tempDate.getDate() + 1);
-        }
+			let target = this.scheduleDays.find(d => d.equals(tempDate));
 
-        return result;
-    }
+			result.push(target ? target : new DayInfo(tempDate))
 
-    public getMonthByDate(date: Date, filled = false): DayInfo[] {
-        const month = date.getMonth();
-        const year = date.getFullYear();
+			tempDate.setDate(tempDate.getDate() + 1);
+		}
 
-        if (filled) {
-            return this.getMonthFilled(year, month);
-        }
+		return result;
+	}
 
-        return this.getMonth(year, month);
-    }
+	public getMonthByDate(date: Date, filled = false): DayInfo[] {
+		const month = date.getMonth();
+		const year = date.getFullYear();
 
-    public getFullYear(year: number): DayInfo[][] {
-        const result: DayInfo[][] = [];
+		if (filled) {
+			return this.getMonthFilled(year, month);
+		}
 
-        for (let month = 0; month < 12; month++) {
-            const monthList = this.getMonthFilled(year, month);
-            result.push(monthList);
-        }
+		return this.getMonth(year, month);
+	}
 
-        return result;
-    }
+	public getFullYear(year: number): DayInfo[][] {
+		const result: DayInfo[][] = [];
+
+		for (let month = 0; month < 12; month++) {
+			const monthList = this.getMonthFilled(year, month);
+			result.push(monthList);
+		}
+
+		return result;
+	}
 }

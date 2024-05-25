@@ -7,6 +7,7 @@ import Module from '@domain/module/module.model';
 import { ColorPickerComponent } from '@shared/components/color-picker/color-picker.component';
 import { DateService } from '@shared/services/date.service';
 import ScheduleService from '@shared/services/schedule.service';
+import StorageService from '@shared/services/storage.service';
 import { SharedModule } from '@shared/shared.module';
 
 @Component({
@@ -66,7 +67,8 @@ export class ScheduleWeekComponent implements OnInit {
 		private readonly route: ActivatedRoute,
 		public readonly location: Location,
 		private readonly scheduleService: ScheduleService,
-		public readonly dateService: DateService
+		public readonly dateService: DateService,
+		private readonly storageService: StorageService
 	) { }
 
 	public ngOnInit(): void {
@@ -80,7 +82,11 @@ export class ScheduleWeekComponent implements OnInit {
 		this.date = new Date(date);
 		this.weekDays = this.scheduleService.getWeek(this.date);
 
-		console.log(this.weekDays);
+		let registedModules = this.storageService.getList<Module>("modules");
+
+		if (registedModules) {
+			this.modules = registedModules;
+		}
 	}
 
 	public onChange(event: MatButtonToggleChange) {
@@ -89,17 +95,15 @@ export class ScheduleWeekComponent implements OnInit {
 
 	public editPeriod(date: DayInfo, isMorning: boolean) {
 
-		console.log("before", date);
-
 		if (this.cursorType == 'clear') {
-			this.scheduleService.updateLesson(date, undefined, isMorning);
+			this.scheduleService.updateLesson(date, null, isMorning);
 		}
 
 		if (this.cursorType == 'add') {
-			this.scheduleService.updateLesson(date, this.selectedModule ?? undefined, isMorning);
+			this.scheduleService.updateLesson(date, this.selectedModule ?? null, isMorning);
 		}
 
-		console.log("after", date);
+		this.weekDays = this.scheduleService.getWeek(this.date);
 	}
 
 	public formatTextColor(backgroundColor: string) {

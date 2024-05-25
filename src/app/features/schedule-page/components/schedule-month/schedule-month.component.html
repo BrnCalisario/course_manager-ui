@@ -26,13 +26,13 @@
 		}
 		@for(day of month; track day; let i = $index) {
 		<div class="day" id="day-{{i}}" [ngClass]="getDayClass(day, i)" (click)="this.gotoWeek(day.getDate())">
-			<div class="day-morning" [style.background]="day.morning?.Module?.Color ?? '#FFF'">
+			<div class="day-morning" [style.background]="day.morning.Module?.Color ?? '#FFF'">
 
 			</div>
 			<div class="day-number">
 				{{ day.day }}
 			</div>
-			<div class="day-afternoon" [style.background]="day.afternoon?.Module?.Color ?? '#FFF'">
+			<div class="day-afternoon" [style.background]="day.afternoon.Module?.Color ?? '#FFF'">
 
 			</div>
 		</div>

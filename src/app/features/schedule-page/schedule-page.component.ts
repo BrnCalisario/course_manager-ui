@@ -18,7 +18,7 @@ export class SchedulePageComponent implements OnInit {
 	}
 
 	ngOnInit(): void {
-		this.scheduleService.scheduleDays = this.dateService.mockYearLessons(2024);
+		// this.scheduleService.scheduleDays = this.dateService.mockYearLessons(2024);
 	}
 }
 

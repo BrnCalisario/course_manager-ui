@@ -1,6 +1,6 @@
 <ng-template>
 	<div class="module" [ngClass]="this.style">
-		<app-color-picker [(color)]="module.Color"></app-color-picker>
+		<app-color-picker (colorChange)="onColorChange($event)" [color]="module.Color"></app-color-picker>
 		<div class="module-name">
 			<span>{{ module.Name }}</span>
 		</div>

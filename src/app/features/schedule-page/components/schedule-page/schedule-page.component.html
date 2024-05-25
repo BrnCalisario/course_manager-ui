@@ -15,9 +15,9 @@
 				@for(day of month; track day) {
 
 				<div class="day" [ngClass]="day.month == i ? day.type : 'disabled'">
-					<div class="day-morning" [style.background]="day.morning?.Module?.Color ?? '#FFF'"></div>
+					<div class="day-morning" [style.background]="day.morning.Module?.Color ?? '#FFF'"></div>
 					{{ day.day }}
-					<div class="day-afternoon" [style.background]="day.afternoon?.Module?.Color ?? '#FFF'"></div>
+					<div class="day-afternoon" [style.background]="day.afternoon.Module?.Color ?? '#FFF'"></div>
 				</div>
 
 				}
