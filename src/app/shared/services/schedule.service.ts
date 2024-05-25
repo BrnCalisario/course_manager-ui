@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { EventEmitter, Injectable } from "@angular/core";
 import { DayInfo } from "@domain/lesson/lesson.model";
 import Module from "@domain/module/module.model";
 import { DateService } from "./date.service";
@@ -15,6 +15,7 @@ export default class ScheduleService {
 
 	public set scheduleDays(dates: DayInfo[]) {
 		this.storageService.setList("scheduleDays", dates);
+		this.scheduleChanged.emit();
 	}
 
 	constructor(dateService: DateService, private storageService: StorageService) {
@@ -27,6 +28,7 @@ export default class ScheduleService {
 		console.log("Schedule service iniciado", days.length > 0 ? "com dados" : "sem dados");
 	}
 
+	public scheduleChanged: EventEmitter<void> = new EventEmitter<void>();
 
 	public updateLesson(dayInfo: DayInfo, module: Module | null, isMorning: boolean) {
 
@@ -41,6 +43,7 @@ export default class ScheduleService {
 		} else {
 			temp[targetIndex].afternoon!.Module = module;
 		}
+
 		this.scheduleDays = temp;
 	}
 

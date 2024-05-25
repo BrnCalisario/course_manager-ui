@@ -87,6 +87,10 @@ export class ScheduleWeekComponent implements OnInit {
 		if (registedModules) {
 			this.modules = registedModules;
 		}
+
+		this.scheduleService.scheduleChanged.subscribe(() => {
+			this.weekDays = this.scheduleService.getWeek(this.date);
+		});
 	}
 
 	public onChange(event: MatButtonToggleChange) {
@@ -114,7 +118,7 @@ export class ScheduleWeekComponent implements OnInit {
 			this.scheduleService.updateLesson(date, this.selectedModule ?? null, isMorning);
 		}
 
-		this.weekDays = this.scheduleService.getWeek(this.date);
+		// this.weekDays = this.scheduleService.getWeek(this.date);
 	}
 
 	public formatTextColor(backgroundColor: string) {
