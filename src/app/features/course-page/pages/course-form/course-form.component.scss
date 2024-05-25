@@ -59,3 +59,18 @@
 	align-items: center;
 	gap: 1rem;
 }
+
+.total-workload {
+	margin: 0 auto;
+	text-align: center;
+	font-size: 1.3rem;
+
+	p {
+		font-weight: 600;
+	}
+
+	span {
+		font-weight: 400;
+		color: var(--primary)
+	}
+}

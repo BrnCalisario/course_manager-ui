@@ -9,11 +9,7 @@
 
 		<mat-form-field style="width: 100%">
 			<mat-label>Description</mat-label>
-			<textarea
-				matInput
-				formControlName="Description"
-				#Description
-			></textarea>
+			<textarea matInput formControlName="Description" #Description></textarea>
 		</mat-form-field>
 
 		<div class="color-input">
@@ -23,21 +19,13 @@
 
 		<div class="module-title-wrap">
 			<h2>Modules</h2>
-			<button
-				mat-fab
-				extended
-				color="primary"
-				(click)="openModuleListDialog()"
-			>
+			<button mat-fab extended color="primary" (click)="openModuleListDialog()">
 				<mat-icon>add</mat-icon>
 				Add module
 			</button>
 		</div>
 
-		<draggable-list
-			[itemFormatter]="formatModule"
-			[itemList]="courseModules"
-		/>
+		<draggable-list [itemFormatter]="formatModule" [itemList]="courseModules" />
 	</form>
 
 	<div id="second-column" class="column">
@@ -47,25 +35,21 @@
 			@for (competence of mainCompetences; track $index) {
 			<mat-chip color="primary" [highlighted]="true">{{
 				competence.Name
-			}}</mat-chip>
+				}}</mat-chip>
 			} @if (competencesOverflow > 0) {
-			<mat-chip color="warn" [highlighted]="true"
-				>+{{ competencesOverflow }} others</mat-chip
-			>
+			<mat-chip color="warn" [highlighted]="true">+{{ competencesOverflow }} others</mat-chip>
 			}
+		</div>
+
+		<div *ngIf="this.courseModules.length > -1" class="total-workload">
+			<p>Total Workload of this course: <span>{{ getTotalWorkload() }}</span> </p>
 		</div>
 	</div>
 
 	{{ courseForm.errors }}
 
-	<button
-		type="button"
-		style="justify-self: flex-end"
-		mat-raised-button
-		color="primary"
-		[disabled]="!courseForm.valid"
-		(click)="onSubmit()"
-	>
+	<button type="button" style="justify-self: flex-end" mat-raised-button color="primary"
+		[disabled]="!courseForm.valid" (click)="onSubmit()">
 		{{ this.isEdit ? "Edit" : "Create" }}
 	</button>
 </div>

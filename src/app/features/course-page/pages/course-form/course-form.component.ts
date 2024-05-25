@@ -193,6 +193,10 @@ export default class CourseFormComponent implements OnInit {
 			});
 	}
 
+	public getTotalWorkload() {
+		return `${this.courseModules.reduce((acc, module) => acc + module.Workload, 0)} hours`;
+	}
+
 	private buildCourse(): Course {
 		const course = new Course(
 			this.courseId ?? 0,

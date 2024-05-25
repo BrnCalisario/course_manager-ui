@@ -17,7 +17,7 @@ abstract class BaseService<TKey, TEntity extends BaseEntity<TKey>> {
 		ODataListResponse<TEntity>
 	>;
 
-	constructor(protected readonly endpoint: BaseEndpoint<TKey, TEntity>) {}
+	constructor(protected readonly endpoint: BaseEndpoint<TKey, TEntity>) { }
 
 	save(entity: TEntity, isEdit: boolean): Observable<TEntity> {
 		const method = isEdit
@@ -77,8 +77,8 @@ abstract class BaseService<TKey, TEntity extends BaseEntity<TKey>> {
 			ODataSingleResponse<TEntity>
 		>(() => {
 			const method = isEdit
-				? this.endpoint.create.bind(this.endpoint)
-				: this.endpoint.update.bind(this.endpoint);
+				? this.endpoint.update.bind(this.endpoint)
+				: this.endpoint.create.bind(this.endpoint);
 			return method(builder());
 		});
 

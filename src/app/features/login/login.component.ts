@@ -45,16 +45,16 @@ export class LoginComponent {
 	public register() {
 		if (!this.registerForm.valid) return;
 
-		// this.authService.register({ ...this.registerForm.value })
-		// 	.subscribe({
-		// 		next: (res) => {
-		// 			this.isLogin = true;
-		// 			console.log(res)
-		// 		},
-		// 		error: (err) => {
-		// 			alert("Erro interno")
-		// 		}
-		// 	})
+		this.authService.register({ ...this.registerForm.value })
+			.subscribe({
+				next: (res) => {
+					this.isLogin = true;
+					console.log(res)
+				},
+				error: (err) => {
+					alert("Erro interno")
+				}
+			})
 	}
 
 	public toggleForm() {
