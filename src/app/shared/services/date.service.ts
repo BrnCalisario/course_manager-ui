@@ -122,10 +122,10 @@ export class DateService {
 		const total = DateService.isLeapYear(init.getFullYear()) ? 366 : 365;
 
 		var morningLesson = new Lesson();
-		morningLesson.Module = Object.assign({}, this.moduleOne);
+		morningLesson.Module = null;
 
 		var afternoonLesson = new Lesson();
-		afternoonLesson.Module = Object.assign({}, this.moduleTwo);
+		afternoonLesson.Module = null;
 
 		for (var i = 0; i < total; ++i) {
 

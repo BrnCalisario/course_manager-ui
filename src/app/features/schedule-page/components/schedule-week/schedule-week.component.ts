@@ -28,35 +28,8 @@ export class ScheduleWeekComponent implements OnInit {
 		'Friday',
 	];
 
-	public mod1: Module = {
-		Id: 0,
-		Name: 'Module 1',
-		Description: '',
-		Objective: '',
-		Workload: 0,
-		Competences: [],
-		Dependencies: [],
-		Dependents: [],
-		Color: '#25b4da',
-		Deleted: false
-	}
 
-	public mod2: Module = {
-		Id: 0,
-		Name: 'Module 2',
-		Description: '',
-		Objective: '',
-		Workload: 0,
-		Competences: [],
-		Dependencies: [],
-		Dependents: [],
-		Color: '#f5a623',
-		Deleted: false
-	}
-
-	public modules: Module[] = [
-		this.mod1, this.mod2
-	];
+	public modules: Module[] = [];
 
 	public cursorType: 'add' | 'clear' | null = null;
 
@@ -91,6 +64,12 @@ export class ScheduleWeekComponent implements OnInit {
 		this.scheduleService.scheduleChanged.subscribe(() => {
 			this.weekDays = this.scheduleService.getWeek(this.date);
 		});
+
+		this.scheduleService.moduleChanged.subscribe((modules) => {
+			this.modules = modules;
+
+			this.selectedModule = this.modules.find(m => m.Name == this.selectedModule?.Name) ?? null;
+		});
 	}
 
 	public previous() {
@@ -122,11 +101,19 @@ export class ScheduleWeekComponent implements OnInit {
 
 	public editPeriod(date: DayInfo, isMorning: boolean) {
 
+		// console.log(this.selectedModule?.RemainingWorkload);
+
 		if (this.cursorType == 'clear') {
 			this.scheduleService.updateLesson(date, null, isMorning);
 		}
 
 		if (this.cursorType == 'add') {
+
+
+			if (this.selectedModule && this.selectedModule!.RemainingWorkload == 0) {
+
+			};
+
 			this.scheduleService.updateLesson(date, this.selectedModule ?? null, isMorning);
 		}
 

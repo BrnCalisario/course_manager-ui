@@ -114,6 +114,8 @@ export default class ModuleFormComponent implements OnInit {
 			body.Id = this.formModuleId;
 		}
 
+		body.RemainingWorkload = body.Workload;
+
 		this.storageService.appendList("modules", body);
 
 		this.service.save(body, this.isEdit).subscribe({
