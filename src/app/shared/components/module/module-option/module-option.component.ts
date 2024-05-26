@@ -22,8 +22,15 @@ export class ModuleOption {
 
 	public colorChange: EventEmitter<string> = new EventEmitter<string>();
 
+	public get canSelect() {
+		return this.module.RemainingWorkload > 0;
+	};
+
 	@Input()
 	public set selected(value: boolean) {
+
+		if (value && !this.canSelect) return;
+
 		this._selected = value;
 		this.style = value ? 'active' : 'inactive';
 	}
@@ -31,6 +38,10 @@ export class ModuleOption {
 	public get selected(): boolean {
 		return this._selected;
 	}
+
+	public style: 'active' | 'disabled' | 'inactive' = 'inactive';
+
+	private _selected: boolean = false;
 
 	onColorChange(color: string): void {
 		this.module.Color = color;
@@ -57,10 +68,5 @@ export class ModuleOption {
 		}
 
 		this.scheduleService.updateModuleColor(module.Name, color);
-
 	}
-
-	public style: 'active' | 'disabled' | 'inactive' = 'inactive';
-
-	private _selected: boolean = false;
 }

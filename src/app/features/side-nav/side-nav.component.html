@@ -5,17 +5,23 @@
 		<mat-divider></mat-divider>
 
 		<mat-nav-list>
+			<a mat-list-item [routerLink]="['/module', 'list']">
+				<mat-icon matListItemIcon>
+					line_style
+				</mat-icon>
+				<p>Modules</p>
+			</a>
 			<a mat-list-item [routerLink]="['/course', 'list']">
 				<mat-icon matListItemIcon>
-					view_module
+					view_quilt
 				</mat-icon>
 				<p matListItemTitle>Courses</p>
 			</a>
-			<a mat-list-item [routerLink]="['/module', 'list']">
+			<a mat-list-item [routerLink]="['/classes', 'list']">
 				<mat-icon matListItemIcon>
-					toll
+					people
 				</mat-icon>
-				<p>Modules</p>
+				<p>Classes</p>
 			</a>
 			<a mat-list-item [routerLink]="['/schedule', 'year']">
 				<mat-icon matListItemIcon>

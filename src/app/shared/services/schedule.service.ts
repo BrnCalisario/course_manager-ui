@@ -19,6 +19,7 @@ export default class ScheduleService {
 	}
 
 	constructor(dateService: DateService, private storageService: StorageService) {
+
 		const days = this.storageService.getList<DayInfo>('scheduleDays');
 
 		if (days.length < 1) {
@@ -29,8 +30,11 @@ export default class ScheduleService {
 	}
 
 	public scheduleChanged: EventEmitter<void> = new EventEmitter<void>();
+	public moduleChanged: EventEmitter<Module[]> = new EventEmitter<Module[]>();
 
 	public updateLesson(dayInfo: DayInfo, module: Module | null, isMorning: boolean) {
+
+		if (module && module.RemainingWorkload < 4) return;
 
 		let targetIndex = this.scheduleDays.findIndex(d => d.equals(dayInfo.getDate()));
 
@@ -38,15 +42,34 @@ export default class ScheduleService {
 
 		const temp = this.scheduleDays;
 
+		const targetModule = module ? module : isMorning ? temp[targetIndex].morning?.Module : temp[targetIndex].afternoon?.Module;
+
 		if (isMorning) {
 			temp[targetIndex].morning!.Module = module;
 		} else {
 			temp[targetIndex].afternoon!.Module = module;
 		}
 
+		if (targetModule) {
+			this.updateModuleRemainingWorkload(targetModule.Name, module ? -4 : 4);
+		}
+
 		this.scheduleDays = temp;
 	}
 
+
+	public updateModuleRemainingWorkload(moduleName: string, incWorkload: number) {
+
+		const modules = this.storageService.getList<Module>('modules');
+
+		let index = modules.findIndex((m) => m.Name === moduleName);
+
+		if (index !== -1) {
+			modules[index].RemainingWorkload = modules[index].RemainingWorkload + incWorkload;
+			this.storageService.setList('modules', modules);
+			this.moduleChanged.emit(modules);
+		}
+	}
 
 	public updateModuleColor(moduleName: string, color: string) {
 		const temp = this.scheduleDays;

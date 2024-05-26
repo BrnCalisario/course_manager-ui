@@ -6,6 +6,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import Course from '@domain/course/course.model';
+import { ClassFormComponent } from '@features/class-page/pages/class-form/class-form.component';
 import { ConfirmDeleteDialog } from '@shared/components/delete-dialog/confirm-delete.component';
 import CourseService from '@shared/services/course.service';
 import { SharedModule } from '@shared/shared.module';
@@ -68,5 +69,10 @@ export class CourseCardComponent {
 
 	public onUpdate(): void {
 		this.router.navigate(['/course', 'form', this.course.Id]);
+	}
+
+	public createClass(): void {
+		const dialogRef = this.dialog.open(ClassFormComponent);
+		dialogRef.componentInstance.course = this.course;
 	}
 }

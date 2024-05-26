@@ -12,4 +12,5 @@ export default class Module implements BaseEntity<string> {
 	Dependents: Module[] = [];
 	Color: string = '#AAEE33';
 	Deleted: boolean = false;
+	RemainingWorkload: number = 0;
 }

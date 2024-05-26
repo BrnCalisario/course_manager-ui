@@ -64,8 +64,6 @@
 <div>
 	<h3>Modules</h3>
 	<app-module-select [(selected)]="selectedModule">
-		<app-module-option [module]="this.dateService.moduleOne" name="Module 1" />
-		<app-module-option [module]="this.dateService.moduleTwo" name="Module 2" />
 		@for(module of this.modules; track module; let i = $index) {
 		<app-module-option [module]="module" />
 		}

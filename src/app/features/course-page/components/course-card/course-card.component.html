@@ -3,28 +3,21 @@
 		<mat-card-title class="title">{{ course.Name }}</mat-card-title>
 	</mat-card-header>
 	<mat-card-content>
-		<p class="description">{{ course.Description }}</p>
+		<p class="description"></p>
 		<div class="info-item duration">
 			<span>Duration</span>
 			<p>{{ TotalWorkload }} H</p>
 		</div>
 	</mat-card-content>
 	<mat-card-actions>
-		<button
-			(click)="onUpdate()"
-			mat-icon-button
-			color="accent"
-			matTooltip="Edit"
-		>
+		<button (click)="onUpdate()" mat-icon-button color="accent" matTooltip="Edit">
 			<mat-icon>edit</mat-icon>
 		</button>
-		<button
-			(click)="onDelete()"
-			mat-icon-button
-			color="warn"
-			matTooltip="Delete"
-		>
+		<button (click)="onDelete()" mat-icon-button color="warn" matTooltip="Delete">
 			<mat-icon>close</mat-icon>
-		</button></mat-card-actions
-	>
+		</button>
+		<button (click)="createClass()" mat-icon-button color="primary" matTooltip="Create Class">
+			<mat-icon>add</mat-icon>
+		</button>
+	</mat-card-actions>
 </mat-card>
