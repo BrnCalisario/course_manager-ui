@@ -84,6 +84,7 @@ export default class ModuleFormComponent implements OnInit {
 			.subscribe({
 				next: (res: any) => {
 					delete res.ModuleCompetences;
+					delete res.Color;
 					this.moduleForm.setValue(res);
 				},
 				error: (_) => {
@@ -115,7 +116,7 @@ export default class ModuleFormComponent implements OnInit {
 
 		body.RemainingWorkload = body.Workload;
 
-		this.storageService.appendList("modules", body);
+		this.storageService.appendList('modules', body);
 
 		this.service.save(body, this.isEdit).subscribe({
 			next: () => {
