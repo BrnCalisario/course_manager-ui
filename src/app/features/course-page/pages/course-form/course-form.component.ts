@@ -95,13 +95,10 @@ export default class CourseFormComponent implements OnInit {
 
 			Description: new FormControl<string>('', [
 				Validators.required,
-				Validators.minLength(10),
 				Validators.maxLength(5000),
 			]),
 
 			Modules: new FormControl<Module[]>([]),
-
-			Color: new FormControl<string>(''),
 		});
 
 		this.courseModulesForm.valueChanges.subscribe((modules) => {

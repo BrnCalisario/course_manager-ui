@@ -5,17 +5,12 @@
 @if(!this.isLoading) {
 <div class="row">
 	<form #form class="column" [formGroup]="courseForm">
-		<editable-text [textForm]="courseNameForm" label="Title" />
+		<editable-text [edit]="true" [textForm]="courseNameForm" label="Title" />
 
 		<mat-form-field style="width: 100%">
 			<mat-label>Description</mat-label>
 			<textarea matInput formControlName="Description" #Description></textarea>
 		</mat-form-field>
-
-		<div class="color-input">
-			<h3>Color:</h3>
-			<app-color-picker [(color)]="courseColor" />
-		</div>
 
 		<div class="module-title-wrap">
 			<h2>Modules</h2>

@@ -93,6 +93,18 @@ export class ScheduleWeekComponent implements OnInit {
 		});
 	}
 
+	public previous() {
+		this.date.setDate(this.date.getDate() - 7);
+
+		this.weekDays = this.scheduleService.getWeek(this.date);
+	}
+
+	public next() {
+		this.date.setDate(this.date.getDate() + 7);
+
+		this.weekDays = this.scheduleService.getWeek(this.date);
+	}
+
 	public onChange(event: MatButtonToggleChange) {
 		this.cursorType = event.value;
 	}

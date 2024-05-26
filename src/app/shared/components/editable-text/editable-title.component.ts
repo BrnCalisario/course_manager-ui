@@ -13,6 +13,7 @@ export default class EditableText {
 	@Input({ required: true })
 	public textForm!: FormControl<string>;
 
+	@Input({ required: false })
 	public edit: boolean = false;
 
 	public toggleEdit(): void {

@@ -4,8 +4,8 @@
 
 <div class="week-control">
 	<div class="buttons">
-		<button mat-icon-button><mat-icon>keyboard_arrow_left</mat-icon></button>
-		<button mat-icon-button><mat-icon>keyboard_arrow_right</mat-icon></button>
+		<button mat-icon-button (click)="previous()"><mat-icon>keyboard_arrow_left</mat-icon></button>
+		<button mat-icon-button (click)="next()"><mat-icon>keyboard_arrow_right</mat-icon></button>
 	</div>
 	<div>
 		{{ this.dateService.formatWeekString(this.date)}}
