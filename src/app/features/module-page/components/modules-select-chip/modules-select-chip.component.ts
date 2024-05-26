@@ -37,6 +37,15 @@ export default class ModulesSelectChipComponent implements OnInit {
 	@Input({ required: true })
 	public modules!: Module[];
 
+	public get selectedValues(): Module[] {
+		return this.modules ?? [];
+	}
+
+	public set selectedValues(value: Module[]) {
+		this.modules = value;
+		this.modulesChange.emit(value);
+	}
+
 	@Output()
 	public modulesChange = new EventEmitter<Module[]>();
 

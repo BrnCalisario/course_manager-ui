@@ -21,7 +21,7 @@ export class SelectChipComponent<TKey, T extends BaseEntity<TKey>> {
 	public onChange = new EventEmitter<T[]>();
 
 	@Input({ required: false })
-	contextMenuFn: (event: MouseEvent, option: T) => void = () => { };
+	contextMenuFn: (event: MouseEvent, option: T) => void = () => {};
 
 	selectedId!: string;
 
@@ -37,7 +37,7 @@ export class SelectChipComponent<TKey, T extends BaseEntity<TKey>> {
 			this.selectedValues.push(value);
 		} else {
 			this.selectedValues = this.selectedValues.filter(
-				(item) => item !== value
+				(item) => item.Id !== value.Id
 			);
 		}
 
@@ -45,14 +45,14 @@ export class SelectChipComponent<TKey, T extends BaseEntity<TKey>> {
 	}
 
 	public isSelected = (item: T): boolean =>
-		this.selectedValues.some(entry => entry.Id === item.Id);
+		this.selectedValues.some((entry) => entry.Id === item.Id);
 
 	public getContextMenuStyle() {
 		return {
 			display: true ? 'block' : 'none',
 			position: 'fixed',
 			left: `30px`,
-			top: `50px`
-		}
+			top: `50px`,
+		};
 	}
 }

@@ -88,6 +88,9 @@ export default class ModuleFormComponent implements OnInit {
 			.subscribe({
 				next: (res: any) => {
 					delete res.ModuleCompetences;
+					delete res.ModuleDependencies;
+					delete res.ModuleDependents;
+
 					this.moduleForm.setValue(res);
 				},
 				error: (_) => {
@@ -106,8 +109,16 @@ export default class ModuleFormComponent implements OnInit {
 		return this.moduleForm.get('Competences')!.value;
 	}
 
+	public set competences(value: Competence[]) {
+		this.moduleForm.get('Competences')!.setValue(value);
+	}
+
 	public get modules(): Module[] {
 		return this.moduleForm.get('Dependencies')!.value;
+	}
+
+	public set modules(value: Module[]) {
+		this.moduleForm.get('Dependencies')!.setValue(value);
 	}
 
 	public onSubmit() {

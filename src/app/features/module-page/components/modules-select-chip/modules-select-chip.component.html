@@ -1,16 +1,30 @@
 <div class="actions">
 	<mat-form-field>
 		<mat-label>Search</mat-label>
-		<input matInput [formControl]="this.searchInput">
+		<input matInput [formControl]="this.searchInput" />
 		@if (this.searchInput.value) {
-		<button type="button" matSuffix mat-icon-button aria-label="Clear" (click)="clearInput()">
+		<button
+			type="button"
+			matSuffix
+			mat-icon-button
+			aria-label="Clear"
+			(click)="clearInput()"
+		>
 			<mat-icon>close</mat-icon>
 		</button>
 		}
 	</mat-form-field>
 </div>
 
-<app-select-chip [contextMenuFn]="showContextMenu.bind(this)" [(selectedValues)]="modules" [options]="modulesOptions"
-	[toLabel]="ToLabel" />
+<app-select-chip
+	[contextMenuFn]="showContextMenu.bind(this)"
+	[(selectedValues)]="selectedValues"
+	[options]="modulesOptions"
+	[toLabel]="ToLabel"
+/>
 
-<app-context-menu #contextmenu [display]="this.displayContextMenu" [contextMenuItems]="contextMenuOptions" />
+<app-context-menu
+	#contextmenu
+	[display]="this.displayContextMenu"
+	[contextMenuItems]="contextMenuOptions"
+/>
