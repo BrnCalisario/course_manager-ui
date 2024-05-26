@@ -27,6 +27,7 @@ export class CompetenceDialogComponent implements OnInit {
 	public form: FormGroup = new FormGroup({
 		Name: new FormControl<string>('', [Validators.required]),
 	});
+
 	constructor(
 		private readonly competenceService: CompetenceService,
 		private readonly dialogRef: MatDialogRef<CompetenceDialogComponent>

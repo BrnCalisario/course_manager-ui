@@ -1,4 +1,6 @@
 import { Routes } from '@angular/router';
+import { ClassPageComponent } from '@features/class-page/class-page.component';
+import { classRoutes } from '@features/class-page/class-page.routes';
 import { CoursePageComponent } from '@features/course-page/course-page.component';
 import { courseRoutes } from '@features/course-page/course-page.routes';
 import { HomePageComponent } from '@features/home-page/home-page.component';
@@ -26,6 +28,11 @@ export const routes: Routes = [
 				path: 'module',
 				component: ModulePageComponent,
 				children: moduleRoutes,
+			},
+			{
+				path: 'classes',
+				component: ClassPageComponent,
+				children: classRoutes
 			},
 			{
 				path: 'schedule',
