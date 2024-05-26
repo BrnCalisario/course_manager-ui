@@ -3,15 +3,23 @@ import ODataQueryCommand from 'src/lib/odata/ODataCommand';
 import { ODataSingleResponse } from 'src/lib/odata/types/ODataResponse';
 
 import {
-    Component, EventEmitter, HostListener, Input, OnInit, Output, ViewChild
+	Component,
+	EventEmitter,
+	HostListener,
+	Input,
+	OnInit,
+	Output,
+	ViewChild,
 } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Competence } from '@domain/competence/competence.models';
 import Module from '@domain/module/module.model';
 import { ContextMenuComponent } from '@shared/components/context-menu/context-menu.component';
 import { ConfirmDeleteDialog } from '@shared/components/delete-dialog/confirm-delete.component';
-import { ContextMenuData, MenuItemEvent } from '@shared/models/context-menu.models';
+import {
+	ContextMenuData,
+	MenuItemEvent,
+} from '@shared/models/context-menu.models';
 import ModuleService from '@shared/services/module.service';
 import { SharedModule } from '@shared/shared.module';
 
@@ -24,7 +32,7 @@ import { SharedModule } from '@shared/shared.module';
 })
 export default class ModulesSelectChipComponent implements OnInit {
 	@Input()
-	public formModuleId?: number;
+	public formModuleId?: string;
 
 	@Input({ required: true })
 	public modules!: Module[];
@@ -34,11 +42,14 @@ export default class ModulesSelectChipComponent implements OnInit {
 
 	public queryCommand: ODataQueryCommand<Module>;
 
-	public deleteCommand: ODataQueryCommand<Module, ODataSingleResponse<Module>>;
+	public deleteCommand: ODataQueryCommand<
+		Module,
+		ODataSingleResponse<Module>
+	>;
 
 	public modulesOptions: Module[] = [];
 
-	public selectedId?: number;
+	public selectedId?: string;
 
 	public searchInput = new FormControl<string>('');
 
@@ -47,38 +58,43 @@ export default class ModulesSelectChipComponent implements OnInit {
 		private readonly moduleService: ModuleService
 	) {
 		this.queryCommand = this.moduleService.listCommand();
-		this.deleteCommand = this.moduleService.deleteCommand(() => this.selectedId ?? 0);
+		this.deleteCommand = this.moduleService.deleteCommand(
+			() => this.selectedId ?? ''
+		);
 	}
 
 	public ngOnInit(): void {
 		this.queryCommand.params = {
 			$orderby: 'Name',
 			$top: 20,
-			$filter: this.formModuleId ? {
-				ne: {
-					Id: `${this.formModuleId}`
-				}
-			} : {}
+			$filter: this.formModuleId
+				? {
+						ne: {
+							Id: `${this.formModuleId}`,
+						},
+				  }
+				: {},
 		};
 
-		this.queryCommand.response$
-			.subscribe((res) => {
-				this.modulesOptions = res.value;
-			});
+		this.queryCommand.response$.subscribe((res) => {
+			this.modulesOptions = res.value;
+		});
 
 		this.queryCommand.execute();
 
 		this.searchInput.valueChanges
 			.pipe(debounceTime(350))
-			.subscribe(text => {
+			.subscribe((text) => {
 				this.queryCommand.params = {
 					$filter: {
 						contains: {
 							Name: text ?? '',
 						},
-						ne: this.formModuleId ? {
-							Id: `${this.formModuleId}`
-						} : {}
+						ne: this.formModuleId
+							? {
+									Id: `${this.formModuleId}`,
+							  }
+							: {},
 					},
 				};
 
@@ -94,38 +110,38 @@ export default class ModulesSelectChipComponent implements OnInit {
 		return competence.Name;
 	}
 
-	private openRemoveModal(event: MenuItemEvent<Competence>) {
-
+	private openRemoveModal(event: MenuItemEvent<Module>) {
 		const dialogRef = this.dialog.open(ConfirmDeleteDialog);
 
 		dialogRef.componentInstance.entityId = event.item.Id;
 
-		dialogRef.componentInstance.onConfirm
-			.subscribe(id => {
-				this.selectedId = id;
-				this.deleteCommand.execute();
-			});
+		dialogRef.componentInstance.onConfirm.subscribe((id) => {
+			this.selectedId = id;
+			this.deleteCommand.execute();
+		});
 
-		this.deleteCommand.response$
-			.pipe(take(1))
-			.subscribe({
-				next: () => {
-					dialogRef.close();
-					this.queryCommand.execute();
-				},
-				error: () => alert("Erro ao deletar") // TODO: Feedback Service
-			})
+		this.deleteCommand.response$.pipe(take(1)).subscribe({
+			next: () => {
+				dialogRef.close();
+				this.queryCommand.execute();
+			},
+			error: () => alert('Erro ao deletar'), // TODO: Feedback Service
+		});
 	}
 
 	//#region ContextMenu Properties and Functions
 
 	@ViewChild('contextmenu')
-	public contextMenu!: ContextMenuComponent<Competence>;
+	public contextMenu!: ContextMenuComponent<Module>;
 
 	public displayContextMenu: boolean = false;
 
-	public contextMenuOptions: Array<ContextMenuData<Competence>> = [
-		{ label: 'Remove', icon: 'delete', func: this.openRemoveModal.bind(this) }
+	public contextMenuOptions: Array<ContextMenuData<Module>> = [
+		{
+			label: 'Remove',
+			icon: 'delete',
+			func: this.openRemoveModal.bind(this),
+		},
 	];
 
 	@HostListener('document:click')
@@ -133,7 +149,7 @@ export default class ModulesSelectChipComponent implements OnInit {
 		this.displayContextMenu = false;
 	}
 
-	public showContextMenu(event: MouseEvent, option: Competence) {
+	public showContextMenu(event: MouseEvent, option: Module) {
 		event.preventDefault();
 
 		const { clientX: x, clientY: y } = event;

@@ -5,9 +5,9 @@ import { BaseEndpoint } from '../base/base.endpoint';
 import Module from './module.model';
 
 @Injectable({ providedIn: 'root' })
-export class ModuleEndpoint extends BaseEndpoint<number, Module> {
+export class ModuleEndpoint extends BaseEndpoint<string, Module> {
 	override get route(): string {
-		return "/odata/Module";
+		return '/odata/Module';
 	}
 
 	constructor(protected override http: HttpClient) {

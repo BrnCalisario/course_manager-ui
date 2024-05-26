@@ -32,13 +32,13 @@ export default class ModuleFormComponent implements OnInit {
 
 	public isLoading: boolean = false;
 
-	public formModuleId?: number;
+	public formModuleId?: string;
 
 	constructor(
 		private readonly service: ModuleService,
 		private readonly router: Router,
 		private readonly route: ActivatedRoute,
-		private readonly storageService: StorageService,
+		private readonly storageService: StorageService
 	) {
 		this.moduleForm = new FormGroup({
 			Name: new FormControl<string>('', [
@@ -64,7 +64,7 @@ export default class ModuleFormComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this.formModuleId = Number(this.route.snapshot.params['id']);
+		this.formModuleId = this.route.snapshot.params['id'];
 
 		if (!this.formModuleId) return;
 
@@ -83,8 +83,7 @@ export default class ModuleFormComponent implements OnInit {
 			)
 			.subscribe({
 				next: (res: any) => {
-					delete res.Deleted;
-
+					delete res.ModuleCompetences;
 					this.moduleForm.setValue(res);
 				},
 				error: (_) => {
@@ -114,15 +113,17 @@ export default class ModuleFormComponent implements OnInit {
 			body.Id = this.formModuleId;
 		}
 
-		this.storageService.appendList("modules", body);
+		this.storageService.appendList('modules', body);
 
 		this.service.save(body, this.isEdit).subscribe({
-			next: () => this.router.navigate(['/module', 'list']),
+			next: () => {
+				this.router.navigate(['/module', 'list']);
+			},
 			error: () => alert('An error occurred while creating the module.'),
 		});
 	}
 
 	public returnToList() {
-		this.router.navigate(["module", "list"])
+		this.router.navigate(['module', 'list']);
 	}
 }

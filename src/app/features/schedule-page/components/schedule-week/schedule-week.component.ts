@@ -1,6 +1,9 @@
 import { Location } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { MatButtonToggleChange, MatButtonToggleModule } from '@angular/material/button-toggle';
+import {
+	MatButtonToggleChange,
+	MatButtonToggleModule,
+} from '@angular/material/button-toggle';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DayInfo } from '@domain/lesson/lesson.model';
 import Module from '@domain/module/module.model';
@@ -29,7 +32,7 @@ export class ScheduleWeekComponent implements OnInit {
 	];
 
 	public mod1: Module = {
-		Id: 0,
+		Id: '',
 		Name: 'Module 1',
 		Description: '',
 		Objective: '',
@@ -38,11 +41,11 @@ export class ScheduleWeekComponent implements OnInit {
 		Dependencies: [],
 		Dependents: [],
 		Color: '#25b4da',
-		Deleted: false
-	}
+		Deleted: false,
+	};
 
 	public mod2: Module = {
-		Id: 0,
+		Id: '',
 		Name: 'Module 2',
 		Description: '',
 		Objective: '',
@@ -51,12 +54,10 @@ export class ScheduleWeekComponent implements OnInit {
 		Dependencies: [],
 		Dependents: [],
 		Color: '#f5a623',
-		Deleted: false
-	}
+		Deleted: false,
+	};
 
-	public modules: Module[] = [
-		this.mod1, this.mod2
-	];
+	public modules: Module[] = [this.mod1, this.mod2];
 
 	public cursorType: 'add' | 'clear' | null = null;
 
@@ -69,7 +70,7 @@ export class ScheduleWeekComponent implements OnInit {
 		private readonly scheduleService: ScheduleService,
 		public readonly dateService: DateService,
 		private readonly storageService: StorageService
-	) { }
+	) {}
 
 	public ngOnInit(): void {
 		const date = this.route.snapshot.paramMap.get('date');
@@ -82,7 +83,7 @@ export class ScheduleWeekComponent implements OnInit {
 		this.date = new Date(date);
 		this.weekDays = this.scheduleService.getWeek(this.date);
 
-		let registedModules = this.storageService.getList<Module>("modules");
+		let registedModules = this.storageService.getList<Module>('modules');
 
 		if (registedModules) {
 			this.modules = registedModules;
@@ -110,9 +111,9 @@ export class ScheduleWeekComponent implements OnInit {
 	}
 
 	public editWeekPeriod(isMorning: boolean) {
-		this.weekDays.forEach(d => {
+		this.weekDays.forEach((d) => {
 			this.editPeriod(d, isMorning);
-		})
+		});
 	}
 
 	public editDayPeriod(dayIndex: number) {
@@ -121,13 +122,16 @@ export class ScheduleWeekComponent implements OnInit {
 	}
 
 	public editPeriod(date: DayInfo, isMorning: boolean) {
-
 		if (this.cursorType == 'clear') {
 			this.scheduleService.updateLesson(date, null, isMorning);
 		}
 
 		if (this.cursorType == 'add') {
-			this.scheduleService.updateLesson(date, this.selectedModule ?? null, isMorning);
+			this.scheduleService.updateLesson(
+				date,
+				this.selectedModule ?? null,
+				isMorning
+			);
 		}
 
 		// this.weekDays = this.scheduleService.getWeek(this.date);
@@ -147,10 +151,10 @@ export class ScheduleWeekComponent implements OnInit {
 		var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
 		return result
 			? {
-				r: parseInt(result[1], 16),
-				g: parseInt(result[2], 16),
-				b: parseInt(result[3], 16),
-			}
+					r: parseInt(result[1], 16),
+					g: parseInt(result[2], 16),
+					b: parseInt(result[3], 16),
+			  }
 			: null;
 	}
 
