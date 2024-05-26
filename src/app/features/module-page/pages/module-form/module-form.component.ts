@@ -58,6 +58,10 @@ export default class ModuleFormComponent implements OnInit {
 				Validators.min(1),
 				Validators.max(200),
 			]),
+			Color: new FormControl<string>('#ffffff', [
+				Validators.required,
+				Validators.maxLength(7),
+			]),
 			Competences: new FormControl<Competence[]>([]),
 			Dependencies: new FormControl<Module[]>([]),
 		});
@@ -84,7 +88,6 @@ export default class ModuleFormComponent implements OnInit {
 			.subscribe({
 				next: (res: any) => {
 					delete res.ModuleCompetences;
-					delete res.Color;
 					this.moduleForm.setValue(res);
 				},
 				error: (_) => {
