@@ -39,7 +39,7 @@ export default class CourseFormComponent implements OnInit {
 
 	public isEdit: boolean = false;
 
-	private courseId?: number;
+	private courseId?: string;
 
 	//#region
 
@@ -134,7 +134,7 @@ export default class CourseFormComponent implements OnInit {
 	}
 
 	public ngOnInit(): void {
-		this.courseId = Number(this.route.snapshot.params['id']);
+		this.courseId = this.route.snapshot.params['id'];
 
 		if (!this.courseId) return;
 
@@ -147,8 +147,6 @@ export default class CourseFormComponent implements OnInit {
 			)
 			.subscribe({
 				next: (res: any) => {
-					delete res.Deleted;
-
 					this.courseForm.setValue(res);
 				},
 				error: (_) => {
@@ -191,12 +189,15 @@ export default class CourseFormComponent implements OnInit {
 	}
 
 	public getTotalWorkload() {
-		return `${this.courseModules.reduce((acc, module) => acc + module.Workload, 0)} hours`;
+		return `${this.courseModules.reduce(
+			(acc, module) => acc + module.Workload,
+			0
+		)} hours`;
 	}
 
 	private buildCourse(): Course {
 		const course = new Course(
-			this.courseId ?? 0,
+			this.courseId ?? '',
 			this.courseName,
 			this.courseDescription,
 			this.courseModules,

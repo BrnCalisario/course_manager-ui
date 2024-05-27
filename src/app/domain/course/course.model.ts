@@ -1,9 +1,9 @@
 import BaseEntity from '@domain/base/base.entity';
 import Module from '@domain/module/module.model';
 
-export default class Course implements BaseEntity<number> {
+export default class Course implements BaseEntity<string> {
 	constructor(
-		id: number,
+		id: string,
 		name: string,
 		description: string,
 		modules: Module[],
@@ -16,7 +16,7 @@ export default class Course implements BaseEntity<number> {
 		this.Color = color;
 	}
 
-	Id: number = 0;
+	Id: string = '';
 	Name: string;
 	Description: string;
 	Modules: Module[] = [];

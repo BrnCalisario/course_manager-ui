@@ -5,7 +5,7 @@ import { BaseEndpoint } from '../base/base.endpoint';
 import Course from './course.model';
 
 @Injectable({ providedIn: 'root' })
-export class CourseEndpoint extends BaseEndpoint<number, Course> {
+export class CourseEndpoint extends BaseEndpoint<string, Course> {
 	override get route(): string {
 		return "/odata/Course";
 	}
