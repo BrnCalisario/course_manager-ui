@@ -1,7 +1,4 @@
-<app-header
-	title="Courses"
-	description="Manage your courses here!"
-></app-header>
+<app-header title="Courses" description="Manage your courses here!"></app-header>
 
 <div class="filter-wrap">
 	<mat-form-field class="search-bar" appearance="outline">
@@ -20,9 +17,10 @@
 
 <div class="course-grid">
 	@for (course of courses; track $index) {
-	<app-course-card
-		[course]="course"
-		(onDeleteCourse)="updateList()"
-	></app-course-card>
+	<app-course-card [course]="course" (onDeleteCourse)="updateList()"></app-course-card>
 	}
+</div>
+
+<div class="not-found" *ngIf="courses.length == 0">
+	No courses found!
 </div>

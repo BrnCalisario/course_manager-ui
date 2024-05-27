@@ -10,14 +10,14 @@
 		</div>
 	</mat-card-content>
 	<mat-card-actions>
+		<button (click)="createClass()" mat-icon-button color="primary" matTooltip="Create Class">
+			<mat-icon>add</mat-icon>
+		</button>
 		<button (click)="onUpdate()" mat-icon-button color="accent" matTooltip="Edit">
 			<mat-icon>edit</mat-icon>
 		</button>
 		<button (click)="onDelete()" mat-icon-button color="warn" matTooltip="Delete">
 			<mat-icon>close</mat-icon>
-		</button>
-		<button (click)="createClass()" mat-icon-button color="primary" matTooltip="Create Class">
-			<mat-icon>add</mat-icon>
 		</button>
 	</mat-card-actions>
 </mat-card>

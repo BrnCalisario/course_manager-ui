@@ -21,3 +21,7 @@
 	<app-module-card *ngFor="let item of modules;" [module]="item" (onUpdate)="this.onEditModule($event)"
 		(onDelete)="this.onDeleteModule($event)" />
 </div>
+
+<div class="not-found" *ngIf="!modules || modules.length == 0">
+	No modules found!
+</div>

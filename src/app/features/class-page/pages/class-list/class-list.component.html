@@ -1,15 +1,20 @@
 <app-header title="Classes"></app-header>
 
 <div class="class-list">
-	<div class="class-card" *ngFor="let class of this.classes">
+	<div class="class-card" *ngFor="let class of this.classes; let i = index">
 		<div class="class-info">
 			<div class="class-name">{{ class.Name }}</div>
 			<div class="class-period">{{ class.StartDate | date: 'dd/MM/yyyy' }} - {{ class.EndDate | date: 'dd/MM/yyyy'
 				}}</div>
 		</div>
-		<button mat-icon-button>
-			<mat-icon class="schedule-icon">date_range</mat-icon>
-		</button>
+		<div class="button-wrap">
+			<button mat-icon-button (click)="goToSchedule()">
+				<mat-icon class="schedule-icon">date_range</mat-icon>
+			</button>
+			<button mat-icon-button (click)="removeClass(i)">
+				<mat-icon class="schedule-icon" color="warn">close</mat-icon>
+			</button>
+		</div>
 	</div>
 </div>
 
