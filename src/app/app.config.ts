@@ -13,6 +13,7 @@ import { provideRouter } from '@angular/router';
 import { BaseEndpoint } from '@domain/base/base.endpoint';
 import { authInterceptor } from '@shared/middlewares/auth.interceptor';
 
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
 import { routes } from './app.routes';
 
 export const environment = isDevMode() ? dev : prod;
@@ -30,5 +31,7 @@ export const appConfig: ApplicationConfig = {
 		// provideClientHydration(),
 		provideAnimationsAsync(),
 		provideDIs(),
+		provideNativeDateAdapter(),
+		{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
 	],
 };

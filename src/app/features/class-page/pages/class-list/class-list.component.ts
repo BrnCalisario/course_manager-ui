@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import StorageService from '@shared/services/storage.service';
 import { SharedModule } from '@shared/shared.module';
 
 @Component({
@@ -8,7 +9,13 @@ import { SharedModule } from '@shared/shared.module';
 	templateUrl: './class-list.component.html',
 	styleUrl: './class-list.component.scss'
 })
-export class ClassListComponent {
+export class ClassListComponent implements OnInit {
 
 	classes: any[] = [];
+
+	constructor(private readonly storageService: StorageService) { }
+
+	ngOnInit(): void {
+		this.classes = this.storageService.getList('classes');
+	}
 }

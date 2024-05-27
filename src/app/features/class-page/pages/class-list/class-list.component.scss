@@ -1,8 +1,24 @@
-.info {
+.class-list {
+	display: grid;
+	margin-top: 1rem;
 
-	margin-top: 3rem;
-	font-size: 1rem;
+	gap: 1rem;
+	grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+}
 
-	// width: 100px;
-	// border: 1px solid #67aeff;
+.class-card {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+
+	padding: 1rem;
+	outline: 2px solid var(--primary);
+	border-radius: 16px;
+
+	.class-name {
+		font-size: 1.25rem;
+		color: var(--primary);
+		font-weight: bold;
+	}
 }

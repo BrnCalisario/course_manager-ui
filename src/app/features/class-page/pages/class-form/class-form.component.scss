@@ -1,0 +1,19 @@
+.form-grid {
+	display: grid;
+
+	grid-gap: 1rem;
+	grid-template-areas: 'name-form name-form'
+		'start-picker end-picker';
+}
+
+.name-form {
+	grid-area: name-form;
+}
+
+.start-picker {
+	grid-area: start-picker;
+}
+
+.end-picker {
+	grid-area: end-picker;
+}
