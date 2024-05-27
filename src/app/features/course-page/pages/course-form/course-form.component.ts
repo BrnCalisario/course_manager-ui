@@ -41,7 +41,7 @@ export default class CourseFormComponent implements OnInit {
 
 	private courseId?: string;
 
-	//#region
+	//#region Commands
 
 	private findCommand: ODataQueryCommand<Course, ODataSingleResponse<Course>>;
 
@@ -147,6 +147,8 @@ export default class CourseFormComponent implements OnInit {
 			)
 			.subscribe({
 				next: (res: any) => {
+					delete res.CourseModules;
+
 					this.courseForm.setValue(res);
 				},
 				error: (_) => {
@@ -162,7 +164,12 @@ export default class CourseFormComponent implements OnInit {
 	}
 
 	public onSubmit() {
-		this.saveCommand.execute();
+		this.courseService.save(this.buildCourse(), this.isEdit).subscribe({
+			next: () => {
+				this.router.navigate(['/course', 'list']);
+			},
+			error: () => alert('An error occurred while creating the module.'),
+		});
 	}
 
 	public formatModule(module: Module): string {
@@ -193,6 +200,10 @@ export default class CourseFormComponent implements OnInit {
 			(acc, module) => acc + module.Workload,
 			0
 		)} hours`;
+	}
+
+	public returnToList() {
+		this.router.navigate(['course', 'list']);
 	}
 
 	private buildCourse(): Course {
