@@ -121,6 +121,15 @@ export default class ModuleFormComponent implements OnInit {
 		this.moduleForm.get('Dependencies')!.setValue(value);
 	}
 
+	public get moduleColor(): string {
+		return this.moduleForm.get('Color')!.value;
+	}
+
+	public set moduleColor(value: string) {
+		this.moduleForm.get('Color')!.setValue(value);
+	}
+
+
 	public onSubmit() {
 		const body = this.moduleForm.value;
 
