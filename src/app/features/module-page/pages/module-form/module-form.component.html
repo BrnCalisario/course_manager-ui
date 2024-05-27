@@ -1,4 +1,8 @@
-<app-header [back]="true" (onBack)="returnToList()" title=" {{ this.isEdit ? 'Edit' : 'Create' }} Module"></app-header>
+<app-header
+	[back]="true"
+	(onBack)="returnToList()"
+	title="{{ this.isEdit ? 'Edit' : 'Create' }} Module"
+></app-header>
 
 <mat-spinner class="spinner" *ngIf="this.isLoading">Loading...</mat-spinner>
 
@@ -8,29 +12,47 @@
 	<form #form class="form" [formGroup]="moduleForm">
 		<div class="form-grid">
 			<div id="module">
-				<div style="display: flex; gap: 5px;">
+				<div style="display: flex; gap: 5px">
 					<div id="name">
 						<mat-form-field>
 							<mat-label>Name</mat-label>
-							<input matInput formControlName="Name" placeholder="Ex: Basic Python" #Name>
+							<input
+								matInput
+								formControlName="Name"
+								placeholder="Ex: Basic Python"
+								#Name
+							/>
 						</mat-form-field>
 					</div>
 					<div id="workload">
 						<mat-form-field>
 							<mat-label>Workload ( Hours )</mat-label>
-							<input matInput formControlName="Workload" #Workload type="number">
+							<input
+								matInput
+								formControlName="Workload"
+								#Workload
+								type="number"
+							/>
 						</mat-form-field>
 					</div>
 				</div>
 				<mat-form-field>
 					<mat-label>Description</mat-label>
-					<textarea matInput formControlName="Description" placeholder="Ex: This module covers..."
-						#Description></textarea>
+					<textarea
+						matInput
+						formControlName="Description"
+						placeholder="Ex: This module covers..."
+						#Description
+					></textarea>
 				</mat-form-field>
 				<mat-form-field>
 					<mat-label>Objectives</mat-label>
-					<textarea matInput formControlName="Objective" placeholder="Ex: Learn about..."
-						#Objectives></textarea>
+					<textarea
+						matInput
+						formControlName="Objective"
+						placeholder="Ex: Learn about..."
+						#Objectives
+					></textarea>
 				</mat-form-field>
 			</div>
 
@@ -39,14 +61,24 @@
 					<app-competence-select-chip [(competences)]="competences" />
 				</mat-tab>
 				<mat-tab label="Modules">
-					<app-modules-select-chip [(modules)]="modules" [formModuleId]="formModuleId" />
+					<app-modules-select-chip
+						[(modules)]="modules"
+						[formModuleId]="formModuleId"
+					/>
 				</mat-tab>
 			</mat-tab-group>
 		</div>
 
-		<button type="button" style="justify-self: flex-end;" mat-raised-button color="primary" (click)="onSubmit()"
-			[disabled]="!moduleForm.valid">{{ this.isEdit ? "Edit" : "Create" }}</button>
+		<button
+			type="button"
+			style="justify-self: flex-end"
+			mat-raised-button
+			color="primary"
+			(click)="onSubmit()"
+			[disabled]="!moduleForm.valid"
+		>
+			{{ this.isEdit ? "Edit" : "Create" }}
+		</button>
 	</form>
-
 </div>
 }
