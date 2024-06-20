@@ -5,25 +5,40 @@
 	mat-form-field {
 		width: 100%;
 	}
-
-	table {
-		width: 100%;
-	}
 }
 
 .form-grid {
 	display: grid;
 	grid-template-columns: 1fr 1fr;
 	gap: 1rem;
-
-	.column {
-		width: 100%;
-	}
 }
 
-#competences {
+#workload {
+	width: 40%;
+}
 
-	h2 {
-		margin: 0;
-	}
+#name {
+	flex-grow: 1;
+}
+
+mat-tab-group {
+	gap: 10px;
+}
+
+
+.color-picker-box {
+
+	width: fit-content;
+
+	display: flex;
+	gap: 1rem;
+
+	border: 2px dashed lightgray;
+	padding: 1rem 0.5rem;
+
+	margin: 1rem 0;
+
+	// justify-content: center;
+	align-items: center;
+
 }

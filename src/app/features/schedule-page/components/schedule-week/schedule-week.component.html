@@ -1,0 +1,71 @@
+<app-header [back]="true" (onBack)="this.location.back()">
+
+</app-header>
+
+<div class="week-control">
+	<div class="buttons">
+		<button mat-icon-button (click)="previous()"><mat-icon>keyboard_arrow_left</mat-icon></button>
+		<button mat-icon-button (click)="next()"><mat-icon>keyboard_arrow_right</mat-icon></button>
+	</div>
+	<div>
+		{{ this.dateService.formatWeekString(this.date)}}
+	</div>
+</div>
+
+<div class="week-label">
+	<div class="side-label">
+
+		<div class="day-label">
+		</div>
+
+		<div class="day-period">
+			<section class="morning" (click)="editWeekPeriod(true)">
+				<p>Morning</p>
+			</section>
+			<section class="afternoon" (click)="editWeekPeriod(false)">
+				<p>Afternoon</p>
+			</section>
+		</div>
+	</div>
+
+	@for(day of weekDays; track day; let i = $index) {
+	<div class="day-block">
+
+		<div class="day-label" (click)="editDayPeriod(i)">
+			<p class="day-value">{{ this.dateService.formatDay(day.getDate()) }}</p>
+			<p>{{ this.weekLabels[i] }}</p>
+		</div>
+
+		<div class="day-period">
+			<section class="morning" (click)="editPeriod(day, true)">
+				<div *ngIf="day.morning?.Module; let module" [style.background]="module!.Color" class="lesson">
+					<p [style.color]="this.formatTextColor( module!.Color)">{{ module!.Name }}</p>
+				</div>
+			</section>
+			<section class="afternoon" (click)="editPeriod(day, false)">
+				<div *ngIf="day.afternoon?.Module; let module" [style.background]="module!.Color" class="lesson">
+					<p [style.color]="this.formatTextColor(module!.Color)">{{ module?.Name }}</p>
+				</div>
+			</section>
+		</div>
+	</div>
+	}
+</div>
+
+<mat-button-toggle-group name="click-option" (change)="onChange($event)">
+	<mat-button-toggle matTooltip="Edit" value="add">
+		<mat-icon>edit</mat-icon>
+	</mat-button-toggle>
+	<mat-button-toggle matTooltip="Clear" value="clear">
+		<mat-icon>clear</mat-icon>
+	</mat-button-toggle>
+</mat-button-toggle-group>
+
+<div>
+	<h3>Modules</h3>
+	<app-module-select [(selected)]="selectedModule">
+		@for(module of this.modules; track module; let i = $index) {
+		<app-module-option [module]="module" />
+		}
+	</app-module-select>
+</div>

@@ -1,7 +1,15 @@
-<div cdkDropList class="list" (cdkDropListDropped)="drop($event)">
-@for (item of itemList; track item) {
-    <div class="item-box" cdkDrag> 
+<!-- <div cdkDropList class="list" (cdkDropListDropped)="drop($event)">
+    @for (item of itemList; track item) {
+    <div class="example-custom-placeholder" cdkDragPlaceholder></div>
+    <div class="item-box" cdkDrag>
         {{ itemFormatter(item) }}
     </div>
-}
+    }
+</div> -->
+
+<div cdkDropList class="example-list" (cdkDropListDropped)="drop($event)">
+    <div class="example-box" *ngFor="let item of itemList" cdkDrag>
+        <div class="example-custom-placeholder" *cdkDragPlaceholder></div>
+        {{ itemFormatter(item) }}
+    </div>
 </div>

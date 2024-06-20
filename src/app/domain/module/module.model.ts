@@ -1,10 +1,16 @@
-import { BaseEntity } from "../base/base.endpoint";
+import BaseEntity from '@domain/base/base.entity';
+import { Competence } from '@domain/competence/competence.models';
 
 export default class Module implements BaseEntity<string> {
 	Id: string = '';
-	Name: string = 'Basic Python';
-	Description?: string = '';
-	Objectives?: string = '';
-	Workload: number = 10;
-	Dependencies: Module[] | undefined = [];
+	Name: string = '';
+	Description: string = '';
+	Objective: string = '';
+	Workload: number = 0;
+	Competences: Competence[] = [];
+	Dependencies: Module[] = [];
+	Dependents: Module[] = [];
+	Color: string = '#AAEE33';
+	Deleted: boolean = false;
+	RemainingWorkload: number = 0;
 }

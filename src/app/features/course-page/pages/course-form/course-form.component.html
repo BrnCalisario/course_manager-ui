@@ -1,25 +1,83 @@
-<app-header [back]="true" title="New Course"></app-header>
+<app-header
+	[back]="true"
+	(onBack)="returnToList()"
+	title="{{ this.isEdit ? 'Edit' : 'Create' }} Course"
+></app-header>
 
+<mat-spinner class="spinner" *ngIf="this.isLoading">Loading...</mat-spinner>
+
+@if(!this.isLoading) {
 <div class="row">
-    <div class="column">
+	<form #form class="column" [formGroup]="courseForm">
+		<editable-text
+			[edit]="true"
+			[textForm]="courseNameForm"
+			label="Title"
+		/>
 
-        <editable-header></editable-header>
+		<mat-form-field style="width: 100%">
+			<mat-label>Description</mat-label>
+			<textarea
+				matInput
+				formControlName="Description"
+				#Description
+			></textarea>
+		</mat-form-field>
 
-        <div class="module-title-wrap">
-            <h2>Modules</h2>
-            <button mat-fab extended color="primary">
-                <mat-icon>add</mat-icon>
-                Add module
-            </button>
-        </div>
+		<div class="module-title-wrap">
+			<h2>Modules</h2>
+			<button
+				mat-fab
+				extended
+				color="primary"
+				(click)="openModuleListDialog()"
+			>
+				<mat-icon>add</mat-icon>
+				Add module
+			</button>
+		</div>
 
-        <div class=draggable-list>
-            <draggable-list [itemFormatter]="formatModule" [itemList]="modules"></draggable-list>
-        </div>
+		<draggable-list
+			[itemFormatter]="formatModule"
+			[itemList]="courseModules"
+		/>
+	</form>
 
-    </div>
+	<div id="second-column" class="column">
+		<h2>Main Competences</h2>
 
-    <div class="column">
+		<div class="chip-list">
+			@for (competence of mainCompetences; track $index) {
+			<mat-chip color="primary" [highlighted]="true">{{
+				competence.Name
+			}}</mat-chip>
+			} @if (competencesOverflow > 0) {
+			<mat-chip color="warn" [highlighted]="true"
+				>+{{ competencesOverflow }} others</mat-chip
+			>
+			}
+		</div>
 
-    </div>
+		<div *ngIf="this.courseModules.length > -1" class="total-workload">
+			<p>
+				<span>Total Workload of this course:</span>
+				<br />
+				<span>{{ getTotalWorkload() }}</span>
+			</p>
+		</div>
+	</div>
+
+	{{ courseForm.errors }}
+
+	<button
+		type="button"
+		style="justify-self: flex-end"
+		mat-raised-button
+		color="primary"
+		[disabled]="!courseForm.valid"
+		(click)="onSubmit()"
+	>
+		{{ this.isEdit ? "Edit" : "Create" }}
+	</button>
 </div>
+}

@@ -1,0 +1,28 @@
+.menu-item {
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	width: 125px;
+	padding: 1rem;
+
+	background-color: white;
+
+	transition: 0.2s;
+
+	cursor: pointer;
+
+	&:hover {
+		background-color: var(--primary);
+		color: white;
+	}
+
+	&:first-child {
+		border-bottom: 1px solid lightgray;
+	}
+
+	button {
+		width: 100%;
+	}
+}

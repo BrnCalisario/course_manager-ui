@@ -1,0 +1,11 @@
+<ng-template>
+	<div class="module" [ngClass]="this.style">
+		<app-color-picker (colorChange)="onColorChange($event)" [color]="module.Color"></app-color-picker>
+		<div class="module-name">
+			<span>{{ module.Name }}</span>
+		</div>
+	</div>
+	<div class="remaining">
+		<p>Remaining Hours: {{ this.module.RemainingWorkload }}</p>
+	</div>
+</ng-template>

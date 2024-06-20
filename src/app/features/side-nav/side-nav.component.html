@@ -1,22 +1,34 @@
 <mat-sidenav-container class="container">
 	<mat-sidenav id="sidenav" #sidenav mode="side" [opened]="true">
-		<mat-toolbar id="title" class="side-header"><a [routerLink]="['/']">Course Manager</a></mat-toolbar>
+		<mat-toolbar id="title" class="side-header"><a [routerLink]="['/home']">Course Manager</a></mat-toolbar>
 
 		<mat-divider></mat-divider>
 
 		<mat-nav-list>
-			<a mat-list-item [routerLink]="['/course', 'list']">
-				<mat-icon matListItemIcon>
-					view_module
-				</mat-icon>
-				<p matListItemTitle>Cursos</p>
-			</a>
 			<a mat-list-item [routerLink]="['/module', 'list']">
 				<mat-icon matListItemIcon>
-					toll
+					line_style
 				</mat-icon>
-				<p>Módulos</p>
+				<p>Modules</p>
 			</a>
+			<a mat-list-item [routerLink]="['/course', 'list']">
+				<mat-icon matListItemIcon>
+					view_quilt
+				</mat-icon>
+				<p matListItemTitle>Courses</p>
+			</a>
+			<a mat-list-item [routerLink]="['/classes', 'list']">
+				<mat-icon matListItemIcon>
+					people
+				</mat-icon>
+				<p>Classes</p>
+			</a>
+			<!-- <a mat-list-item [routerLink]="['/schedule', 'year']">
+				<mat-icon matListItemIcon>
+					date_range
+				</mat-icon>
+				<p>Schedule</p>
+			</a> -->
 		</mat-nav-list>
 
 	</mat-sidenav>
@@ -28,7 +40,7 @@
 				(click)="sidenav.toggle()">
 				<mat-icon aria-label="sideNav toggle icon">menu</mat-icon>
 			</button>
-			<button mat-icon-button>
+			<button mat-icon-button (click)="logout()">
 				<mat-icon>logout</mat-icon>
 			</button>
 		</mat-toolbar>

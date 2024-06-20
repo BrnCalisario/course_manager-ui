@@ -1,4 +1,4 @@
-<h2 mat-dialog-title>Create competence</h2>
+<h2 mat-dialog-title>{{ editMode ? 'Edit' : 'Create' }} competence</h2>
 <mat-dialog-content>
 	<div class="new-competence-wrap" [formGroup]="form">
 		<mat-form-field>
@@ -7,7 +7,10 @@
 		</mat-form-field>
 	</div>
 </mat-dialog-content>
+
 <mat-dialog-actions align="end">
 	<button mat-raised-button mat-dialog-close color="warn">Cancel</button>
-	<button mat-raised-button cdkFocusInitial color="primary" (click)="onSubmit()">Create</button>
+	<button mat-raised-button cdkFocusInitial color="primary" (click)="onSubmit()">
+		{{ editMode ? 'Edit' : 'Create'}}
+	</button>
 </mat-dialog-actions>

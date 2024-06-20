@@ -1,30 +1,37 @@
-import { ApplicationConfig, isDevMode } from '@angular/core';
-import { provideRouter } from '@angular/router';
+import { environment as dev } from 'src/assets/environment/environment';
+import { environment as prod } from 'src/assets/environment/environment.prod';
 
 import { Location } from '@angular/common';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { provideClientHydration } from '@angular/platform-browser';
+import {
+	provideHttpClient,
+	withFetch,
+	withInterceptors,
+} from '@angular/common/http';
+import { ApplicationConfig, isDevMode } from '@angular/core';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
-import { routes } from './app.routes';
-import { UserEndpoint } from './domain/user/user.endpoint';
+import { provideRouter } from '@angular/router';
+import { BaseEndpoint } from '@domain/base/base.endpoint';
+import { authInterceptor } from '@shared/middlewares/auth.interceptor';
 
-import { environment as dev } from '@environment/environment';
-import { environment as prod } from '@environment/environment.prod';
+import { MAT_DATE_LOCALE, provideNativeDateAdapter } from '@angular/material/core';
+import { routes } from './app.routes';
 
 export const environment = isDevMode() ? dev : prod;
 
 const provideDIs = () => [
-	{ provide: UserEndpoint },
-	{ provide: Location }
+	provideHttpClient(withInterceptors([authInterceptor])),
+	{ provide: BaseEndpoint },
+	{ provide: Location },
 ];
 
 export const appConfig: ApplicationConfig = {
 	providers: [
 		provideHttpClient(withFetch()),
 		provideRouter(routes),
-		provideClientHydration(),
+		// provideClientHydration(),
 		provideAnimationsAsync(),
-		provideDIs()
-	]
+		provideDIs(),
+		provideNativeDateAdapter(),
+		{ provide: MAT_DATE_LOCALE, useValue: 'pt-BR' }
+	],
 };
-

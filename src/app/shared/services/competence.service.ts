@@ -1,40 +1,11 @@
-import { Injectable } from "@angular/core";
-import CompetenceEndpoint from "@domain/competence/competence.endpoint";
-import { Competence } from "@domain/competence/competence.models";
-import { Observable } from "rxjs";
-import ODataCommand from "src/lib/odata/ODataCommand";
+import { Injectable } from '@angular/core';
+import BaseService from '@domain/base/base.service';
+import CompetenceEndpoint from '@domain/competence/competence.endpoint';
+import { Competence } from '@domain/competence/competence.models';
 
 @Injectable({ providedIn: 'root' })
-export default class CompetenceService {
-
-	private _getCommand?: ODataCommand<Competence>;
-
-	constructor(private readonly endpoint: CompetenceEndpoint) { }
-
-	public getCommand(): ODataCommand<Competence> {
-
-		if (!this._getCommand) {
-			const command = new ODataCommand<Competence>((command) => {
-				return this.endpoint.getAll(command.build());
-			})
-
-			this._getCommand = command;
-		}
-
-		return this._getCommand;
+export default class CompetenceService extends BaseService<number, Competence> {
+	constructor(protected override endpoint: CompetenceEndpoint) {
+		super(endpoint)
 	}
-
-	public post(competence: Competence): Observable<Competence> {
-		return this.endpoint.create(competence);
-	}
-
-	// public postCommand(builder: () => Competence): ODataCommand<Competence> {
-
-	// 	const command = new ODataCommand<Competence>(_ => {
-	// 		return this.endpoint.create(builder());
-	// 	})
-
-	// 	return command;
-	// }
-
 }

@@ -1,0 +1,25 @@
+<app-header title="Classes"></app-header>
+
+<div class="class-list">
+	<div class="class-card" *ngFor="let class of this.classes; let i = index">
+		<div class="class-info">
+			<div class="class-name">{{ class.Name }}</div>
+			<div class="class-period">{{ class.StartDate | date: 'dd/MM/yyyy' }} - {{ class.EndDate | date: 'dd/MM/yyyy'
+				}}</div>
+		</div>
+		<div class="button-wrap">
+			<button mat-icon-button (click)="goToSchedule()">
+				<mat-icon class="schedule-icon">date_range</mat-icon>
+			</button>
+			<button mat-icon-button (click)="removeClass(i)">
+				<mat-icon class="schedule-icon" color="warn">close</mat-icon>
+			</button>
+		</div>
+	</div>
+</div>
+
+
+<div *ngIf=" this.classes.length==0" class="info">
+	You don't have any classes yet. <br>
+	Choose a course and <a [routerLink]="['/course', 'list']">create a new class.</a>
+</div>

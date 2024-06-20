@@ -15,19 +15,36 @@
 	outline-width: 3px;
 }
 
-.module-name {
-	font-size: 1.2rem;
-	font-weight: 500;
-	margin-bottom: 0.4rem;
-}
+.text {
 
-.duration {
-	color: var(--primary);
+	width: 70%;
 
-	p {
-		font-weight: bold;
+	.module-name {
+		font-size: 1.2rem;
+		font-weight: 500;
+		margin-bottom: 0.4rem;
+
+		height: 2rem;
+
+		text-overflow: ellipsis;
+		overflow: hidden;
+		white-space: nowrap;
 	}
+
+	.duration {
+		color: var(--primary);
+
+		p {
+			font-weight: bold;
+		}
+	}
+
 }
+
+.actions {
+	width: fit-content
+}
+
 
 
 p {

@@ -1,17 +1,23 @@
 <mat-card class="card">
-    <mat-card-header>
-        <mat-card-title class="title">{{ course.Name }}</mat-card-title>
-    </mat-card-header>
-    <mat-card-content>
-        <p class="description">{{ course.Description }}</p>
-        <div class="card-info">
-            <div class="info-item duration">
-                <span>Duration</span>
-                <p>{{ course.TotalWorkload }} H</p>
-            </div>
-            <mat-icon class="favorite-button"  color="primary">
-                favorite_outline
-            </mat-icon>
-        </div>
-    </mat-card-content>
+	<mat-card-header>
+		<mat-card-title class="title">{{ course.Name }}</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<p class="description"></p>
+		<div class="info-item duration">
+			<span>Duration</span>
+			<p>{{ TotalWorkload }} H</p>
+		</div>
+	</mat-card-content>
+	<mat-card-actions>
+		<button (click)="createClass()" mat-icon-button color="primary" matTooltip="Create Class">
+			<mat-icon>add</mat-icon>
+		</button>
+		<button (click)="onUpdate()" mat-icon-button color="accent" matTooltip="Edit">
+			<mat-icon>edit</mat-icon>
+		</button>
+		<button (click)="onDelete()" mat-icon-button color="warn" matTooltip="Delete">
+			<mat-icon>close</mat-icon>
+		</button>
+	</mat-card-actions>
 </mat-card>

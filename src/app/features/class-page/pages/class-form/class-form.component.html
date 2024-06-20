@@ -1,0 +1,26 @@
+<h2 mat-dialog-title>Create Class</h2>
+
+<mat-dialog-content>
+	<div class="form-grid" [formGroup]="this.form">
+		<mat-form-field class="name-form">
+			<mat-label>Name</mat-label>
+			<input matInput formControlName="Name" />
+		</mat-form-field>
+
+		<mat-form-field>
+			<mat-label>Course Period</mat-label>
+			<mat-date-range-input [rangePicker]="picker">
+				<input formControlName="StartDate" matStartDate placeholder="Start date">
+				<input formControlName="EndDate" matEndDate placeholder="End date">
+			</mat-date-range-input>
+			<!-- <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint> -->
+			<mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+			<mat-date-range-picker #picker></mat-date-range-picker>
+		</mat-form-field>
+	</div>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+	<button mat-raised-button color="warn" mat-dialog-close>Cancel</button>
+	<button mat-raised-button color="primary" (click)="onCreate()">Create</button>
+</mat-dialog-actions>

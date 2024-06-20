@@ -1,7 +1,7 @@
 
-import { Component, OnInit } from '@angular/core';
-
+import { Component } from '@angular/core';
 import { SideNavComponent } from '@features/side-nav/side-nav.component';
+
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
@@ -11,11 +11,5 @@ import { SharedModule } from '../../shared/shared.module';
 	templateUrl: './home-page.component.html',
 	styleUrl: './home-page.component.scss',
 })
-export class HomePageComponent implements OnInit {
-
-	constructor() {
-	}
-
-	ngOnInit(): void {
-	}
+export class HomePageComponent {
 }

@@ -1,1 +1,52 @@
-<p>login works!</p>
+<div class="form-card">
+    <h1 style="color: var(--primary);">Course Manager</h1>
+
+    @if (this.isLogin) {
+
+    <h2>Login</h2>
+    <form class="form" [formGroup]="loginForm">
+        <mat-form-field>
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="Email" />
+            <mat-error>Invalid e-mail</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="Password" />
+            <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{ hidePassword ? 'visibility_off' :
+                'visibility'}}</mat-icon>
+            <mat-error>Invalid password</mat-error>
+        </mat-form-field>
+
+        <button type="submit" class="enter-btn" mat-raised-button color="primary" (click)="login()">Enter</button>
+
+        <button type="button" class="enter-btn" mat-raised-button color="accent"
+            (click)="toggleForm()">Register</button>
+    </form>
+    } @else {
+    <h2>Register</h2>
+    <form class="form" [formGroup]="registerForm">
+        <mat-form-field>
+            <mat-label>UserName</mat-label>
+            <input matInput formControlName="UserName" />
+            <mat-error>Invalid username</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>E-mail</mat-label>
+            <input matInput formControlName="Email" />
+            <mat-error>Invalid e-mail</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Password</mat-label>
+            <input [type]="hidePassword ? 'password' : 'text'" matInput formControlName="Password" />
+            <mat-icon matSuffix (click)="hidePassword = !hidePassword">{{ hidePassword ? 'visibility_off' :
+                'visibility'}}</mat-icon>
+        </mat-form-field>
+
+        <button type="submit" class="enter-btn" mat-raised-button color="primary" (click)="register()">Register</button>
+
+        <button type="button" class="enter-btn" mat-raised-button color="accent" (click)="toggleForm()">Login</button>
+    </form>
+    }
+
+</div>

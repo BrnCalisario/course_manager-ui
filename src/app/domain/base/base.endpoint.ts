@@ -1,16 +1,17 @@
 import { Observable } from 'rxjs';
-import ODataResponse from 'src/lib/odata/types/ODataResponse';
-
-import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Injectable } from '@angular/core';
 import { environment } from 'src/app/app.config';
+import {
+	ODataListResponse,
+	ODataSingleResponse,
+} from 'src/lib/odata/types/ODataResponse';
 
-export interface BaseEntity<TId> {
-	Id: TId;
-}
+import { HttpClient } from '@angular/common/http';
+import { Injectable } from '@angular/core';
+
+import BaseEntity from './base.entity';
 
 @Injectable()
-export abstract class BaseEndpoint<TEntity extends BaseEntity<TId>, TId> {
+export abstract class BaseEndpoint<TKey, TEntity extends BaseEntity<TKey>> {
 	abstract get route(): string;
 
 	protected appURL: string = environment.APP_URL;
@@ -19,35 +20,43 @@ export abstract class BaseEndpoint<TEntity extends BaseEntity<TId>, TId> {
 		return `${this.appURL}${this.route}`;
 	}
 
-	public get headers() {
-		const token: string = sessionStorage.getItem('token') ?? '';
+	constructor(protected http: HttpClient) {}
 
-		return new HttpHeaders({
-			'Content-Type': 'application/json',
-			'Authorization': `Bearer ${token}`
-		})
+	public get(
+		id: TKey,
+		query?: string
+	): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.get<ODataSingleResponse<TEntity>>(
+			`${this.baseURL}/${id}?${query}`
+		);
 	}
 
-	constructor(protected http: HttpClient) {
+	public getAll(query?: string): Observable<ODataListResponse<TEntity>> {
+		return this.http.get<ODataListResponse<TEntity>>(
+			`${this.baseURL}?${query}`
+		);
 	}
 
-	public get(id: TId): Observable<ODataResponse<TEntity>> {
-		return this.http.get<ODataResponse<TEntity>>(`${this.baseURL}/${id}`, { ...this.headers });
+	public create(
+		entity: Omit<TEntity, 'Id' | 'Deleted'>
+	): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.post<ODataSingleResponse<TEntity>>(
+			this.baseURL,
+			entity
+		);
 	}
 
-	public getAll(query?: string): Observable<ODataResponse<TEntity>> {
-		return this.http.get<ODataResponse<TEntity>>(`${this.baseURL}?${query}`, { ...this.headers });
+	public update(entity: TEntity): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.patch<ODataSingleResponse<TEntity>>(
+			`${this.baseURL}/${entity.Id}`,
+			entity,
+			{ headers: { Prefer: 'return=representation' } }
+		);
 	}
 
-	public create(entity: Omit<TEntity, 'Id'>): Observable<TEntity> {
-		return this.http.post<TEntity>(this.baseURL, entity, { ...this.headers });
-	}
-
-	public update(entity: Omit<TEntity, 'Id'>): Observable<TEntity> {
-		return this.http.put<TEntity>(this.baseURL, entity, { ...this.headers });
-	}
-
-	public delete(id: TId): Observable<TEntity> {
-		return this.http.delete<TEntity>(`${this.baseURL}/${id}`, { ...this.headers });
+	public delete(id: TKey): Observable<ODataSingleResponse<TEntity>> {
+		return this.http.delete<ODataSingleResponse<TEntity>>(
+			`${this.baseURL}/${id}`
+		);
 	}
 }

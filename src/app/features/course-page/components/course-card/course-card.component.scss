@@ -1,51 +1,45 @@
 .card {
-    padding-right: 1rem;
-    border-left: 8px solid var(--primary);
-    cursor: pointer;
-    box-shadow: 3px 3px 3px lightgray;
+	padding-right: 1rem;
+	border-left: 8px solid var(--primary);
+	cursor: pointer;
+	box-shadow: 3px 3px 3px lightgray;
 
-    transition: 0.2s;
+	transition: 0.2s;
 }
 
 .card:hover {
-    transform: scale(1.01);
-    box-shadow: 6px 6px 6px lightgray;
+	transform: scale(1.01);
+	box-shadow: 6px 6px 6px lightgray;
 
-}
-
-.card-info {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
 }
 
 .title {
-    font-weight: 700;
+	font-weight: 700;
 }
 
 .description {
-    height: 75px;
-    display: -webkit-box;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
-    overflow: hidden;
+	// height: 75px;
+	display: -webkit-box;
+	-webkit-line-clamp: 3;
+	-webkit-box-orient: vertical;
+	overflow: hidden;
 }
 
 .info-item {
-    p {
-        padding: 0;
-        margin: 0;
+	p {
+		padding: 0;
+		margin: 0;
 
-        color: var(--primary);
-        font-weight: bold;
-    }
-    span {
-        color: var(--secondary);
-    }
+		color: var(--primary);
+		font-weight: bold;
+	}
+
+	span {
+		color: var(--secondary);
+	}
 }
 
 .favorite-button {
-    transform: scale(1.2);
-    cursor: pointer;
+	transform: scale(1.2);
+	cursor: pointer;
 }

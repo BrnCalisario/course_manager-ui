@@ -1,0 +1,28 @@
+<app-header title="Schedule"></app-header>
+
+<div class="content">
+	<div class="month-grid">
+
+		@for(month of year; track month; let i = $index) {
+		<div class="month" (click)="onMonthClick(i)">
+			<div class="month-header">
+				{{ monthNames[i] }}
+			</div>
+			<div class="day-grid">
+				@for(dayLabel of weekNames; track dayLabel) {
+				<div class="day-label">{{ dayLabel }}</div>
+				}
+				@for(day of month; track day) {
+
+				<div class="day" [ngClass]="day.month == i ? day.type : 'disabled'">
+					<div class="day-morning" [style.background]="day.morning.Module?.Color ?? '#FFF'"></div>
+					{{ day.day }}
+					<div class="day-afternoon" [style.background]="day.afternoon.Module?.Color ?? '#FFF'"></div>
+				</div>
+
+				}
+			</div>
+		</div>
+		}
+	</div>
+</div>
